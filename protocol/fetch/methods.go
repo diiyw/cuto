@@ -2,9 +2,9 @@ package fetch
 
 import (
 
-	"github.com/diiyw/gator/protocol/io"
+	"github.com/diiyw/goc/protocol/io"
 
-	"github.com/diiyw/gator/protocol/network"
+	"github.com/diiyw/goc/protocol/network"
 
 )
 const (

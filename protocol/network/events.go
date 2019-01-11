@@ -2,7 +2,7 @@ package network
 
 import (
 
-	"github.com/diiyw/gator/protocol/frame"
+	"github.com/diiyw/goc/protocol/frame"
 
 )
 const (

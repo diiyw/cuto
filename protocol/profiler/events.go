@@ -2,7 +2,7 @@ package profiler
 
 import (
 
-	"github.com/diiyw/gator/protocol/debugger"
+	"github.com/diiyw/goc/protocol/debugger"
 
 )
 const (

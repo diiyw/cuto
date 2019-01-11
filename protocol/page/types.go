@@ -2,7 +2,7 @@ package page
 
 import (
 
-	"github.com/diiyw/gator/protocol/network"
+	"github.com/diiyw/goc/protocol/network"
 
 )
 

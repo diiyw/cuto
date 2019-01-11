@@ -2,11 +2,11 @@ package overlay
 
 import (
 
-	"github.com/diiyw/gator/protocol/dom"
+	"github.com/diiyw/goc/protocol/dom"
 
-	"github.com/diiyw/gator/protocol/frame"
+	"github.com/diiyw/goc/protocol/frame"
 
-	"github.com/diiyw/gator/protocol/runtime"
+	"github.com/diiyw/goc/protocol/runtime"
 
 )
 const (

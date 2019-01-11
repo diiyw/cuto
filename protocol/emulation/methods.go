@@ -2,11 +2,11 @@ package emulation
 
 import (
 
-	"github.com/diiyw/gator/protocol/dom"
+	"github.com/diiyw/goc/protocol/dom"
 
-	"github.com/diiyw/gator/protocol/frame"
+	"github.com/diiyw/goc/protocol/frame"
 
-	"github.com/diiyw/gator/protocol/network"
+	"github.com/diiyw/goc/protocol/network"
 
 )
 const (
@@ -54,8 +54,8 @@ const (
 	// unavailable.
 	SetGeolocationOverride = "Emulation.setGeolocationOverride"
 	
-	// Overrides value returned by the javascript navigator object.
-	SetNavigatorOverrides = "Emulation.setNavigatorOverrides"
+	// Overrides value returned by the javascript navigoc object.
+	SetNavigocOverrides = "Emulation.setNavigocOverrides"
 	
 	// Sets a specified page scale factor.
 	SetPageScaleFactor = "Emulation.setPageScaleFactor"
@@ -285,16 +285,16 @@ type SetGeolocationOverrideReturns struct {
 	
 }
 
-// SetNavigatorOverrides parameters
-type SetNavigatorOverridesParams struct {
+// SetNavigocOverrides parameters
+type SetNavigocOverridesParams struct {
 	
-	// The platform navigator.platform should return.
+	// The platform navigoc.platform should return.
 	Platform	string	`json:"platform"`
 	
 }
 
-// SetNavigatorOverrides returns
-type SetNavigatorOverridesReturns struct {
+// SetNavigocOverrides returns
+type SetNavigocOverridesReturns struct {
 	
 }
 
@@ -396,7 +396,7 @@ type SetUserAgentOverrideParams struct {
 	// Browser langugage to emulate.
 	AcceptLanguage	string	`json:"acceptLanguage"`
 	
-	// The platform navigator.platform should return.
+	// The platform navigoc.platform should return.
 	Platform	string	`json:"platform"`
 	
 }

@@ -2,7 +2,7 @@ package serviceworker
 
 import (
 
-	"github.com/diiyw/gator/protocol/target"
+	"github.com/diiyw/goc/protocol/target"
 
 )
 

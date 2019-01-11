@@ -2,7 +2,7 @@ package tracing
 
 import (
 
-	"github.com/diiyw/gator/protocol/io"
+	"github.com/diiyw/goc/protocol/io"
 
 )
 const (

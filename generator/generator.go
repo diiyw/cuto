@@ -45,7 +45,7 @@ type Viewport struct {
 {{if .Requires}}
 import (
 {{range .Requires}}
-	"github.com/diiyw/gator/protocol{{.|lower}}"
+	"github.com/diiyw/goc/protocol{{.|lower}}"
 {{end}}
 ){{end}}`
 	methods = `

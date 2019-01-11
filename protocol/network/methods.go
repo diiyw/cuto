@@ -2,9 +2,9 @@ package network
 
 import (
 
-	"github.com/diiyw/gator/protocol/debugger"
+	"github.com/diiyw/goc/protocol/debugger"
 
-	"github.com/diiyw/gator/protocol/io"
+	"github.com/diiyw/goc/protocol/io"
 
 )
 const (
@@ -579,7 +579,7 @@ type SetUserAgentOverrideParams struct {
 	// Browser langugage to emulate.
 	AcceptLanguage	string	`json:"acceptLanguage"`
 	
-	// The platform navigator.platform should return.
+	// The platform navigoc.platform should return.
 	Platform	string	`json:"platform"`
 	
 }

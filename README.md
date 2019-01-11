@@ -1,4 +1,4 @@
-# Gator
+# goc
 GO语言驱动chrome内核浏览器
 # 环境依赖
 - Go >= 1.11 

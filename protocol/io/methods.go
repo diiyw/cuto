@@ -2,7 +2,7 @@ package io
 
 import (
 
-	"github.com/diiyw/gator/protocol/runtime"
+	"github.com/diiyw/goc/protocol/runtime"
 
 )
 const (

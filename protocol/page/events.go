@@ -2,9 +2,9 @@ package page
 
 import (
 
-	"github.com/diiyw/gator/protocol/network"
+	"github.com/diiyw/goc/protocol/network"
 
-	"github.com/diiyw/gator/protocol/runtime"
+	"github.com/diiyw/goc/protocol/runtime"
 
 )
 const (

@@ -1,4 +1,4 @@
-package gator
+package goc
 
 type Controls map[string]string
 

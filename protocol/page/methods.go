@@ -2,15 +2,15 @@ package page
 
 import (
 
-	"github.com/diiyw/gator/protocol/debugger"
+	"github.com/diiyw/goc/protocol/debugger"
 
-	"github.com/diiyw/gator/protocol/dom"
+	"github.com/diiyw/goc/protocol/dom"
 
-	"github.com/diiyw/gator/protocol/emulation"
+	"github.com/diiyw/goc/protocol/emulation"
 
-	"github.com/diiyw/gator/protocol/network"
+	"github.com/diiyw/goc/protocol/network"
 
-	"github.com/diiyw/gator/protocol/runtime"
+	"github.com/diiyw/goc/protocol/runtime"
 
 )
 const (
