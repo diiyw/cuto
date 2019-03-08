@@ -8,6 +8,7 @@ import (
 	"github.com/diiyw/goc/protocol/dom"
 	"github.com/diiyw/goc/protocol/page"
 	"github.com/gorilla/websocket"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -39,15 +40,16 @@ func New(opts []string) (*Chrome, error) {
 			"--remote-debugging-port=9222",
 			"--user-data-dir=" + defaultUserDataTmpDir + "/" + string(s[:8]),
 		}, opts...)...)
-		go cmd.Run()
+		go func() {
+			if err := cmd.Run(); err != nil {
+				log.Println(err)
+			}
+		}()
 		break
 	}
-	for {
-		c, err := net.Dial("tcp", "127.0.0.1:9222")
-		if err == nil {
-			c.Close()
-			break
-		}
+	_, err := net.DialTimeout("tcp", "127.0.0.1:9222", time.Second*10)
+	if err == nil {
+		log.Println(err)
 	}
 	ch := &Chrome{
 		"127.0.0.1:9222",
@@ -60,7 +62,10 @@ func New(opts []string) (*Chrome, error) {
 		for {
 			select {
 			case <-c:
-				ch.Close()
+				var err = ch.Close()
+				if err != nil {
+					log.Println(err)
+				}
 			}
 		}
 	}()
@@ -83,18 +88,29 @@ func (chrome *Chrome) Open(url string) (*Tab, error) {
 
 // Close chrome
 func (chrome *Chrome) Close() error {
-	_ = os.RemoveAll(chrome.DataDir)
+	if err := os.RemoveAll(chrome.DataDir); err != nil {
+		return err
+	}
 	return chrome.Process.Kill()
 }
 
 func newTab(tab *Tab) (*Tab, error) {
-	conn, _, err := websocket.DefaultDialer.Dial(tab.WsUrl, nil)
+	conn, _, err := websocket.DefaultDialer.Dial(tab.WebSocketDebuggerUrl, nil)
 	if err != nil {
 		return nil, err
 	}
 	tab.Ipc.Conn = conn
+	tab.Ipc.events = make(chan []byte, 1024)
+	tab.Ipc.returns = make(chan []byte, 1024)
+	tab.Ipc.errors = make(chan []byte, 1024)
 	_ = tab.Send(dom.Enable, dom.EnableParams{})
 	_ = tab.Send(page.Enable, page.EnableParams{})
+	go func() {
+		if err := tab.handle(); err != nil {
+			log.Println(err)
+			return
+		}
+	}()
 	return tab, nil
 }
 
@@ -111,6 +127,9 @@ func (chrome *Chrome) Find(kw string) (*Tab, error) {
 	}
 	for _, tab := range tabs {
 		if strings.Contains(tab.Url, kw) || strings.Contains(tab.Id, kw) || strings.Contains(tab.Title, kw) {
+			tab.Ipc.events = make(chan []byte, 1024)
+			tab.Ipc.returns = make(chan []byte, 1024)
+			tab.Ipc.errors = make(chan []byte, 1024)
 			return tab, nil
 		}
 	}

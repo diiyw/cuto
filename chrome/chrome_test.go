@@ -1,6 +1,7 @@
 package chrome
 
 import (
+	"log"
 	"testing"
 	"time"
 )
@@ -11,5 +12,7 @@ func TestChrome(t *testing.T) {
 		t.Fatal(err)
 	}
 	time.Sleep(1e9 * 5)
-	defer chrome.Close()
+	if err := chrome.Close(); err != nil {
+		log.Println(err)
+	}
 }

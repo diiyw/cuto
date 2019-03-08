@@ -1,6 +1,7 @@
 package chrome
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -10,8 +11,8 @@ import (
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"path"
-	"strconv"
 	"strings"
+	"time"
 )
 
 type (
@@ -36,19 +37,30 @@ type (
 )
 
 type ipc struct {
-	id int
 	*websocket.Conn
-	message chan string
+
+	id      int
+	events  chan []byte
+	returns chan []byte
+	errors  chan []byte
 }
 
 type Tab struct {
-	Id     string `json:"id"`
-	Url    string `json:"url"`
-	Type   string `json:"type"`
-	Title  string `json:"title"`
-	DevUrl string `json:"devtoolsFrontendUrl"`
-	WsUrl  string `json:"webSocketDebuggerUrl"`
-	Ipc    ipc    `json:"-"`
+	Id                   string `json:"id"`
+	Url                  string `json:"url"`
+	Type                 string `json:"type"`
+	Title                string `json:"title"`
+	DevtoolsFrontendUrl  string `json:"devtoolsFrontendUrl"`
+	WebSocketDebuggerUrl string `json:"webSocketDebuggerUrl"`
+	Ipc                  ipc    `json:"-"`
+}
+
+// 等待页面加载完成
+func (tab *Tab) Wait() error {
+	if err := tab.HandleEvent(page.LoadEventFiredEvent, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 // 跳转地址
@@ -56,59 +68,22 @@ func (tab *Tab) Jump(url string) error {
 	if err := tab.Send(page.Navigate, page.NavigateParams{Url: url}); err != nil {
 		return err
 	}
-	err := tab.Recv(func(m []byte) bool {
-		var result = page.NavigateReturns{}
-		var returns = Return{Result: &result}
-		if err := json.Unmarshal(m, &returns); err != nil {
-			return true
-		}
-		if returns.Id != 0 && result.FrameId != "" {
-			return true
-		}
-		return false
-	})
-	if err != nil {
+	var result = page.NavigateReturns{}
+	if err := tab.HandleResult(&result); err != nil {
 		return err
 	}
-	return tab.Recv(func(m []byte) bool {
-		var navigatedParams = &page.FrameNavigatedParams{}
-		var navigated = Event{Params: navigatedParams}
-		if err := json.Unmarshal(m, &navigated); err != nil {
-			return true
-		}
-		if navigated.Method == page.FrameNavigatedEvent {
-			_ = tab.Recv(func(m []byte) bool {
-				var stoppedLoadingParams = &page.FrameStoppedLoadingParams{}
-				var stoppedLoading = Event{Params: stoppedLoadingParams}
-				if err := json.Unmarshal(m, &stoppedLoading); err != nil {
-					return true
-				}
-				if stoppedLoading.Method == page.FrameStoppedLoadingEvent {
-					if navigatedParams.Frame.Id == string(stoppedLoadingParams.FrameId) {
-						return true
-					}
-				}
-				return false
-			})
-			return true
-		}
-		return false
-	})
-}
-
-// 等待页面加载完成
-func (tab *Tab) Wait() (err error) {
-	return tab.Recv(func(m []byte) bool {
-		var params = page.LoadEventFiredParams{}
-		var loadEvent = Event{Params: params}
-		if err = json.Unmarshal(m, &loadEvent); err != nil {
-			return true
-		}
-		if loadEvent.Method == page.LoadEventFiredEvent {
-			return true
-		}
-		return false
-	})
+	var frameNavigatedParams = page.FrameNavigatedParams{}
+	if err := tab.HandleEvent(page.FrameNavigatedEvent, &frameNavigatedParams); err != nil {
+		return err
+	}
+	var frameStoppedLoadingParams = page.FrameStoppedLoadingParams{}
+	if err := tab.HandleEvent(page.FrameStoppedLoadingEvent, &frameStoppedLoadingParams); err != nil {
+		return err
+	}
+	if frameNavigatedParams.Frame.Id == string(frameStoppedLoadingParams.FrameId) {
+		return nil
+	}
+	return errors.New("jump error")
 }
 
 // 查询节点
@@ -118,17 +93,10 @@ func (tab *Tab) Query(selector string) ([]dom.NodeId, error) {
 	if err := tab.Send(dom.GetDocument, dom.GetDocumentParams{}); err != nil {
 		return nil, err
 	}
-	err = tab.Recv(func(m []byte) bool {
-		var getDocument = &dom.GetDocumentReturns{}
-		var returns = Return{Result: getDocument}
-		if err = json.Unmarshal(m, &returns); err != nil {
-			return true
-		}
-		if returns.Id == tab.Ipc.id {
-			return true
-		}
-		return false
-	})
+	var getDocument = dom.GetDocumentReturns{}
+	if err := tab.HandleResult(&getDocument); err != nil {
+		return nil, err
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -140,17 +108,10 @@ func (tab *Tab) Query(selector string) ([]dom.NodeId, error) {
 	if err := tab.Send(dom.PerformSearch, searchParams); err != nil {
 		return nil, err
 	}
-	var searchResult = &dom.PerformSearchReturns{}
-	err = tab.Recv(func(m []byte) bool {
-		var returns = Return{Result: searchResult}
-		if err := json.Unmarshal(m, &returns); err != nil {
-			return true
-		}
-		if searchResult.SearchId != "" {
-			return true
-		}
-		return false
-	})
+	var searchResult = dom.PerformSearchReturns{}
+	if err := tab.HandleResult(&searchResult); err != nil {
+		return nil, err
+	}
 	// 获取节点结果
 	var result = dom.GetSearchResultsParams{
 		SearchId:  searchResult.SearchId,
@@ -160,17 +121,10 @@ func (tab *Tab) Query(selector string) ([]dom.NodeId, error) {
 	if err := tab.Send(dom.GetSearchResults, result); err != nil {
 		return nil, err
 	}
-	var getResult = &dom.GetSearchResultsReturns{}
-	err = tab.Recv(func(m []byte) bool {
-		var returns = Return{Result: getResult}
-		if err := json.Unmarshal(m, &returns); err != nil {
-			return true
-		}
-		if returns.Id == tab.Ipc.id {
-			return true
-		}
-		return false
-	})
+	var getResult = dom.GetSearchResultsReturns{}
+	if err := tab.HandleResult(&getResult); err != nil {
+		return nil, err
+	}
 	return getResult.NodeIds, nil
 }
 
@@ -244,18 +198,8 @@ func (tab *Tab) Js(js string, timeout runtime.TimeDelta) (object runtime.RemoteO
 	if err := tab.Send(runtime.Evaluate, rParams); err != nil {
 		return object, err
 	}
-	var evalResult = &runtime.EvaluateReturns{}
-	err = tab.Recv(func(m []byte) bool {
-		var returns = Return{Result: evalResult}
-		if err = json.Unmarshal(m, &returns); err != nil {
-			return true
-		}
-		if returns.Id == tab.Ipc.id {
-			return true
-		}
-		return false
-	})
-	if err != nil {
+	var evalResult = runtime.EvaluateReturns{}
+	if err := tab.HandleResult(&evalResult); err != nil {
 		return object, err
 	}
 	return evalResult.Result, nil
@@ -280,18 +224,9 @@ func (tab *Tab) Close() error {
 
 // 页面截图
 func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) error {
-	var err error
-	err = tab.Recv(func(m []byte) bool {
-		var params = &page.DomContentEventFiredParams{}
-		var contentEvent = Event{Params: params}
-		if err = json.Unmarshal(m, &contentEvent); err != nil {
-			return true
-		}
-		if contentEvent.Method == page.DomContentEventFiredEvent && params.Timestamp != 0 {
-			return true
-		}
-		return false
-	})
+	if err := tab.HandleEvent(page.DomContentEventFiredEvent, nil); err != nil {
+		return err
+	}
 	var capture = page.CaptureScreenshotParams{
 		Format:  strings.Trim(path.Ext(filename), "."),
 		Clip:    viewport,
@@ -300,20 +235,12 @@ func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) er
 	if err := tab.Send(page.CaptureScreenshot, capture); err != nil {
 		return err
 	}
-	err = tab.Recv(func(m []byte) bool {
-		var result = &page.CaptureScreenshotReturns{}
-		var returns = Return{Result: result}
-		if err = json.Unmarshal(m, &returns); err != nil {
-			return true
-		}
-		if result.Data != "" && returns.Id != 0 {
-			b, _ := base64.StdEncoding.DecodeString(result.Data)
-			err = ioutil.WriteFile(filename, b, 0777)
-			return true
-		}
-		return false
-	})
-	return err
+	var captureScreenshotReturns = page.CaptureScreenshotReturns{}
+	if err := tab.HandleResult(&captureScreenshotReturns); err != nil {
+		return err
+	}
+	b, _ := base64.StdEncoding.DecodeString(captureScreenshotReturns.Data)
+	return ioutil.WriteFile(filename, b, 0777)
 }
 
 // 发起命令
@@ -330,23 +257,63 @@ func (tab *Tab) Send(method string, params interface{}) error {
 	return nil
 }
 
-func (tab *Tab) Recv(f func(m []byte) bool) error {
+func (tab *Tab) handle() error {
 	for {
-		var e Error
 		_, b, err := tab.Ipc.ReadMessage()
 		if err != nil {
 			return err
 		}
-		if err := json.Unmarshal(b, &e); err != nil {
-			return err
+		// Error
+		if bytes.Contains(b, []byte(`"error"`)) {
+			tab.Ipc.errors <- b
 		}
-		if e.Id != 0 && e.Error.Code != 0 {
-			var code = "[CODE]:" + strconv.Itoa(e.Error.Code) + "\n[DATA]:"
-			return errors.New(code + e.Error.Data + "\n[MESSAGE]:" + e.Error.Message)
+		// Event
+		if bytes.Contains(b, []byte(`"params"`)) && bytes.Contains(b, []byte(`"method"`)) {
+			tab.Ipc.events <- b
 		}
-		if f(b) {
-			break
+		// Result
+		tab.Ipc.returns <- b
+	}
+}
+
+func (tab *Tab) HandleResult(returns interface{}) error {
+	timeout := make(chan bool)
+	go func() {
+		time.Sleep(time.Second * 15)
+		timeout <- true
+	}()
+	for {
+		select {
+		case b := <-tab.Ipc.returns:
+			var ret = Return{Result: returns}
+			if err := json.Unmarshal(b, &ret); err == nil {
+				if ret.Id == tab.Ipc.id {
+					return nil
+				}
+			}
+		case <-timeout:
+			return errors.New("Handle result timeout.")
 		}
 	}
-	return nil
+}
+
+func (tab *Tab) HandleEvent(method string, params interface{}) error {
+	timeout := make(chan bool)
+	go func() {
+		time.Sleep(time.Second * 15)
+		timeout <- true
+	}()
+	for {
+		select {
+		case b := <-tab.Ipc.events:
+			var event = Event{Params: params}
+			if err := json.Unmarshal(b, &event); err == nil {
+				if event.Method == method {
+					return nil
+				}
+			}
+		case <-timeout:
+			return errors.New("Handle " + method + " timeout.")
+		}
+	}
 }

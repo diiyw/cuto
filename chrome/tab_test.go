@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func Test_Tab(t *testing.T) {
+func TestTab(t *testing.T) {
 	bs, err := New(nil)
 	if err != nil {
 		log.Fatal(err)
@@ -20,6 +20,7 @@ func Test_Tab(t *testing.T) {
 	if err := tab.Wait(); err != nil {
 		log.Fatal(err)
 	}
+	log.Println("Page loaded.")
 	nodes, err := tab.Query("//*[@id=\"kw\"]")
 	if err != nil {
 		log.Fatal(err)
