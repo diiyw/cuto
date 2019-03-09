@@ -41,7 +41,7 @@ func New(opts []string) (*Chrome, error) {
 		}()
 		break
 	}
-	testConn, err := net.DialTimeout("tcp", "127.0.0.1:9222", time.Second*5)
+	testConn, err := net.DialTimeout("tcp4", "127.0.0.1:9222", time.Second*5)
 	if err != nil {
 		return nil, err
 	}
