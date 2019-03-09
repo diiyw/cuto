@@ -14,5 +14,5 @@ var (
 		os.Getenv("USERPROFILE") + `\AppData\Local\Google\Chrome\Application\chrome.exe`,
 		os.Getenv("USERPROFILE") + `\AppData\Roaming\360se6\Application\360se.exe`,
 	}
-	defaultUserDataTmpDir = os.TempDir()
+	defaultUserDataTmpDir = os.TempDir() + `\goc`
 )

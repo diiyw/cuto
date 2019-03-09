@@ -1,8 +1,6 @@
 package chrome
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"github.com/diiyw/goc/protocol/dom"
@@ -14,7 +12,6 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -27,9 +24,6 @@ type Chrome struct {
 
 // Create chrome client
 func New(opts []string) (*Chrome, error) {
-	h := md5.New()
-	h.Write([]byte(strconv.FormatInt(time.Now().Unix(), 10)))
-	s := []rune(hex.EncodeToString(h.Sum(nil)))
 	cmd := &exec.Cmd{}
 	for _, filename := range defaultChrome {
 		_, err := os.Stat(filename)
@@ -38,7 +32,7 @@ func New(opts []string) (*Chrome, error) {
 		}
 		cmd = exec.Command(filename, append([]string{
 			"--remote-debugging-port=9222",
-			"--user-data-dir=" + defaultUserDataTmpDir + "/" + string(s[:8]),
+			"--user-data-dir=" + defaultUserDataTmpDir,
 		}, opts...)...)
 		go func() {
 			if err := cmd.Run(); err != nil {
@@ -47,13 +41,14 @@ func New(opts []string) (*Chrome, error) {
 		}()
 		break
 	}
-	_, err := net.DialTimeout("tcp", "127.0.0.1:9222", time.Second*10)
-	if err == nil {
-		log.Println(err)
+	testConn, err := net.DialTimeout("tcp", "127.0.0.1:9222", time.Second*5)
+	if err != nil {
+		return nil, err
 	}
+	_ = testConn.Close()
 	ch := &Chrome{
 		"127.0.0.1:9222",
-		defaultUserDataTmpDir + "/" + string(s[:8]),
+		defaultUserDataTmpDir,
 		cmd.Process,
 	}
 	var c = make(chan os.Signal, 1)
@@ -62,8 +57,7 @@ func New(opts []string) (*Chrome, error) {
 		for {
 			select {
 			case <-c:
-				var err = ch.Close()
-				if err != nil {
+				if err := ch.Close(); err != nil {
 					log.Println(err)
 				}
 			}
