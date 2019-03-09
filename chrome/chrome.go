@@ -24,23 +24,31 @@ type Chrome struct {
 
 // Create chrome client
 func New(opts []string) (*Chrome, error) {
-	cmd := &exec.Cmd{}
 	for _, filename := range defaultChrome {
 		_, err := os.Stat(filename)
 		if err != nil {
 			continue
 		}
-		cmd = exec.Command(filename, append([]string{
-			"--remote-debugging-port=9222",
-			"--user-data-dir=" + defaultUserDataTmpDir,
-		}, opts...)...)
-		go func() {
-			if err := cmd.Run(); err != nil {
-				log.Println(err)
-			}
-		}()
-		break
+		return Create(filename, opts)
 	}
+	return nil, errors.New("Chrome may be not install on this system")
+}
+
+func Create(filename string, opts []string) (*Chrome, error) {
+	_, err := os.Stat(filename)
+	if err != nil {
+		return nil, err
+	}
+	cmd := &exec.Cmd{}
+	cmd = exec.Command(filename, append([]string{
+		"--remote-debugging-port=9222",
+		"--user-data-dir=" + defaultUserDataTmpDir,
+	}, opts...)...)
+	go func() {
+		if err := cmd.Run(); err != nil {
+			log.Println(err)
+		}
+	}()
 	testConn, err := net.DialTimeout("tcp4", "127.0.0.1:9222", time.Second*5)
 	if err != nil {
 		return nil, err
@@ -82,9 +90,7 @@ func (chrome *Chrome) Open(url string) (*Tab, error) {
 
 // Close chrome
 func (chrome *Chrome) Close() error {
-	if err := os.RemoveAll(chrome.DataDir); err != nil {
-		return err
-	}
+	_ = os.RemoveAll(chrome.DataDir)
 	return chrome.Process.Kill()
 }
 
