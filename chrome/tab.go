@@ -216,11 +216,11 @@ func (tab *Tab) Refresh() error {
 
 // 关闭标签
 func (tab *Tab) Close() error {
-	err := tab.Ipc.Close()
-	if err != nil {
+	if err := tab.Send(page.Close, page.CloseParams{}); err != nil {
 		return err
 	}
-	if err := tab.Send(page.Close, page.CloseParams{}); err != nil {
+	err := tab.Ipc.Close()
+	if err != nil {
 		return err
 	}
 	return nil
