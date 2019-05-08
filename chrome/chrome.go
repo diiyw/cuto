@@ -59,16 +59,12 @@ func Create(filename string, opts []string) (*Chrome, error) {
 		defaultUserDataTmpDir,
 		cmd.Process,
 	}
-	var c = make(chan os.Signal, 1)
+	var c = make(chan os.Signal)
 	go func() {
 		signal.Notify(c, os.Interrupt, os.Kill)
-		for {
-			select {
-			case <-c:
-				if err := ch.Close(); err != nil {
-					log.Println(err)
-				}
-			}
+		<-c
+		if err := ch.Close(); err != nil {
+			log.Println(err)
 		}
 	}()
 	return ch, nil
