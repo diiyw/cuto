@@ -216,6 +216,10 @@ func (tab *Tab) Refresh() error {
 
 // 关闭标签
 func (tab *Tab) Close() error {
+	err := tab.Ipc.Close()
+	if err != nil {
+		return err
+	}
 	if err := tab.Send(page.Close, page.CloseParams{}); err != nil {
 		return err
 	}
@@ -245,7 +249,7 @@ func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) er
 
 // 发起命令
 func (tab *Tab) Send(method string, params interface{}) error {
-	tab.Ipc.id ++
+	tab.Ipc.id++
 	var request = map[string]interface{}{
 		"id":     tab.Ipc.id,
 		"method": method,
