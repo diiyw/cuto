@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/diiyw/goc/protocol/dom"
 	"github.com/diiyw/goc/protocol/page"
 	"github.com/diiyw/goc/protocol/runtime"
@@ -253,9 +252,6 @@ func (tab *Tab) Send(method string, params interface{}) error {
 		"method": method,
 		"params": params,
 	}
-	b, _ := json.Marshal(request)
-
-	fmt.Println(string(b))
 	if err := tab.Ipc.WriteJSON(request); err != nil {
 		return err
 	}
