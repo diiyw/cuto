@@ -52,6 +52,10 @@ type RequestPausedParams struct {
 	// Response headers if intercepted at the response stage.
 	ResponseHeaders	[]HeaderEntry	`json:"responseHeaders"`
 	
+	// If the intercepted request had a corresponding Network.requestWillBeSent event fired for it,
+	// then this networkId will be the same as the requestId present in the requestWillBeSent event.
+	NetworkId	RequestId	`json:"networkId"`
+	
 }
 
 // Issued when the domain is enabled with handleAuthRequests set to true.

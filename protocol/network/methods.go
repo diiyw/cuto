@@ -97,7 +97,7 @@ const (
 	// Specifies whether to always send extra HTTP headers with the requests from this page.
 	SetExtraHTTPHeaders = "Network.setExtraHTTPHeaders"
 	
-	// Sets the requests to intercept that match a the provided patterns and optionally resource types.
+	// Sets the requests to intercept that match the provided patterns and optionally resource types.
 	SetRequestInterception = "Network.setRequestInterception"
 	
 	// Allows overriding user agent with the given string.
@@ -579,7 +579,7 @@ type SetUserAgentOverrideParams struct {
 	// Browser langugage to emulate.
 	AcceptLanguage	string	`json:"acceptLanguage"`
 	
-	// The platform navigoc.platform should return.
+	// The platform navigator.platform should return.
 	Platform	string	`json:"platform"`
 	
 }

@@ -52,6 +52,9 @@ type TracingCompleteParams struct {
 	// A handle of the stream that holds resulting trace data.
 	Stream	io.StreamHandle	`json:"stream"`
 	
+	// Trace data format of returned stream.
+	TraceFormat	StreamFormat	`json:"traceFormat"`
+	
 	// Compression format of returned stream.
 	StreamCompression	StreamCompression	`json:"streamCompression"`
 	

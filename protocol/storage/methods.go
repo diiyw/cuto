@@ -28,7 +28,7 @@ type ClearDataForOriginParams struct {
 	// Security origin.
 	Origin	string	`json:"origin"`
 	
-	// Comma separated origin names.
+	// Comma separated list of StorageType to clear.
 	StorageTypes	string	`json:"storageTypes"`
 	
 }

@@ -329,6 +329,9 @@ type GetPropertiesReturns struct {
 	// Internal object properties (only of the element itself).
 	InternalProperties	[]InternalPropertyDescriptor	`json:"internalProperties"`
 	
+	// Object private properties.
+	PrivateProperties	[]PrivatePropertyDescriptor	`json:"privateProperties"`
+	
 	// Exception details.
 	ExceptionDetails	ExceptionDetails	`json:"exceptionDetails"`
 	

@@ -43,6 +43,10 @@ type TraceConfig struct {
 	
 }	
 
+// Data format of a trace. Can be either the legacy JSON format or the
+	// protocol buffer format. Note that the JSON format will be deprecated soon.
+type StreamFormat string	
+
 // Compression type to use for traces returned via streams.
 type StreamCompression string	
 

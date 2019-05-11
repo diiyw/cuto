@@ -19,6 +19,9 @@ const (
 	// Crashes browser on the main thread.
 	Crash = "Browser.crash"
 	
+	// Crashes GPU process.
+	CrashGpuProcess = "Browser.crashGpuProcess"
+	
 	// Returns version information.
 	GetVersion = "Browser.getVersion"
 	
@@ -95,6 +98,16 @@ type CrashParams struct {
 
 // Crash returns
 type CrashReturns struct {
+	
+}
+
+// CrashGpuProcess parameters
+type CrashGpuProcessParams struct {
+	
+}
+
+// CrashGpuProcess returns
+type CrashGpuProcessReturns struct {
 	
 }
 

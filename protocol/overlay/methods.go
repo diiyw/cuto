@@ -40,6 +40,9 @@ const (
 	// Backend then generates 'inspectNodeRequested' event upon element selection.
 	SetInspectMode = "Overlay.setInspectMode"
 	
+	// Highlights owner element of all frames detected to be ads.
+	SetShowAdHighlights = "Overlay.setShowAdHighlights"
+	
 	
 	SetPausedInDebuggerMessage = "Overlay.setPausedInDebuggerMessage"
 	
@@ -60,9 +63,6 @@ const (
 	
 	// Paints viewport size upon main frame resize.
 	SetShowViewportSizeOnResize = "Overlay.setShowViewportSizeOnResize"
-	
-	
-	SetSuspended = "Overlay.setSuspended"
 	
 )
 
@@ -146,6 +146,9 @@ type HighlightNodeParams struct {
 	// JavaScript object id of the node to be highlighted.
 	ObjectId	runtime.RemoteObjectId	`json:"objectId"`
 	
+	// Selectors to highlight relevant nodes.
+	Selector	string	`json:"selector"`
+	
 }
 
 // HighlightNode returns
@@ -214,6 +217,19 @@ type SetInspectModeParams struct {
 
 // SetInspectMode returns
 type SetInspectModeReturns struct {
+	
+}
+
+// SetShowAdHighlights parameters
+type SetShowAdHighlightsParams struct {
+	
+	// True for showing ad highlights
+	Show	bool	`json:"show"`
+	
+}
+
+// SetShowAdHighlights returns
+type SetShowAdHighlightsReturns struct {
 	
 }
 
@@ -305,19 +321,6 @@ type SetShowViewportSizeOnResizeParams struct {
 
 // SetShowViewportSizeOnResize returns
 type SetShowViewportSizeOnResizeReturns struct {
-	
-}
-
-// SetSuspended parameters
-type SetSuspendedParams struct {
-	
-	// Whether overlay should be suspended and not consume any resources until resumed.
-	Suspended	bool	`json:"suspended"`
-	
-}
-
-// SetSuspended returns
-type SetSuspendedReturns struct {
 	
 }
 

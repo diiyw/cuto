@@ -394,7 +394,7 @@ type GetNodeForLocationReturns struct {
 	// Resulting node.
 	BackendNodeId	BackendNodeId	`json:"backendNodeId"`
 	
-	// Id of the node at given coordinates, only when enabled.
+	// Id of the node at given coordinates, only when enabled and requested document.
 	NodeId	NodeId	`json:"nodeId"`
 	
 }
@@ -703,6 +703,9 @@ type ResolveNodeParams struct {
 	// Symbolic group name that can be used to release multiple objects.
 	ObjectGroup	string	`json:"objectGroup"`
 	
+	// Execution context in which to resolve the node.
+	ExecutionContextId	runtime.ExecutionContextId	`json:"executionContextId"`
+	
 }
 
 // ResolveNode returns
@@ -878,7 +881,7 @@ type GetFrameOwnerReturns struct {
 	// Resulting node.
 	BackendNodeId	BackendNodeId	`json:"backendNodeId"`
 	
-	// Id of the node at given coordinates, only when enabled.
+	// Id of the node at given coordinates, only when enabled and requested document.
 	NodeId	NodeId	`json:"nodeId"`
 	
 }

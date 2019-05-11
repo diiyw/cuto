@@ -55,6 +55,9 @@ const (
 	
 	GetAppManifest = "Page.getAppManifest"
 	
+	
+	GetInstallabilityErrors = "Page.getInstallabilityErrors"
+	
 	// Returns all browser cookies. Depending on the backend support, will return detailed cookie
 	// information in the `cookies` field.
 	GetCookies = "Page.getCookies"
@@ -97,9 +100,6 @@ const (
 	
 	// Removes given script from the list.
 	RemoveScriptToEvaluateOnNewDocument = "Page.removeScriptToEvaluateOnNewDocument"
-	
-	
-	RequestAppBanner = "Page.requestAppBanner"
 	
 	// Acknowledges that a screencast frame has been received by the frontend.
 	ScreencastFrameAck = "Page.screencastFrameAck"
@@ -374,6 +374,19 @@ type GetAppManifestReturns struct {
 	
 	// Manifest content.
 	Data	string	`json:"data"`
+	
+}
+
+// GetInstallabilityErrors parameters
+type GetInstallabilityErrorsParams struct {
+	
+}
+
+// GetInstallabilityErrors returns
+type GetInstallabilityErrorsReturns struct {
+	
+	
+	Errors	[]string	`json:"errors"`
 	
 }
 
@@ -653,16 +666,6 @@ type RemoveScriptToEvaluateOnNewDocumentParams struct {
 
 // RemoveScriptToEvaluateOnNewDocument returns
 type RemoveScriptToEvaluateOnNewDocumentReturns struct {
-	
-}
-
-// RequestAppBanner parameters
-type RequestAppBannerParams struct {
-	
-}
-
-// RequestAppBanner returns
-type RequestAppBannerReturns struct {
 	
 }
 

@@ -87,6 +87,10 @@ type StartParams struct {
 	// stream (defaults to `ReportEvents`).
 	TransferMode	string	`json:"transferMode"`
 	
+	// Trace data format to use. This only applies when using `ReturnAsStream`
+	// transfer mode (defaults to `json`).
+	StreamFormat	StreamFormat	`json:"streamFormat"`
+	
 	// Compression format to use. This only applies when using `ReturnAsStream`
 	// transfer mode (defaults to `none`)
 	StreamCompression	StreamCompression	`json:"streamCompression"`

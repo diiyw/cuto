@@ -6,12 +6,15 @@ import (
 
 )
 
+// 
+type RegistrationID string	
+
 // ServiceWorker registration.
 type ServiceWorkerRegistration struct {
 	
 	
 	
-	RegistrationId	string	`json:"registrationId"`
+	RegistrationId	RegistrationID	`json:"registrationId"`
 	
 	
 	
@@ -38,7 +41,7 @@ type ServiceWorkerVersion struct {
 	
 	
 	
-	RegistrationId	string	`json:"registrationId"`
+	RegistrationId	RegistrationID	`json:"registrationId"`
 	
 	
 	
@@ -80,7 +83,7 @@ type ServiceWorkerErrorMessage struct {
 	
 	
 	
-	RegistrationId	string	`json:"registrationId"`
+	RegistrationId	RegistrationID	`json:"registrationId"`
 	
 	
 	

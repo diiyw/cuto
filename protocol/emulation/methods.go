@@ -54,8 +54,8 @@ const (
 	// unavailable.
 	SetGeolocationOverride = "Emulation.setGeolocationOverride"
 	
-	// Overrides value returned by the javascript navigoc object.
-	SetNavigocOverrides = "Emulation.setNavigocOverrides"
+	// Overrides value returned by the javascript navigator object.
+	SetNavigatorOverrides = "Emulation.setNavigatorOverrides"
 	
 	// Sets a specified page scale factor.
 	SetPageScaleFactor = "Emulation.setPageScaleFactor"
@@ -285,16 +285,16 @@ type SetGeolocationOverrideReturns struct {
 	
 }
 
-// SetNavigocOverrides parameters
-type SetNavigocOverridesParams struct {
+// SetNavigatorOverrides parameters
+type SetNavigatorOverridesParams struct {
 	
-	// The platform navigoc.platform should return.
+	// The platform navigator.platform should return.
 	Platform	string	`json:"platform"`
 	
 }
 
-// SetNavigocOverrides returns
-type SetNavigocOverridesReturns struct {
+// SetNavigatorOverrides returns
+type SetNavigatorOverridesReturns struct {
 	
 }
 
@@ -396,7 +396,7 @@ type SetUserAgentOverrideParams struct {
 	// Browser langugage to emulate.
 	AcceptLanguage	string	`json:"acceptLanguage"`
 	
-	// The platform navigoc.platform should return.
+	// The platform navigator.platform should return.
 	Platform	string	`json:"platform"`
 	
 }

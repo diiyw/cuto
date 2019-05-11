@@ -641,10 +641,6 @@ type SignedExchangeHeader struct {
 	
 	RequestUrl	string	`json:"requestUrl"`
 	
-	// Signed exchange request method.
-	
-	RequestMethod	string	`json:"requestMethod"`
-	
 	// Signed exchange response code.
 	
 	ResponseCode	int	`json:"responseCode"`

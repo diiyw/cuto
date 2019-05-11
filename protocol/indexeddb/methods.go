@@ -20,6 +20,9 @@ const (
 	// Requests data from object store or index.
 	RequestData = "IndexedDB.requestData"
 	
+	// Gets metadata of an object store
+	GetMetadata = "IndexedDB.getMetadata"
+	
 	// Requests database with given name in given frame.
 	RequestDatabase = "IndexedDB.requestDatabase"
 	
@@ -139,6 +142,33 @@ type RequestDataReturns struct {
 	
 	// If true, there are more entries to fetch in the given range.
 	HasMore	bool	`json:"hasMore"`
+	
+}
+
+// GetMetadata parameters
+type GetMetadataParams struct {
+	
+	// Security origin.
+	SecurityOrigin	string	`json:"securityOrigin"`
+	
+	// Database name.
+	DatabaseName	string	`json:"databaseName"`
+	
+	// Object store name.
+	ObjectStoreName	string	`json:"objectStoreName"`
+	
+}
+
+// GetMetadata returns
+type GetMetadataReturns struct {
+	
+	// the entries count
+	EntriesCount	float64	`json:"entriesCount"`
+	
+	// the current value of key generator, to become the next inserted
+	// key into the object store. Valid if objectStore.autoIncrement
+	// is true.
+	KeyGeneratorValue	float64	`json:"keyGeneratorValue"`
 	
 }
 

@@ -13,6 +13,10 @@ type HighlightConfig struct {
 	
 	ShowInfo	bool	`json:"showInfo"`
 	
+	// Whether the node styles in the tooltip (default: false).
+	
+	ShowStyles	bool	`json:"showStyles"`
+	
 	// Whether the rulers should be shown (default: false).
 	
 	ShowRulers	bool	`json:"showRulers"`
@@ -20,10 +24,6 @@ type HighlightConfig struct {
 	// Whether the extension lines from node to the rulers should be shown (default: false).
 	
 	ShowExtensionLines	bool	`json:"showExtensionLines"`
-	
-	
-	
-	DisplayAsMaterial	bool	`json:"displayAsMaterial"`
 	
 	// The content box highlight fill color (default: transparent).
 	
@@ -52,10 +52,6 @@ type HighlightConfig struct {
 	// The shape margin fill color (default: transparent).
 	
 	ShapeMarginColor	dom.RGBA	`json:"shapeMarginColor"`
-	
-	// Selectors to highlight relevant nodes.
-	
-	SelectorList	string	`json:"selectorList"`
 	
 	// The grid layout color (default: transparent).
 	

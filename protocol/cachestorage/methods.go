@@ -73,6 +73,9 @@ type RequestCachedResponseParams struct {
 	// URL spec of the request.
 	RequestURL	string	`json:"requestURL"`
 	
+	// headers of the request.
+	RequestHeaders	[]Header	`json:"requestHeaders"`
+	
 }
 
 // RequestCachedResponse returns
@@ -106,8 +109,9 @@ type RequestEntriesReturns struct {
 	// Array of object store data entries.
 	CacheDataEntries	[]DataEntry	`json:"cacheDataEntries"`
 	
-	// If true, there are more entries to fetch in the given range.
-	HasMore	bool	`json:"hasMore"`
+	// Count of returned entries from this storage. If pathFilter is empty, it
+	// is the count of all entries from this storage.
+	ReturnCount	float64	`json:"returnCount"`
 	
 }
 

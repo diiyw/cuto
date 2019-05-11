@@ -136,6 +136,10 @@ type DisableReturns struct {
 // Enable parameters
 type EnableParams struct {
 	
+	// The maximum size in bytes of collected scripts (not referenced by other heap objects)
+	// the debugger can hold. Puts no limit if paramter is omitted.
+	MaxScriptsCacheSize	float64	`json:"maxScriptsCacheSize,omitempty"`
+	
 }
 
 // Enable returns

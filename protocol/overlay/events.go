@@ -19,6 +19,9 @@ const (
 	// Fired when user asks to capture screenshot of some area on the page.
 	ScreenshotRequestedEvent = "Overlay.screenshotRequested"
 	
+	// Fired when user cancels the inspect mode.
+	InspectModeCanceledEvent = "Overlay.inspectModeCanceled"
+	
 )
 
 // Fired when the node should be inspected. This happens after call to `setInspectMode` or when
@@ -41,8 +44,13 @@ type NodeHighlightRequestedParams struct {
 // Fired when user asks to capture screenshot of some area on the page.
 type ScreenshotRequestedParams struct {
 	
-	// Viewport to capture, in CSS.
+	// Viewport to capture, in device independent pixels (dip).
 	Viewport	frame.Viewport	`json:"viewport"`
+	
+}
+
+// Fired when user cancels the inspect mode.
+type InspectModeCanceledParams struct {
 	
 }
 

@@ -47,7 +47,7 @@ type DeliverPushMessageParams struct {
 	Origin	string	`json:"origin"`
 	
 	
-	RegistrationId	string	`json:"registrationId"`
+	RegistrationId	RegistrationID	`json:"registrationId"`
 	
 	
 	Data	string	`json:"data"`
@@ -76,7 +76,7 @@ type DispatchSyncEventParams struct {
 	Origin	string	`json:"origin"`
 	
 	
-	RegistrationId	string	`json:"registrationId"`
+	RegistrationId	RegistrationID	`json:"registrationId"`
 	
 	
 	Tag	string	`json:"tag"`

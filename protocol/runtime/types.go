@@ -198,6 +198,19 @@ type InternalPropertyDescriptor struct {
 	
 }	
 
+// Object private field descriptor.
+type PrivatePropertyDescriptor struct {
+	
+	// Private property name.
+	
+	Name	string	`json:"name"`
+	
+	// The value associated with the private property.
+	
+	Value	RemoteObject	`json:"value"`
+	
+}	
+
 // Represents function call argument. Either remote object id `objectId`, primitive `value`,
 	// unserializable primitive value or neither of (for undefined) them should be specified.
 type CallArgument struct {

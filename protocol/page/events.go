@@ -27,6 +27,10 @@ const (
 	
 	FrameResizedEvent = "Page.frameResized"
 	
+	// Fired when a renderer-initiated navigation is requested.
+	// Navigation may still be cancelled after the event is issued.
+	FrameRequestedNavigationEvent = "Page.frameRequestedNavigation"
+	
 	// Fired when frame schedules a potential navigation.
 	FrameScheduledNavigationEvent = "Page.frameScheduledNavigation"
 	
@@ -35,6 +39,9 @@ const (
 	
 	// Fired when frame has stopped loading.
 	FrameStoppedLoadingEvent = "Page.frameStoppedLoading"
+	
+	// Fired when page is about to start a download.
+	DownloadWillBeginEvent = "Page.downloadWillBegin"
 	
 	// Fired when interstitial page was hidden
 	InterstitialHiddenEvent = "Page.interstitialHidden"
@@ -126,6 +133,21 @@ type FrameResizedParams struct {
 	
 }
 
+// Fired when a renderer-initiated navigation is requested.
+	// Navigation may still be cancelled after the event is issued.
+type FrameRequestedNavigationParams struct {
+	
+	// Id of the frame that is being navigated.
+	FrameId	FrameId	`json:"frameId"`
+	
+	// The reason for the navigation.
+	Reason	ClientNavigationReason	`json:"reason"`
+	
+	// The destination URL for the requested navigation.
+	Url	string	`json:"url"`
+	
+}
+
 // Fired when frame schedules a potential navigation.
 type FrameScheduledNavigationParams struct {
 	
@@ -157,6 +179,17 @@ type FrameStoppedLoadingParams struct {
 	
 	// Id of the frame that has stopped loading.
 	FrameId	FrameId	`json:"frameId"`
+	
+}
+
+// Fired when page is about to start a download.
+type DownloadWillBeginParams struct {
+	
+	// Id of the frame that caused download to begin.
+	FrameId	FrameId	`json:"frameId"`
+	
+	// URL of the resource being downloaded.
+	Url	string	`json:"url"`
 	
 }
 

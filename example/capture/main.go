@@ -16,7 +16,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := tab.Capture("baidu.png", 100, page.Viewport{}); err != nil {
+	if err := tab.Wait(); err != nil {
+		log.Fatal(err)
+	}
+	if err := tab.Capture("baidu.png", 100, page.Viewport{X: 20, Y: 20, Width: 200, Height: 200}); err != nil {
 		log.Fatal(err)
 	}
 }

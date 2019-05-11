@@ -138,6 +138,9 @@ type DispatchMouseEventParams struct {
 	// Y delta in CSS pixels for mouse wheel event (default: 0).
 	DeltaY	float64	`json:"deltaY"`
 	
+	// Pointer type (default: "mouse").
+	PointerType	string	`json:"pointerType"`
+	
 }
 
 // DispatchMouseEvent returns

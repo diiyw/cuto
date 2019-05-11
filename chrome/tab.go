@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/diiyw/goc/protocol/dom"
 	"github.com/diiyw/goc/protocol/page"
 	"github.com/diiyw/goc/protocol/runtime"
@@ -228,9 +229,6 @@ func (tab *Tab) Close() error {
 
 // 页面截图
 func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) error {
-	if err := tab.HandleEvent(page.DomContentEventFiredEvent, nil); err != nil {
-		return err
-	}
 	var capture = page.CaptureScreenshotParams{
 		Format:  strings.Trim(path.Ext(filename), "."),
 		Clip:    viewport,
@@ -255,6 +253,9 @@ func (tab *Tab) Send(method string, params interface{}) error {
 		"method": method,
 		"params": params,
 	}
+	b, _ := json.Marshal(request)
+
+	fmt.Println(string(b))
 	if err := tab.Ipc.WriteJSON(request); err != nil {
 		return err
 	}
@@ -270,10 +271,12 @@ func (tab *Tab) handle() error {
 		// Error
 		if bytes.Contains(b, []byte(`"error"`)) {
 			tab.Ipc.errors <- b
+			continue
 		}
 		// Event
 		if bytes.Contains(b, []byte(`"params"`)) && bytes.Contains(b, []byte(`"method"`)) {
 			tab.Ipc.events <- b
+			continue
 		}
 		// Result
 		tab.Ipc.returns <- b
@@ -290,7 +293,8 @@ func (tab *Tab) HandleResult(returns interface{}) error {
 		select {
 		case b := <-tab.Ipc.returns:
 			var ret = Return{Result: returns}
-			if err := json.Unmarshal(b, &ret); err == nil {
+			err := json.Unmarshal(b, &ret)
+			if err == nil {
 				if ret.Id == tab.Ipc.id {
 					return nil
 				}
@@ -311,7 +315,8 @@ func (tab *Tab) HandleEvent(method string, params interface{}) error {
 		select {
 		case b := <-tab.Ipc.events:
 			var event = Event{Params: params}
-			if err := json.Unmarshal(b, &event); err == nil {
+			err := json.Unmarshal(b, &event)
+			if err == nil {
 				if event.Method == method {
 					return nil
 				}

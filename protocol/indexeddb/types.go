@@ -13,9 +13,10 @@ type DatabaseWithObjectStores struct {
 	
 	Name	string	`json:"name"`
 	
-	// Database version.
+	// Database version (type is not 'integer', as the standard
+	// requires the version number to be 'unsigned long long')
 	
-	Version	int	`json:"version"`
+	Version	float64	`json:"version"`
 	
 	// Object stores in this database.
 	

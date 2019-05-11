@@ -8,6 +8,9 @@ const (
 	
 	PrepareForLeakDetection = "Memory.prepareForLeakDetection"
 	
+	// Simulate OomIntervention by purging V8 memory.
+	ForciblyPurgeJavaScriptMemory = "Memory.forciblyPurgeJavaScriptMemory"
+	
 	// Enable/disable suppressing memory pressure notifications in all processes.
 	SetPressureNotificationsSuppressed = "Memory.setPressureNotificationsSuppressed"
 	
@@ -60,6 +63,16 @@ type PrepareForLeakDetectionParams struct {
 
 // PrepareForLeakDetection returns
 type PrepareForLeakDetectionReturns struct {
+	
+}
+
+// ForciblyPurgeJavaScriptMemory parameters
+type ForciblyPurgeJavaScriptMemoryParams struct {
+	
+}
+
+// ForciblyPurgeJavaScriptMemory returns
+type ForciblyPurgeJavaScriptMemoryReturns struct {
 	
 }
 

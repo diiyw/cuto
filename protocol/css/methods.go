@@ -200,9 +200,6 @@ type GetBackgroundColorsReturns struct {
 	// '100').
 	ComputedFontWeight	string	`json:"computedFontWeight"`
 	
-	// The computed font size for the document body, as a computed CSS value string (e.g. '16px').
-	ComputedBodyFontSize	string	`json:"computedBodyFontSize"`
-	
 }
 
 // GetComputedStyleForNode parameters
