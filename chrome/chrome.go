@@ -14,6 +14,7 @@ import (
 	"os/signal"
 	"strings"
 	"time"
+	"fmt"
 )
 
 type Chrome struct {
@@ -87,7 +88,10 @@ func (chrome *Chrome) Open(url string) (*Tab, error) {
 // Close chrome
 func (chrome *Chrome) Close() error {
 	_ = os.RemoveAll(chrome.DataDir)
-	return chrome.Process.Kill()
+	if chrome.Process != nil {
+		return chrome.Process.Kill()
+	}
+	return nil
 }
 
 func newTab(tab *Tab) (*Tab, error) {
