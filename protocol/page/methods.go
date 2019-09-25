@@ -8,6 +8,8 @@ import (
 
 	"github.com/diiyw/goc/protocol/emulation"
 
+	"github.com/diiyw/goc/protocol/io"
+
 	"github.com/diiyw/goc/protocol/network"
 
 	"github.com/diiyw/goc/protocol/runtime"
@@ -178,6 +180,15 @@ const (
 	
 	// Pauses page execution. Can be resumed using generic Runtime.runIfWaitingForDebugger.
 	WaitForDebugger = "Page.waitForDebugger"
+	
+	// Intercept file chooser requests and transfer control to protocol clients.
+	// When file chooser interception is enabled, native file chooser dialog is not shown.
+	// Instead, a protocol event `Page.fileChooserOpened` is emitted.
+	// File chooser can be handled with `page.handleFileChooser` command.
+	SetInterceptFileChooserDialog = "Page.setInterceptFileChooserDialog"
+	
+	// Accepts or cancels an intercepted file chooser dialog.
+	HandleFileChooser = "Page.handleFileChooser"
 	
 )
 
@@ -616,13 +627,19 @@ type PrintToPDFParams struct {
 	// in which case the content will be scaled to fit the paper size.
 	PreferCSSPageSize	bool	`json:"preferCSSPageSize"`
 	
+	// return as stream
+	TransferMode	string	`json:"transferMode"`
+	
 }
 
 // PrintToPDF returns
 type PrintToPDFReturns struct {
 	
-	// Base64-encoded pdf data.
+	// Base64-encoded pdf data. Empty if |returnAsStream| is specified.
 	Data	string	`json:"data"`
+	
+	// A handle of the stream that holds resulting PDF data.
+	Stream	io.StreamHandle	`json:"stream"`
 	
 }
 
@@ -1049,6 +1066,35 @@ type WaitForDebuggerParams struct {
 
 // WaitForDebugger returns
 type WaitForDebuggerReturns struct {
+	
+}
+
+// SetInterceptFileChooserDialog parameters
+type SetInterceptFileChooserDialogParams struct {
+	
+	
+	Enabled	bool	`json:"enabled"`
+	
+}
+
+// SetInterceptFileChooserDialog returns
+type SetInterceptFileChooserDialogReturns struct {
+	
+}
+
+// HandleFileChooser parameters
+type HandleFileChooserParams struct {
+	
+	
+	Action	string	`json:"action"`
+	
+	// Array of absolute file paths to set, only respected with `accept` action.
+	Files	[]string	`json:"files"`
+	
+}
+
+// HandleFileChooser returns
+type HandleFileChooserReturns struct {
 	
 }
 

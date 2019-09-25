@@ -12,6 +12,9 @@ const (
 	DispatchSyncEvent = "ServiceWorker.dispatchSyncEvent"
 	
 	
+	DispatchPeriodicSyncEvent = "ServiceWorker.dispatchPeriodicSyncEvent"
+	
+	
 	Enable = "ServiceWorker.enable"
 	
 	
@@ -88,6 +91,25 @@ type DispatchSyncEventParams struct {
 
 // DispatchSyncEvent returns
 type DispatchSyncEventReturns struct {
+	
+}
+
+// DispatchPeriodicSyncEvent parameters
+type DispatchPeriodicSyncEventParams struct {
+	
+	
+	Origin	string	`json:"origin"`
+	
+	
+	RegistrationId	RegistrationID	`json:"registrationId"`
+	
+	
+	Tag	string	`json:"tag"`
+	
+}
+
+// DispatchPeriodicSyncEvent returns
+type DispatchPeriodicSyncEventReturns struct {
 	
 }
 

@@ -79,6 +79,12 @@ type CaptureSnapshotParams struct {
 	// Whitelist of computed styles to return.
 	ComputedStyles	[]string	`json:"computedStyles"`
 	
+	// Whether to include layout object paint orders into the snapshot.
+	IncludePaintOrder	bool	`json:"includePaintOrder"`
+	
+	// Whether to include DOM rectangles (offsetRects, clientRects, scrollRects) into the snapshot
+	IncludeDOMRects	bool	`json:"includeDOMRects"`
+	
 }
 
 // CaptureSnapshot returns

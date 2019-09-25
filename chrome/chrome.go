@@ -14,7 +14,6 @@ import (
 	"os/signal"
 	"strings"
 	"time"
-	"fmt"
 )
 
 type Chrome struct {

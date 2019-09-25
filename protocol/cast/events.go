@@ -17,7 +17,7 @@ const (
 type SinksUpdatedParams struct {
 	
 	
-	SinkNames	[]string	`json:"sinkNames"`
+	Sinks	[]Sink	`json:"sinks"`
 	
 }
 

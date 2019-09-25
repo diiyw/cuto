@@ -7,6 +7,9 @@ import (
 )
 const (
 	
+	// Set permission settings for given origin.
+	SetPermission = "Browser.setPermission"
+	
 	// Grant specific permissions to the given origin and reject all others.
 	GrantPermissions = "Browser.grantPermissions"
 	
@@ -48,6 +51,28 @@ const (
 	SetDockTile = "Browser.setDockTile"
 	
 )
+
+// SetPermission parameters
+type SetPermissionParams struct {
+	
+	// Origin the permission applies to.
+	Origin	string	`json:"origin"`
+	
+	// Descriptor of permission to override.
+	Permission	PermissionDescriptor	`json:"permission"`
+	
+	// Setting of the permission.
+	Setting	PermissionSetting	`json:"setting"`
+	
+	// Context to override. When omitted, default browser context is used.
+	BrowserContextId	target.TargetID	`json:"browserContextId,omitempty"`
+	
+}
+
+// SetPermission returns
+type SetPermissionReturns struct {
+	
+}
 
 // GrantPermissions parameters
 type GrantPermissionsParams struct {

@@ -318,6 +318,10 @@ type Response struct {
 	
 	FromServiceWorker	bool	`json:"fromServiceWorker"`
 	
+	// Specifies that the request was served from the prefetch cache.
+	
+	FromPrefetchCache	bool	`json:"fromPrefetchCache"`
+	
 	// Total number of bytes received for this request so far.
 	
 	EncodedDataLength	float64	`json:"encodedDataLength"`
@@ -482,6 +486,45 @@ type Cookie struct {
 	// Cookie SameSite type.
 	
 	SameSite	CookieSameSite	`json:"sameSite"`
+	
+}	
+
+// Types of reasons why a cookie may not be stored from a response.
+type SetCookieBlockedReason string	
+
+// Types of reasons why a cookie may not be sent with a request.
+type CookieBlockedReason string	
+
+// A cookie which was not stored from a response with the corresponding reason.
+type BlockedSetCookieWithReason struct {
+	
+	// The reason(s) this cookie was blocked.
+	
+	BlockedReasons	[]SetCookieBlockedReason	`json:"blockedReasons"`
+	
+	// The string representing this individual cookie as it would appear in the header.
+	// This is not the entire "cookie" or "set-cookie" header which could have multiple cookies.
+	
+	CookieLine	string	`json:"cookieLine"`
+	
+	// The cookie object which represents the cookie which was not stored. It is optional because
+	// sometimes complete cookie information is not available, such as in the case of parsing
+	// errors.
+	
+	Cookie	Cookie	`json:"cookie"`
+	
+}	
+
+// A cookie with was not sent with a request with the corresponding reason.
+type BlockedCookieWithReason struct {
+	
+	// The reason(s) the cookie was blocked.
+	
+	BlockedReasons	[]CookieBlockedReason	`json:"blockedReasons"`
+	
+	// The cookie object representing the cookie which was not sent.
+	
+	Cookie	Cookie	`json:"cookie"`
 	
 }	
 
@@ -652,6 +695,10 @@ type SignedExchangeHeader struct {
 	// Signed exchange response signature.
 	
 	Signatures	[]SignedExchangeSignature	`json:"signatures"`
+	
+	// Signed exchange header integrity hash in the form of "sha256-<base64-hash-value>".
+	
+	HeaderIntegrity	string	`json:"headerIntegrity"`
 	
 }	
 

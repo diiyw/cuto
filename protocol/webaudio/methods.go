@@ -37,7 +37,7 @@ type DisableReturns struct {
 type GetRealtimeDataParams struct {
 	
 	
-	ContextId	ContextId	`json:"contextId"`
+	ContextId	GraphObjectId	`json:"contextId"`
 	
 }
 

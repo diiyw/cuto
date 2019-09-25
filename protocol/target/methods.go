@@ -187,6 +187,13 @@ type CreateTargetParams struct {
 	// not supported on MacOS yet, false by default).
 	EnableBeginFrameControl	bool	`json:"enableBeginFrameControl"`
 	
+	// Whether to create a new Window or Tab (chrome-only, false by default).
+	NewWindow	bool	`json:"newWindow"`
+	
+	// Whether to create the target in background or foreground (chrome-only,
+	// false by default).
+	Background	bool	`json:"background"`
+	
 }
 
 // CreateTarget returns

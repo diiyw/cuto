@@ -20,6 +20,97 @@ type GPUDevice struct {
 	
 	DeviceString	string	`json:"deviceString"`
 	
+	// String description of the GPU driver vendor.
+	
+	DriverVendor	string	`json:"driverVendor"`
+	
+	// String description of the GPU driver version.
+	
+	DriverVersion	string	`json:"driverVersion"`
+	
+}	
+
+// Describes the width and height dimensions of an entity.
+type Size struct {
+	
+	// Width in pixels.
+	
+	Width	int	`json:"width"`
+	
+	// Height in pixels.
+	
+	Height	int	`json:"height"`
+	
+}	
+
+// Describes a supported video decoding profile with its associated minimum and
+	// maximum resolutions.
+type VideoDecodeAcceleratorCapability struct {
+	
+	// Video codec profile that is supported, e.g. VP9 Profile 2.
+	
+	Profile	string	`json:"profile"`
+	
+	// Maximum video dimensions in pixels supported for this |profile|.
+	
+	MaxResolution	Size	`json:"maxResolution"`
+	
+	// Minimum video dimensions in pixels supported for this |profile|.
+	
+	MinResolution	Size	`json:"minResolution"`
+	
+}	
+
+// Describes a supported video encoding profile with its associated maximum
+	// resolution and maximum framerate.
+type VideoEncodeAcceleratorCapability struct {
+	
+	// Video codec profile that is supported, e.g H264 Main.
+	
+	Profile	string	`json:"profile"`
+	
+	// Maximum video dimensions in pixels supported for this |profile|.
+	
+	MaxResolution	Size	`json:"maxResolution"`
+	
+	// Maximum encoding framerate in frames per second supported for this
+	// |profile|, as fraction's numerator and denominator, e.g. 24/1 fps,
+	// 24000/1001 fps, etc.
+	
+	MaxFramerateNumerator	int	`json:"maxFramerateNumerator"`
+	
+	
+	
+	MaxFramerateDenominator	int	`json:"maxFramerateDenominator"`
+	
+}	
+
+// YUV subsampling type of the pixels of a given image.
+type SubsamplingFormat string	
+
+// Image format of a given image.
+type ImageType string	
+
+// Describes a supported image decoding profile with its associated minimum and
+	// maximum resolutions and subsampling.
+type ImageDecodeAcceleratorCapability struct {
+	
+	// Image coded, e.g. Jpeg.
+	
+	ImageType	ImageType	`json:"imageType"`
+	
+	// Maximum supported dimensions of the image in pixels.
+	
+	MaxDimensions	Size	`json:"maxDimensions"`
+	
+	// Minimum supported dimensions of the image in pixels.
+	
+	MinDimensions	Size	`json:"minDimensions"`
+	
+	// Optional array of supported subsampling formats, e.g. 4:2:0, if known.
+	
+	Subsamplings	[]SubsamplingFormat	`json:"subsamplings"`
+	
 }	
 
 // Provides information about the GPU(s) on the system.
@@ -40,6 +131,18 @@ type GPUInfo struct {
 	// An optional array of GPU driver bug workarounds.
 	
 	DriverBugWorkarounds	[]string	`json:"driverBugWorkarounds"`
+	
+	// Supported accelerated video decoding capabilities.
+	
+	VideoDecoding	[]VideoDecodeAcceleratorCapability	`json:"videoDecoding"`
+	
+	// Supported accelerated video encoding capabilities.
+	
+	VideoEncoding	[]VideoEncodeAcceleratorCapability	`json:"videoEncoding"`
+	
+	// Supported accelerated image decoding capabilities.
+	
+	ImageDecoding	[]ImageDecodeAcceleratorCapability	`json:"imageDecoding"`
 	
 }	
 

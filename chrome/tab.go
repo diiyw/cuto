@@ -80,7 +80,7 @@ func (tab *Tab) Jump(url string) error {
 	if err := tab.HandleEvent(page.FrameStoppedLoadingEvent, &frameStoppedLoadingParams); err != nil {
 		return err
 	}
-	if frameNavigatedParams.Frame.Id == string(frameStoppedLoadingParams.FrameId) {
+	if frameNavigatedParams.Frame.Id == frameStoppedLoadingParams.FrameId {
 		return nil
 	}
 	return errors.New("jump error")

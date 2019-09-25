@@ -28,6 +28,7 @@ const (
 	// modifications, or blocks it, or completes it with the provided response bytes. If a network
 	// fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
 	// event will be sent with the same InterceptionId.
+	// Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failRequest instead.
 	ContinueInterceptedRequest = "Network.continueInterceptedRequest"
 	
 	// Deletes browser cookies with matching name and url or domain/path pair.
@@ -98,6 +99,7 @@ const (
 	SetExtraHTTPHeaders = "Network.setExtraHTTPHeaders"
 	
 	// Sets the requests to intercept that match the provided patterns and optionally resource types.
+	// Deprecated, please use Fetch.enable instead.
 	SetRequestInterception = "Network.setRequestInterception"
 	
 	// Allows overriding user agent with the given string.

@@ -35,6 +35,33 @@ type Bounds struct {
 // 
 type PermissionType string	
 
+// 
+type PermissionSetting string	
+
+// Definition of PermissionDescriptor defined in the Permissions API:
+	// https://w3c.github.io/permissions/#dictdef-permissiondescriptor.
+type PermissionDescriptor struct {
+	
+	// Name of permission.
+	// See https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl for valid permission names.
+	
+	Name	string	`json:"name"`
+	
+	// For "midi" permission, may also specify sysex control.
+	
+	Sysex	bool	`json:"sysex"`
+	
+	// For "push" permission, may specify userVisibleOnly.
+	// Note that userVisibleOnly = true is the only currently supported type.
+	
+	UserVisibleOnly	bool	`json:"userVisibleOnly"`
+	
+	// For "wake-lock" permission, must specify type as either "screen" or "system".
+	
+	Type	string	`json:"type"`
+	
+}	
+
 // Chrome histogram bucket.
 type Bucket struct {
 	

@@ -21,6 +21,7 @@ const (
 	
 	// Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
 	// mocked.
+	// Deprecated, use Fetch.requestPaused instead.
 	RequestInterceptedEvent = "Network.requestIntercepted"
 	
 	// Fired if request ended up loading from cache.
@@ -58,6 +59,17 @@ const (
 	
 	// Fired when WebSocket is about to initiate handshake.
 	WebSocketWillSendHandshakeRequestEvent = "Network.webSocketWillSendHandshakeRequest"
+	
+	// Fired when additional information about a requestWillBeSent event is available from the
+	// network stack. Not every requestWillBeSent event will have an additional
+	// requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
+	// or requestWillBeSentExtraInfo will be fired first for the same request.
+	RequestWillBeSentExtraInfoEvent = "Network.requestWillBeSentExtraInfo"
+	
+	// Fired when additional information about a responseReceived event is available from the network
+	// stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
+	// it, and responseReceivedExtraInfo may be fired before or after responseReceived.
+	ResponseReceivedExtraInfoEvent = "Network.responseReceivedExtraInfo"
 	
 )
 
@@ -141,6 +153,7 @@ type LoadingFinishedParams struct {
 
 // Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
 	// mocked.
+	// Deprecated, use Fetch.requestPaused instead.
 type RequestInterceptedParams struct {
 	
 	// Each request the page makes will have a unique id, however if any redirects are encountered
@@ -378,6 +391,46 @@ type WebSocketWillSendHandshakeRequestParams struct {
 	
 	// WebSocket request data.
 	Request	WebSocketRequest	`json:"request"`
+	
+}
+
+// Fired when additional information about a requestWillBeSent event is available from the
+	// network stack. Not every requestWillBeSent event will have an additional
+	// requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
+	// or requestWillBeSentExtraInfo will be fired first for the same request.
+type RequestWillBeSentExtraInfoParams struct {
+	
+	// Request identifier. Used to match this information to an existing requestWillBeSent event.
+	RequestId	RequestId	`json:"requestId"`
+	
+	// A list of cookies which will not be sent with this request along with corresponding reasons
+	// for blocking.
+	BlockedCookies	[]BlockedCookieWithReason	`json:"blockedCookies"`
+	
+	// Raw request headers as they will be sent over the wire.
+	Headers	Headers	`json:"headers"`
+	
+}
+
+// Fired when additional information about a responseReceived event is available from the network
+	// stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
+	// it, and responseReceivedExtraInfo may be fired before or after responseReceived.
+type ResponseReceivedExtraInfoParams struct {
+	
+	// Request identifier. Used to match this information to another responseReceived event.
+	RequestId	RequestId	`json:"requestId"`
+	
+	// A list of cookies which were not stored from the response along with the corresponding
+	// reasons for blocking. The cookies here may not be valid due to syntax errors, which
+	// are represented by the invalid cookie line string instead of a proper cookie.
+	BlockedCookies	[]BlockedSetCookieWithReason	`json:"blockedCookies"`
+	
+	// Raw response headers as they were received over the wire.
+	Headers	Headers	`json:"headers"`
+	
+	// Raw response header text as it was received over the wire. The raw text may not always be
+	// available, such as in the case of HTTP/2 or QUIC.
+	HeadersText	string	`json:"headersText"`
 	
 }
 

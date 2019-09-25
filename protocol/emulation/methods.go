@@ -70,6 +70,9 @@ const (
 	// the current virtual time policy.  Note this supersedes any previous time budget.
 	SetVirtualTimePolicy = "Emulation.setVirtualTimePolicy"
 	
+	// Overrides default host system timezone with the specified one.
+	SetTimezoneOverride = "Emulation.setTimezoneOverride"
+	
 	// Resizes the frame/viewport of the page. Note that this does not affect the frame's container
 	// (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
 	// on Android.
@@ -368,6 +371,20 @@ type SetVirtualTimePolicyReturns struct {
 	
 	// Absolute timestamp at which virtual time was first enabled (up time in milliseconds).
 	VirtualTimeTicksBase	float64	`json:"virtualTimeTicksBase"`
+	
+}
+
+// SetTimezoneOverride parameters
+type SetTimezoneOverrideParams struct {
+	
+	// The timezone identifier. If empty, disables the override and
+	// restores default host system timezone.
+	TimezoneId	string	`json:"timezoneId"`
+	
+}
+
+// SetTimezoneOverride returns
+type SetTimezoneOverrideReturns struct {
 	
 }
 
