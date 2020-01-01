@@ -9,5 +9,5 @@ var (
 	defaultChrome = []string{
 		`/usr/bin/google-chrome`,
 	}
-	defaultUserDataTmpDir = os.TempDir() + "/goc"
+	defaultUserDataTmpDir = os.TempDir() + "/chr"
 )

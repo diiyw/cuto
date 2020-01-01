@@ -2,7 +2,7 @@ package debugger
 
 import (
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 const (
@@ -64,9 +64,6 @@ const (
 	
 	// Sets JavaScript breakpoint at a given location.
 	SetBreakpoint = "Debugger.setBreakpoint"
-	
-	// Sets instrumentation breakpoint.
-	SetInstrumentationBreakpoint = "Debugger.setInstrumentationBreakpoint"
 	
 	// Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
 	// command is issued, all existing parsed scripts will have breakpoints resolved and returned in
@@ -413,22 +410,6 @@ type SetBreakpointReturns struct {
 	
 }
 
-// SetInstrumentationBreakpoint parameters
-type SetInstrumentationBreakpointParams struct {
-	
-	// Instrumentation name.
-	Instrumentation	string	`json:"instrumentation"`
-	
-}
-
-// SetInstrumentationBreakpoint returns
-type SetInstrumentationBreakpointReturns struct {
-	
-	// Id of the created breakpoint for further reference.
-	BreakpointId	BreakpointId	`json:"breakpointId"`
-	
-}
-
 // SetBreakpointByUrl parameters
 type SetBreakpointByUrlParams struct {
 	
@@ -598,7 +579,7 @@ type SetVariableValueReturns struct {
 // StepInto parameters
 type StepIntoParams struct {
 	
-	// Debugger will pause on the execution of the first async task which was scheduled
+	// Debugger will issue additional Debugger.paused notification if any async task is scheduled
 	// before next pause.
 	BreakOnAsyncCall	bool	`json:"breakOnAsyncCall"`
 	

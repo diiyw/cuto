@@ -2,11 +2,11 @@ package domsnapshot
 
 import (
 
-	"github.com/diiyw/goc/protocol/dom"
+	"github.com/diiyw/chr/protocol/dom"
 
-	"github.com/diiyw/goc/protocol/domdebugger"
+	"github.com/diiyw/chr/protocol/domdebugger"
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
 )
 
@@ -297,11 +297,11 @@ type DocumentSnapshot struct {
 	
 	TextBoxes	TextBoxSnapshot	`json:"textBoxes"`
 	
-	// Horizontal scroll offset.
+	// Scroll offsets.
 	
 	ScrollOffsetX	float64	`json:"scrollOffsetX"`
 	
-	// Vertical scroll offset.
+	
 	
 	ScrollOffsetY	float64	`json:"scrollOffsetY"`
 	
@@ -374,14 +374,14 @@ type NodeTreeSnapshot struct {
 	
 }	
 
-// Table of details of an element in the DOM tree with a LayoutObject.
+// Details of an element in the DOM tree with a LayoutObject.
 type LayoutTreeSnapshot struct {
 	
-	// Index of the corresponding node in the `NodeTreeSnapshot` array returned by `captureSnapshot`.
+	// The index of the related DOM node in the `domNodes` array returned by `getSnapshot`.
 	
 	NodeIndex	[]int	`json:"nodeIndex"`
 	
-	// Array of indexes specifying computed style strings, filtered according to the `computedStyles` parameter passed to `captureSnapshot`.
+	// Index into the `computedStyles` array returned by `captureSnapshot`.
 	
 	Styles	[]ArrayOfStrings	`json:"styles"`
 	
@@ -397,31 +397,13 @@ type LayoutTreeSnapshot struct {
 	
 	StackingContexts	RareBooleanData	`json:"stackingContexts"`
 	
-	// Global paint order index, which is determined by the stacking order of the nodes. Nodes
-	// that are painted together will have the same index. Only provided if includePaintOrder in
-	// captureSnapshot was true.
-	
-	PaintOrders	[]int	`json:"paintOrders"`
-	
-	// The offset rect of nodes. Only available when includeDOMRects is set to true
-	
-	OffsetRects	[]Rectangle	`json:"offsetRects"`
-	
-	// The scroll rect of nodes. Only available when includeDOMRects is set to true
-	
-	ScrollRects	[]Rectangle	`json:"scrollRects"`
-	
-	// The client rect of nodes. Only available when includeDOMRects is set to true
-	
-	ClientRects	[]Rectangle	`json:"clientRects"`
-	
 }	
 
-// Table of details of the post layout rendered text positions. The exact layout should not be regarded as
+// Details of post layout rendered text positions. The exact layout should not be regarded as
 	// stable and may change between versions.
 type TextBoxSnapshot struct {
 	
-	// Index of the layout tree node that owns this box collection.
+	// Intex of th elayout tree node that owns this box collection.
 	
 	LayoutIndex	[]int	`json:"layoutIndex"`
 	

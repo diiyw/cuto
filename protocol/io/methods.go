@@ -2,7 +2,7 @@ package io
 
 import (
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 const (

@@ -1,4 +1,4 @@
-package goc
+package chr
 
 type Controls map[string]string
 

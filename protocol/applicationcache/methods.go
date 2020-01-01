@@ -2,7 +2,7 @@ package applicationcache
 
 import (
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
 )
 const (

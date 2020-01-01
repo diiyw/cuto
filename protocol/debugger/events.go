@@ -2,7 +2,7 @@ package debugger
 
 import (
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 const (
@@ -57,7 +57,8 @@ type PausedParams struct {
 	// Async stack trace, if any.
 	AsyncStackTraceId	runtime.StackTraceId	`json:"asyncStackTraceId"`
 	
-	// Never present, will be removed.
+	// Just scheduled async call will have this stack trace as parent stack during async execution.
+	// This field is available only after `Debugger.stepInto` call with `breakOnAsynCall` flag.
 	AsyncCallStackTraceId	runtime.StackTraceId	`json:"asyncCallStackTraceId"`
 	
 }

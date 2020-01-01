@@ -2,9 +2,9 @@ package log
 
 import (
 
-	"github.com/diiyw/goc/protocol/network"
+	"github.com/diiyw/chr/protocol/network"
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 

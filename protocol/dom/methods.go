@@ -2,9 +2,9 @@ package dom
 
 import (
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 const (
@@ -125,12 +125,6 @@ const (
 	
 	// Sets files for the given file input element.
 	SetFileInputFiles = "DOM.setFileInputFiles"
-	
-	// Sets if stack traces should be captured for Nodes. See `Node.getNodeStackTraces`. Default is disabled.
-	SetNodeStackTracesEnabled = "DOM.setNodeStackTracesEnabled"
-	
-	// Gets stack traces associated with a Node. As of now, only provides stack trace for Node creation.
-	GetNodeStackTraces = "DOM.getNodeStackTraces"
 	
 	// Returns file information for the given
 	// File wrapper.
@@ -392,9 +386,6 @@ type GetNodeForLocationParams struct {
 	// False to skip to the nearest non-UA shadow root ancestor (default: false).
 	IncludeUserAgentShadowDOM	bool	`json:"includeUserAgentShadowDOM"`
 	
-	// Whether to ignore pointer-events: none on elements and hit test them.
-	IgnorePointerEventsNone	bool	`json:"ignorePointerEventsNone"`
-	
 }
 
 // GetNodeForLocation returns
@@ -402,9 +393,6 @@ type GetNodeForLocationReturns struct {
 	
 	// Resulting node.
 	BackendNodeId	BackendNodeId	`json:"backendNodeId"`
-	
-	// Frame this node belongs to.
-	FrameId	frame.FrameId	`json:"frameId"`
 	
 	// Id of the node at given coordinates, only when enabled and requested document.
 	NodeId	NodeId	`json:"nodeId"`
@@ -786,35 +774,6 @@ type SetFileInputFilesParams struct {
 
 // SetFileInputFiles returns
 type SetFileInputFilesReturns struct {
-	
-}
-
-// SetNodeStackTracesEnabled parameters
-type SetNodeStackTracesEnabledParams struct {
-	
-	// Enable or disable.
-	Enable	bool	`json:"enable"`
-	
-}
-
-// SetNodeStackTracesEnabled returns
-type SetNodeStackTracesEnabledReturns struct {
-	
-}
-
-// GetNodeStackTraces parameters
-type GetNodeStackTracesParams struct {
-	
-	// Id of the node to get stack traces for.
-	NodeId	NodeId	`json:"nodeId"`
-	
-}
-
-// GetNodeStackTraces returns
-type GetNodeStackTracesReturns struct {
-	
-	// Creation stack trace, if available.
-	Creation	runtime.StackTrace	`json:"creation"`
 	
 }
 

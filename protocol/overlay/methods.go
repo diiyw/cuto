@@ -2,11 +2,11 @@ package overlay
 
 import (
 
-	"github.com/diiyw/goc/protocol/dom"
+	"github.com/diiyw/chr/protocol/dom"
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 const (
@@ -55,9 +55,6 @@ const (
 	// Requests that backend shows paint rectangles
 	SetShowPaintRects = "Overlay.setShowPaintRects"
 	
-	// Requests that backend shows layout shift regions
-	SetShowLayoutShiftRegions = "Overlay.setShowLayoutShiftRegions"
-	
 	// Requests that backend shows scroll bottleneck rects
 	SetShowScrollBottleneckRects = "Overlay.setShowScrollBottleneckRects"
 	
@@ -94,12 +91,6 @@ type GetHighlightObjectForTestParams struct {
 	
 	// Id of the node to get highlight object for.
 	NodeId	dom.NodeId	`json:"nodeId"`
-	
-	// Whether to include distance info.
-	IncludeDistance	bool	`json:"includeDistance"`
-	
-	// Whether to include style info.
-	IncludeStyle	bool	`json:"includeStyle"`
 	
 }
 
@@ -291,19 +282,6 @@ type SetShowPaintRectsParams struct {
 
 // SetShowPaintRects returns
 type SetShowPaintRectsReturns struct {
-	
-}
-
-// SetShowLayoutShiftRegions parameters
-type SetShowLayoutShiftRegionsParams struct {
-	
-	// True for showing layout shift regions
-	Result	bool	`json:"result"`
-	
-}
-
-// SetShowLayoutShiftRegions returns
-type SetShowLayoutShiftRegionsReturns struct {
 	
 }
 

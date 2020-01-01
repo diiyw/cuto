@@ -2,7 +2,7 @@ package fetch
 
 import (
 
-	"github.com/diiyw/goc/protocol/network"
+	"github.com/diiyw/chr/protocol/network"
 
 )
 

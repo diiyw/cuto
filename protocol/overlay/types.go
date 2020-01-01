@@ -2,7 +2,7 @@ package overlay
 
 import (
 
-	"github.com/diiyw/goc/protocol/dom"
+	"github.com/diiyw/chr/protocol/dom"
 
 )
 

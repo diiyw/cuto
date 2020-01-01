@@ -2,7 +2,7 @@ package tracing
 
 import (
 
-	"github.com/diiyw/goc/protocol/io"
+	"github.com/diiyw/chr/protocol/io"
 
 )
 const (
@@ -48,10 +48,6 @@ type DataCollectedParams struct {
 // Signals that tracing is stopped and there is no trace buffers pending flush, all data were
 	// delivered via dataCollected events.
 type TracingCompleteParams struct {
-	
-	// Indicates whether some trace data is known to have been lost, e.g. because the trace ring
-	// buffer wrapped around.
-	DataLossOccurred	bool	`json:"dataLossOccurred"`
 	
 	// A handle of the stream that holds resulting trace data.
 	Stream	io.StreamHandle	`json:"stream"`

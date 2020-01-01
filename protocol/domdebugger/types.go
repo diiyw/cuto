@@ -2,9 +2,9 @@ package domdebugger
 
 import (
 
-	"github.com/diiyw/goc/protocol/dom"
+	"github.com/diiyw/chr/protocol/dom"
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 

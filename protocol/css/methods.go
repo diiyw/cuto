@@ -2,9 +2,9 @@ package css
 
 import (
 
-	"github.com/diiyw/goc/protocol/dom"
+	"github.com/diiyw/chr/protocol/dom"
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
 )
 const (

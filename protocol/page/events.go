@@ -2,18 +2,15 @@ package page
 
 import (
 
-	"github.com/diiyw/goc/protocol/network"
+	"github.com/diiyw/chr/protocol/network"
 
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/runtime"
 
 )
 const (
 	
 	
 	DomContentEventFiredEvent = "Page.domContentEventFired"
-	
-	// Emitted only when `page.interceptFileChooser` is enabled.
-	FileChooserOpenedEvent = "Page.fileChooserOpened"
 	
 	// Fired when frame has been attached to its parent.
 	FrameAttachedEvent = "Page.frameAttached"
@@ -90,14 +87,6 @@ type DomContentEventFiredParams struct {
 	
 	
 	Timestamp	network.MonotonicTime	`json:"timestamp"`
-	
-}
-
-// Emitted only when `page.interceptFileChooser` is enabled.
-type FileChooserOpenedParams struct {
-	
-	
-	Mode	string	`json:"mode"`
 	
 }
 

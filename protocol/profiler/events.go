@@ -2,7 +2,7 @@ package profiler
 
 import (
 
-	"github.com/diiyw/goc/protocol/debugger"
+	"github.com/diiyw/chr/protocol/debugger"
 
 )
 const (

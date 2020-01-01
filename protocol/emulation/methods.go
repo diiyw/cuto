@@ -2,11 +2,11 @@ package emulation
 
 import (
 
-	"github.com/diiyw/goc/protocol/dom"
+	"github.com/diiyw/chr/protocol/dom"
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
-	"github.com/diiyw/goc/protocol/network"
+	"github.com/diiyw/chr/protocol/network"
 
 )
 const (
@@ -69,9 +69,6 @@ const (
 	// Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
 	// the current virtual time policy.  Note this supersedes any previous time budget.
 	SetVirtualTimePolicy = "Emulation.setVirtualTimePolicy"
-	
-	// Overrides default host system timezone with the specified one.
-	SetTimezoneOverride = "Emulation.setTimezoneOverride"
 	
 	// Resizes the frame/viewport of the page. Note that this does not affect the frame's container
 	// (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
@@ -371,20 +368,6 @@ type SetVirtualTimePolicyReturns struct {
 	
 	// Absolute timestamp at which virtual time was first enabled (up time in milliseconds).
 	VirtualTimeTicksBase	float64	`json:"virtualTimeTicksBase"`
-	
-}
-
-// SetTimezoneOverride parameters
-type SetTimezoneOverrideParams struct {
-	
-	// The timezone identifier. If empty, disables the override and
-	// restores default host system timezone.
-	TimezoneId	string	`json:"timezoneId"`
-	
-}
-
-// SetTimezoneOverride returns
-type SetTimezoneOverrideReturns struct {
 	
 }
 

@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/diiyw/goc/chrome"
-	"github.com/diiyw/goc/protocol/page"
+	"github.com/diiyw/chr/chrome"
+	"github.com/diiyw/chr/protocol/page"
 	"log"
 )
 
 func main() {
-	bs, err := chrome.New(nil)
+	bs, err := chrome.Create()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -19,7 +19,7 @@ func main() {
 	if err := tab.Wait(); err != nil {
 		log.Fatal(err)
 	}
-	if err := tab.Capture("baidu.png", 100, page.Viewport{X: 20, Y: 20, Width: 200, Height: 200}); err != nil {
+	if err := tab.Capture("baidu.png", 80, page.Viewport{X: 20, Y: 20, Width: 200, Height: 200}); err != nil {
 		log.Fatal(err)
 	}
 }

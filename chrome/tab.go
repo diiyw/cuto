@@ -5,9 +5,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"github.com/diiyw/goc/protocol/dom"
-	"github.com/diiyw/goc/protocol/page"
-	"github.com/diiyw/goc/protocol/runtime"
+	"github.com/diiyw/chr/protocol/dom"
+	"github.com/diiyw/chr/protocol/page"
+	"github.com/diiyw/chr/protocol/runtime"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"path"
@@ -80,7 +80,7 @@ func (tab *Tab) Jump(url string) error {
 	if err := tab.HandleEvent(page.FrameStoppedLoadingEvent, &frameStoppedLoadingParams); err != nil {
 		return err
 	}
-	if frameNavigatedParams.Frame.Id == frameStoppedLoadingParams.FrameId {
+	if frameNavigatedParams.Frame.Id == string(frameStoppedLoadingParams.FrameId) {
 		return nil
 	}
 	return errors.New("jump error")
@@ -280,11 +280,7 @@ func (tab *Tab) handle() error {
 }
 
 func (tab *Tab) HandleResult(returns interface{}) error {
-	timeout := make(chan bool)
-	go func() {
-		time.Sleep(time.Second * 15)
-		timeout <- true
-	}()
+	timeout := time.After(time.Second * 15)
 	for {
 		select {
 		case b := <-tab.Ipc.returns:
@@ -296,17 +292,13 @@ func (tab *Tab) HandleResult(returns interface{}) error {
 				}
 			}
 		case <-timeout:
-			return errors.New("Handle result timeout.")
+			return errors.New("Handle result timeout ")
 		}
 	}
 }
 
 func (tab *Tab) HandleEvent(method string, params interface{}) error {
-	timeout := make(chan bool)
-	go func() {
-		time.Sleep(time.Second * 15)
-		timeout <- true
-	}()
+	timeout := time.After(time.Second * 15)
 	for {
 		select {
 		case b := <-tab.Ipc.events:

@@ -2,7 +2,7 @@ package serviceworker
 
 import (
 
-	"github.com/diiyw/goc/protocol/target"
+	"github.com/diiyw/chr/protocol/target"
 
 )
 

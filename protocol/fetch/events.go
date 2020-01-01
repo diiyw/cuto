@@ -2,9 +2,9 @@ package fetch
 
 import (
 
-	"github.com/diiyw/goc/protocol/frame"
+	"github.com/diiyw/chr/protocol/frame"
 
-	"github.com/diiyw/goc/protocol/network"
+	"github.com/diiyw/chr/protocol/network"
 
 )
 const (

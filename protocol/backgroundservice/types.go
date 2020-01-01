@@ -2,9 +2,9 @@ package backgroundservice
 
 import (
 
-	"github.com/diiyw/goc/protocol/network"
+	"github.com/diiyw/chr/protocol/network"
 
-	"github.com/diiyw/goc/protocol/serviceworker"
+	"github.com/diiyw/chr/protocol/serviceworker"
 
 )
 

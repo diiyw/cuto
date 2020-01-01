@@ -1,4 +1,4 @@
-package main
+package generator
 
 import (
 	"bytes"
@@ -45,7 +45,7 @@ type Viewport struct {
 {{if .Requires}}
 import (
 {{range .Requires}}
-	"github.com/diiyw/goc/protocol{{.|lower}}"
+	"github.com/diiyw/chr/protocol{{.|lower}}"
 {{end}}
 ){{end}}`
 	methods = `

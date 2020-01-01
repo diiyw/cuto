@@ -3,11 +3,11 @@ package chrome
 import (
 	"encoding/json"
 	"errors"
-	"github.com/diiyw/goc/protocol/dom"
-	"github.com/diiyw/goc/protocol/page"
+	"fmt"
+	"github.com/diiyw/chr/protocol/dom"
+	"github.com/diiyw/chr/protocol/page"
 	"github.com/gorilla/websocket"
 	"log"
-	"net"
 	"net/http"
 	"os"
 	"os/exec"
@@ -17,62 +17,83 @@ import (
 )
 
 type Chrome struct {
-	Addr    string
-	DataDir string
-	Process *os.Process
+	bin        string
+	remoteAddr string
+	dataDir    string
+	process    *os.Process
+	timeout    time.Duration
 }
 
 // Create chrome client
-func New(opts []string) (*Chrome, error) {
-	for _, filename := range defaultChrome {
-		_, err := os.Stat(filename)
-		if err != nil {
-			continue
-		}
-		return Create(filename, opts)
-	}
-	return nil, errors.New("Chrome may be not install on this system")
-}
+func Create(opts ...Option) (*Chrome, error) {
 
-func Create(filename string, opts []string) (*Chrome, error) {
-	_, err := os.Stat(filename)
-	if err != nil {
-		return nil, err
+	c := new(Chrome)
+	for _, opt := range opts {
+		opt(c)
 	}
+
+	if c.bin == "" {
+		for _, filename := range defaultChrome {
+			_, err := os.Stat(filename)
+			if err == nil {
+				c.bin = filename
+				break
+			}
+		}
+	}
+
+	if c.remoteAddr == "" {
+		c.remoteAddr = "127.0.0.1:9222"
+	}
+
+	if c.dataDir == "" {
+		c.dataDir = defaultUserDataTmpDir
+	}
+
+	if c.timeout == 0 {
+		c.timeout = 5 * time.Second
+	}
+
+	_, err := os.Stat(c.bin)
+	if err != nil {
+		return nil, errors.New("Chrome not found ")
+	}
+
 	cmd := &exec.Cmd{}
-	cmd = exec.Command(filename, append([]string{
-		"--remote-debugging-port=9222",
-		"--user-data-dir=" + defaultUserDataTmpDir,
-	}, opts...)...)
+	cmd = exec.Command(c.bin, []string{
+		"--remote-debugging-port=" + strings.Split(c.remoteAddr, ":")[1],
+		"--user-data-dir=" + c.dataDir,
+	}...)
+	if err := cmd.Start(); err != nil {
+		return nil, fmt.Errorf("Start chrome with error: %s ", err)
+	}
+
 	go func() {
-		if err := cmd.Run(); err != nil {
-			log.Println(err)
-		}
+		c.process = cmd.Process
+		_ = cmd.Wait()
 	}()
-	testConn, err := net.DialTimeout("tcp4", "127.0.0.1:9222", time.Second*5)
+
+	http.DefaultClient.Timeout = c.timeout
+	resp, err := http.Get("http://127.0.0.1:9222")
 	if err != nil {
 		return nil, err
 	}
-	_ = testConn.Close()
-	ch := &Chrome{
-		"127.0.0.1:9222",
-		defaultUserDataTmpDir,
-		cmd.Process,
-	}
-	var c = make(chan os.Signal)
+	_ = resp.Body.Close()
+
+	var s = make(chan os.Signal)
 	go func() {
-		signal.Notify(c, os.Interrupt, os.Kill)
-		<-c
-		if err := ch.Close(); err != nil {
+		signal.Notify(s, os.Interrupt, os.Kill)
+		<-s
+		if err := c.Close(); err != nil {
 			log.Println(err)
 		}
 	}()
-	return ch, nil
+	return c, nil
 }
 
 // Open new tab
 func (chrome *Chrome) Open(url string) (*Tab, error) {
-	r, err := http.Get("http://" + chrome.Addr + "/json/new?" + url)
+	r, err := http.Get("http://" + chrome.remoteAddr + "/json/new?" + url)
 	if err != nil {
 		return nil, errors.New("Http request error:" + err.Error())
 	}
@@ -86,11 +107,8 @@ func (chrome *Chrome) Open(url string) (*Tab, error) {
 
 // Close chrome
 func (chrome *Chrome) Close() error {
-	_ = os.RemoveAll(chrome.DataDir)
-	if chrome.Process != nil {
-		return chrome.Process.Kill()
-	}
-	return nil
+	_ = os.RemoveAll(chrome.dataDir)
+	return chrome.process.Kill()
 }
 
 func newTab(tab *Tab) (*Tab, error) {
@@ -115,7 +133,7 @@ func newTab(tab *Tab) (*Tab, error) {
 
 // Catch tab
 func (chrome *Chrome) Find(kw string) (*Tab, error) {
-	r, err := http.Get("http://" + chrome.Addr + "/json")
+	r, err := http.Get("http://" + chrome.remoteAddr + "/json")
 	if err != nil {
 		return nil, errors.New("Http request error:" + err.Error())
 	}

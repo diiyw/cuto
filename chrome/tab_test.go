@@ -8,7 +8,7 @@ import (
 )
 
 func TestTab(t *testing.T) {
-	bs, err := New(nil)
+	bs, err := Create()
 	if err != nil {
 		log.Println(err)
 	}
