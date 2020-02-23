@@ -1,12 +1,12 @@
 // +build windows
 
-package chrome
+package chr
 
 import "os"
 
 var (
 	// Windows下默认浏览器
-	defaultChrome = []string{
+	defaultBrowser = []string{
 		`C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`,
 		`D:\Program Files (x86)\Google\Chrome\Application\chrome.exe`,
 		`C:\Program Files\Google\Chrome\Application\chrome.exe`,

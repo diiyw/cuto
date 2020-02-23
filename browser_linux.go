@@ -1,12 +1,12 @@
 // +build linux
 
-package chrome
+package chr
 
 import "os"
 
 var (
 	// Linux下默认浏览器
-	defaultChrome = []string{
+	defaultBrowser = []string{
 		`/usr/bin/google-chrome`,
 	}
 	defaultUserDataTmpDir = os.TempDir() + "/chr"

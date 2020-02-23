@@ -1,4 +1,4 @@
-package chrome
+package chr
 
 import (
 	"log"
@@ -7,12 +7,12 @@ import (
 )
 
 func TestChrome(t *testing.T) {
-	chrome, err := New(nil)
+	browser, err := Create(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	time.Sleep(1e9 * 5)
-	if err := chrome.Close(); err != nil {
+	if err := browser.Close(); err != nil {
 		log.Println(err)
 	}
 }

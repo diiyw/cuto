@@ -1,4 +1,4 @@
-package chrome
+package chr
 
 import (
 	"fmt"
@@ -8,12 +8,12 @@ import (
 )
 
 func TestTab(t *testing.T) {
-	bs, err := Create()
+	browser, err := Create()
 	if err != nil {
 		log.Println(err)
 	}
-	//defer bs.Close()
-	tab, err := bs.Open("https://www.baidu.com")
+	defer browser.Close()
+	tab, err := browser.Open("https://www.baidu.com")
 	if err != nil {
 		log.Println(err)
 	}

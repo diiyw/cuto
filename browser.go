@@ -1,4 +1,4 @@
-package chrome
+package chr
 
 import (
 	"encoding/json"
@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-type Chrome struct {
+type Browser struct {
 	bin        string
 	remoteAddr string
 	dataDir    string
@@ -25,38 +25,27 @@ type Chrome struct {
 }
 
 // Create chrome client
-func Create(opts ...Option) (*Chrome, error) {
+func Create(options ...Option) (*Browser, error) {
+	c := new(Browser)
 
-	c := new(Chrome)
-	for _, opt := range opts {
-		opt(c)
-	}
-
-	if c.bin == "" {
-		for _, filename := range defaultChrome {
-			_, err := os.Stat(filename)
-			if err == nil {
-				c.bin = filename
-				break
-			}
+	for _, filename := range defaultBrowser {
+		_, err := os.Stat(filename)
+		if err == nil {
+			c.bin = filename
+			break
 		}
 	}
+	c.remoteAddr = "127.0.0.1:9222"
+	c.dataDir = defaultUserDataTmpDir
+	c.timeout = 5 * time.Second
 
-	if c.remoteAddr == "" {
-		c.remoteAddr = "127.0.0.1:9222"
-	}
-
-	if c.dataDir == "" {
-		c.dataDir = defaultUserDataTmpDir
-	}
-
-	if c.timeout == 0 {
-		c.timeout = 5 * time.Second
+	for _, op := range options {
+		op(c)
 	}
 
 	_, err := os.Stat(c.bin)
 	if err != nil {
-		return nil, errors.New("Chrome not found ")
+		return nil, errors.New("Browser not found ")
 	}
 
 	cmd := &exec.Cmd{}
@@ -92,7 +81,7 @@ func Create(opts ...Option) (*Chrome, error) {
 }
 
 // Open new tab
-func (chrome *Chrome) Open(url string) (*Tab, error) {
+func (chrome *Browser) Open(url string) (*Tab, error) {
 	r, err := http.Get("http://" + chrome.remoteAddr + "/json/new?" + url)
 	if err != nil {
 		return nil, errors.New("Http request error:" + err.Error())
@@ -106,7 +95,7 @@ func (chrome *Chrome) Open(url string) (*Tab, error) {
 }
 
 // Close chrome
-func (chrome *Chrome) Close() error {
+func (chrome *Browser) Close() error {
 	_ = os.RemoveAll(chrome.dataDir)
 	return chrome.process.Kill()
 }
@@ -132,7 +121,7 @@ func newTab(tab *Tab) (*Tab, error) {
 }
 
 // Catch tab
-func (chrome *Chrome) Find(kw string) (*Tab, error) {
+func (chrome *Browser) Find(kw string) (*Tab, error) {
 	r, err := http.Get("http://" + chrome.remoteAddr + "/json")
 	if err != nil {
 		return nil, errors.New("Http request error:" + err.Error())

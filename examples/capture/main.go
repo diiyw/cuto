@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/diiyw/chr/chrome"
+	"github.com/diiyw/chr"
 	"github.com/diiyw/chr/protocol/page"
 	"log"
 )
 
 func main() {
-	bs, err := chrome.Create()
+	bs, err := chr.Create()
 	if err != nil {
 		log.Fatal(err)
 	}
