@@ -36,7 +36,7 @@ type (
 	}
 )
 
-type ipc struct {
+type Channel struct {
 	*websocket.Conn
 
 	id      int
@@ -46,13 +46,13 @@ type ipc struct {
 }
 
 type Tab struct {
-	Id                   string `json:"id"`
-	Url                  string `json:"url"`
-	Type                 string `json:"type"`
-	Title                string `json:"title"`
-	DevtoolsFrontendUrl  string `json:"devtoolsFrontendUrl"`
-	WebSocketDebuggerUrl string `json:"webSocketDebuggerUrl"`
-	Ipc                  ipc    `json:"-"`
+	Id                   string  `json:"id"`
+	Url                  string  `json:"url"`
+	Type                 string  `json:"type"`
+	Title                string  `json:"title"`
+	DevtoolsFrontendUrl  string  `json:"devtoolsFrontendUrl"`
+	WebSocketDebuggerUrl string  `json:"webSocketDebuggerUrl"`
+	Channel              Channel `json:"-"`
 }
 
 // 等待页面加载完成
@@ -219,7 +219,7 @@ func (tab *Tab) Close() error {
 	if err := tab.Send(page.Close, page.CloseParams{}); err != nil {
 		return err
 	}
-	err := tab.Ipc.Close()
+	err := tab.Channel.Close()
 	if err != nil {
 		return err
 	}
@@ -246,13 +246,13 @@ func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) er
 
 // 发起命令
 func (tab *Tab) Send(method string, params interface{}) error {
-	tab.Ipc.id++
+	tab.Channel.id++
 	var request = map[string]interface{}{
-		"id":     tab.Ipc.id,
+		"id":     tab.Channel.id,
 		"method": method,
 		"params": params,
 	}
-	if err := tab.Ipc.WriteJSON(request); err != nil {
+	if err := tab.Channel.WriteJSON(request); err != nil {
 		return err
 	}
 	return nil
@@ -260,22 +260,22 @@ func (tab *Tab) Send(method string, params interface{}) error {
 
 func (tab *Tab) handle() error {
 	for {
-		_, b, err := tab.Ipc.ReadMessage()
+		_, b, err := tab.Channel.ReadMessage()
 		if err != nil {
 			return err
 		}
 		// Error
 		if bytes.Contains(b, []byte(`"error"`)) {
-			tab.Ipc.errors <- b
+			tab.Channel.errors <- b
 			continue
 		}
 		// Event
 		if bytes.Contains(b, []byte(`"params"`)) && bytes.Contains(b, []byte(`"method"`)) {
-			tab.Ipc.events <- b
+			tab.Channel.events <- b
 			continue
 		}
 		// Result
-		tab.Ipc.returns <- b
+		tab.Channel.returns <- b
 	}
 }
 
@@ -283,11 +283,11 @@ func (tab *Tab) HandleResult(returns interface{}) error {
 	timeout := time.After(time.Second * 15)
 	for {
 		select {
-		case b := <-tab.Ipc.returns:
+		case b := <-tab.Channel.returns:
 			var ret = Return{Result: returns}
 			err := json.Unmarshal(b, &ret)
 			if err == nil {
-				if ret.Id == tab.Ipc.id {
+				if ret.Id == tab.Channel.id {
 					return nil
 				}
 			}
@@ -301,7 +301,7 @@ func (tab *Tab) HandleEvent(method string, params interface{}) error {
 	timeout := time.After(time.Second * 15)
 	for {
 		select {
-		case b := <-tab.Ipc.events:
+		case b := <-tab.Channel.events:
 			var event = Event{Params: params}
 			err := json.Unmarshal(b, &event)
 			if err == nil {
