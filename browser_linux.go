@@ -1,13 +1,13 @@
 // +build linux
 
-package chr
+package cuto
 
 import "os"
 
 var (
 	// Linux下默认浏览器
 	defaultBrowser = []string{
-		`/usr/bin/google-chrome`,
+		`/usr/bin/google-cutoome`,
 	}
-	defaultUserDataTmpDir = os.TempDir() + "/chr"
+	defaultUserDataTmpDir = os.TempDir() + "/cuto"
 )

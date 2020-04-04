@@ -1,11 +1,11 @@
-package chr
+package cuto
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/diiyw/chr/protocol/dom"
-	"github.com/diiyw/chr/protocol/page"
+	"github.com/diiyw/cuto/protocol/dom"
+	"github.com/diiyw/cuto/protocol/page"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -81,8 +81,8 @@ func Create(options ...Option) (*Browser, error) {
 }
 
 // Open new tab
-func (chrome *Browser) Open(url string) (*Tab, error) {
-	r, err := http.Get("http://" + chrome.remoteAddr + "/json/new?" + url)
+func (b *Browser) Open(url string) (*Tab, error) {
+	r, err := http.Get("http://" + b.remoteAddr + "/json/new?" + url)
 	if err != nil {
 		return nil, errors.New("Http request error:" + err.Error())
 	}
@@ -95,9 +95,9 @@ func (chrome *Browser) Open(url string) (*Tab, error) {
 }
 
 // Close chrome
-func (chrome *Browser) Close() error {
-	_ = os.RemoveAll(chrome.dataDir)
-	return chrome.process.Kill()
+func (b *Browser) Close() error {
+	_ = os.RemoveAll(b.dataDir)
+	return b.process.Kill()
 }
 
 func newTab(tab *Tab) (*Tab, error) {
@@ -113,7 +113,7 @@ func newTab(tab *Tab) (*Tab, error) {
 	_ = tab.Send(page.Enable, page.EnableParams{})
 	go func() {
 		if err := tab.handle(); err != nil {
-			log.Println(err)
+			log.Println("Error:",err)
 			return
 		}
 	}()
@@ -121,8 +121,8 @@ func newTab(tab *Tab) (*Tab, error) {
 }
 
 // Catch tab
-func (chrome *Browser) Find(kw string) (*Tab, error) {
-	r, err := http.Get("http://" + chrome.remoteAddr + "/json")
+func (b *Browser) Find(kw string) (*Tab, error) {
+	r, err := http.Get("http://" + b.remoteAddr + "/json")
 	if err != nil {
 		return nil, errors.New("Http request error:" + err.Error())
 	}

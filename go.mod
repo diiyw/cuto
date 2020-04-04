@@ -1,4 +1,4 @@
-module github.com/diiyw/chr
+module github.com/diiyw/cuto
 
 require github.com/gorilla/websocket v1.4.0
 

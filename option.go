@@ -1,4 +1,4 @@
-package chr
+package cuto
 
 import "time"
 

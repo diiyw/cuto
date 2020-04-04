@@ -1,15 +1,15 @@
-package chr
+package cuto
 
 import (
 	"bytes"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"github.com/diiyw/chr/protocol/dom"
-	"github.com/diiyw/chr/protocol/page"
-	"github.com/diiyw/chr/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/dom"
+	"github.com/diiyw/cuto/protocol/page"
+	"github.com/diiyw/cuto/protocol/runtime"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
+	"log"
 	"path"
 	"strings"
 	"time"
@@ -68,7 +68,7 @@ func (tab *Tab) Jump(url string) error {
 	if err := tab.Send(page.Navigate, page.NavigateParams{Url: url}); err != nil {
 		return err
 	}
-	var result = page.NavigateReturns{}
+	var result = page.NavigateResult{}
 	if err := tab.HandleResult(&result); err != nil {
 		return err
 	}
@@ -80,20 +80,20 @@ func (tab *Tab) Jump(url string) error {
 	if err := tab.HandleEvent(page.FrameStoppedLoadingEvent, &frameStoppedLoadingParams); err != nil {
 		return err
 	}
-	if frameNavigatedParams.Frame.Id == string(frameStoppedLoadingParams.FrameId) {
+	if frameNavigatedParams.Frame.Id == frameStoppedLoadingParams.FrameId {
 		return nil
 	}
 	return errors.New("jump error")
 }
 
 // 查询节点
-func (tab *Tab) Query(selector string) ([]dom.NodeId, error) {
+func (tab *Tab) Query(selector string) ([]*dom.NodeId, error) {
 	var err error
 	// 初始化整个节点
 	if err := tab.Send(dom.GetDocument, dom.GetDocumentParams{}); err != nil {
 		return nil, err
 	}
-	var getDocument = dom.GetDocumentReturns{}
+	var getDocument = dom.GetDocumentResult{}
 	if err := tab.HandleResult(&getDocument); err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (tab *Tab) Query(selector string) ([]dom.NodeId, error) {
 	if err := tab.Send(dom.PerformSearch, searchParams); err != nil {
 		return nil, err
 	}
-	var searchResult = dom.PerformSearchReturns{}
+	var searchResult = dom.PerformSearchResult{}
 	if err := tab.HandleResult(&searchResult); err != nil {
 		return nil, err
 	}
@@ -121,7 +121,7 @@ func (tab *Tab) Query(selector string) ([]dom.NodeId, error) {
 	if err := tab.Send(dom.GetSearchResults, result); err != nil {
 		return nil, err
 	}
-	var getResult = dom.GetSearchResultsReturns{}
+	var getResult = dom.GetSearchResultsResult{}
 	if err := tab.HandleResult(&getResult); err != nil {
 		return nil, err
 	}
@@ -198,7 +198,7 @@ func (tab *Tab) Js(js string, timeout runtime.TimeDelta) (object runtime.RemoteO
 	if err := tab.Send(runtime.Evaluate, rParams); err != nil {
 		return object, err
 	}
-	var evalResult = runtime.EvaluateReturns{}
+	var evalResult = runtime.EvaluateResult{}
 	if err := tab.HandleResult(&evalResult); err != nil {
 		return object, err
 	}
@@ -236,12 +236,11 @@ func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) er
 	if err := tab.Send(page.CaptureScreenshot, capture); err != nil {
 		return err
 	}
-	var captureScreenshotReturns = page.CaptureScreenshotReturns{}
-	if err := tab.HandleResult(&captureScreenshotReturns); err != nil {
+	var captureScreenshotResult = page.CaptureScreenshotResult{}
+	if err := tab.HandleResult(&captureScreenshotResult); err != nil {
 		return err
 	}
-	b, _ := base64.StdEncoding.DecodeString(captureScreenshotReturns.Data)
-	return ioutil.WriteFile(filename, b, 0777)
+	return ioutil.WriteFile(filename, captureScreenshotResult.Data, 0777)
 }
 
 // 发起命令
@@ -266,6 +265,7 @@ func (tab *Tab) handle() error {
 		}
 		// Error
 		if bytes.Contains(b, []byte(`"error"`)) {
+			log.Println("Error:", string(b))
 			tab.Ipc.errors <- b
 			continue
 		}
@@ -284,6 +284,7 @@ func (tab *Tab) HandleResult(returns interface{}) error {
 	for {
 		select {
 		case b := <-tab.Ipc.returns:
+			log.Println("Result:", string(b))
 			var ret = Return{Result: returns}
 			err := json.Unmarshal(b, &ret)
 			if err == nil {
@@ -302,6 +303,7 @@ func (tab *Tab) HandleEvent(method string, params interface{}) error {
 	for {
 		select {
 		case b := <-tab.Ipc.events:
+			log.Println("Event:", string(b))
 			var event = Event{Params: params}
 			err := json.Unmarshal(b, &event)
 			if err == nil {

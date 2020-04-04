@@ -1,6 +1,0 @@
-package input
-
-const (
-	
-)
-
