@@ -1,4 +1,4 @@
-package chr
+package cuto
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestChrome(t *testing.T) {
+func Test_browser(t *testing.T) {
 	browser, err := Create(nil)
 	if err != nil {
 		t.Fatal(err)

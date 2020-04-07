@@ -1,10 +1,10 @@
-# CHR
+# Cuto
 
-GO语言跨平台驱动chrome内核浏览器,实现自动化操作。
+GO语言跨平台驱动cutoome内核浏览器,实现自动化操作。
 
 # Require
 - Go >= 1.11 
-- Chromium >= 69
+- cutoomium >= 69
 
 # 支持
 - Mac Os 

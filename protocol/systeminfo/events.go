@@ -1,6 +1,0 @@
-package systeminfo
-
-const (
-	
-)
-
