@@ -290,7 +290,7 @@ type MediaQueryExpression  struct {
 // Information about amount of glyphs that were rendered with given font.
 type PlatformFontUsage  struct {
 
-	// Font's family name reported by platform.
+	// FontFamily's family name reported by platform.
 	FamilyName	string	`json:"familyName"`
 
 	// Indicates if the font was downloaded or resolved locally.

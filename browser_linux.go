@@ -7,7 +7,7 @@ import "os"
 var (
 	// Linux下默认浏览器
 	defaultBrowser = []string{
-		`/usr/bin/google-cutoome`,
+		`/usr/bin/google-chrome`,
 	}
 	defaultUserDataTmpDir = os.TempDir() + "/cuto"
 )

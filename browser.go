@@ -13,6 +13,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -71,7 +72,7 @@ func Create(options ...Option) (*Browser, error) {
 
 	var s = make(chan os.Signal)
 	go func() {
-		signal.Notify(s, os.Interrupt, os.Kill)
+		signal.Notify(s, os.Interrupt, syscall.SIGQUIT, syscall.SIGTERM)
 		<-s
 		if err := c.Close(); err != nil {
 			log.Println(err)
@@ -113,7 +114,7 @@ func newTab(tab *Tab) (*Tab, error) {
 	_ = tab.Send(page.Enable, page.EnableParams{})
 	go func() {
 		if err := tab.handle(); err != nil {
-			log.Println("Error:",err)
+			log.Println("Error:", err)
 			return
 		}
 	}()

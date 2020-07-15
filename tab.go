@@ -88,16 +88,12 @@ func (tab *Tab) Jump(url string) error {
 
 // 查询节点
 func (tab *Tab) Query(selector string) ([]*dom.NodeId, error) {
-	var err error
 	// 初始化整个节点
 	if err := tab.Send(dom.GetDocument, dom.GetDocumentParams{}); err != nil {
 		return nil, err
 	}
 	var getDocument = dom.GetDocumentResult{}
 	if err := tab.HandleResult(&getDocument); err != nil {
-		return nil, err
-	}
-	if err != nil {
 		return nil, err
 	}
 	// 开始搜素节点
