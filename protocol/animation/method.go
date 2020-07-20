@@ -1,5 +1,10 @@
 package animation
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
+
 // Disables animation domain notifications.
 const Disable = "Animation.disable"
 
@@ -72,7 +77,7 @@ type ResolveAnimationParams struct {
 type ResolveAnimationResult struct {
 
 	// Corresponding remote object.
-	RemoteObject 	interface{}	`json:"remoteObject"`
+	RemoteObject 	runtime.RemoteObject	`json:"remoteObject"`
 }
 
 // Seek a set of animations to a particular time within each animation.

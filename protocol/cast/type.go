@@ -10,5 +10,5 @@ type Sink  struct {
 
 	// Text describing the current session. Present only if there is an active
 	// session on the sink.
-	Session	string	`json:"session"`
+	Session	string	`json:"session,omitempty"`
 }

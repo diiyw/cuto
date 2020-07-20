@@ -1,4 +1,9 @@
 package indexeddb
+
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
 // Database with an array of object stores.
 type DatabaseWithObjectStores  struct {
 
@@ -52,26 +57,26 @@ type Key  struct {
 	Type	string	`json:"type"`
 
 	// Number value.
-	Number	float64	`json:"number"`
+	Number	float64	`json:"number,omitempty"`
 
 	// String value.
-	String	string	`json:"string"`
+	String	string	`json:"string,omitempty"`
 
 	// Date value.
-	Date	float64	`json:"date"`
+	Date	float64	`json:"date,omitempty"`
 
 	// Array value.
-	Array	[]*Key	`json:"array"`
+	Array	[]*Key	`json:"array,omitempty"`
 }
 
 // Key range.
 type KeyRange  struct {
 
 	// Lower bound.
-	Lower	Key	`json:"lower"`
+	Lower	Key	`json:"lower,omitempty"`
 
 	// Upper bound.
-	Upper	Key	`json:"upper"`
+	Upper	Key	`json:"upper,omitempty"`
 
 	// If true lower bound is open.
 	LowerOpen	bool	`json:"lowerOpen"`
@@ -84,13 +89,13 @@ type KeyRange  struct {
 type DataEntry  struct {
 
 	// Key object.
-	Key	interface{}	`json:"key"`
+	Key	runtime.RemoteObject	`json:"key"`
 
 	// Primary key object.
-	PrimaryKey	interface{}	`json:"primaryKey"`
+	PrimaryKey	runtime.RemoteObject	`json:"primaryKey"`
 
 	// Value object.
-	Value	interface{}	`json:"value"`
+	Value	runtime.RemoteObject	`json:"value"`
 }
 
 // Key path.
@@ -100,8 +105,8 @@ type KeyPath  struct {
 	Type	string	`json:"type"`
 
 	// String value.
-	String	string	`json:"string"`
+	String	string	`json:"string,omitempty"`
 
 	// Array value.
-	Array	[]string	`json:"array"`
+	Array	[]string	`json:"array,omitempty"`
 }

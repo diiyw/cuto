@@ -1,5 +1,11 @@
 package accessibility
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/dom"
+)
+
+
 // Disables the accessibility domain.
 const Disable = "Accessibility.disable"
 
@@ -27,16 +33,16 @@ const GetPartialAXTree = "Accessibility.getPartialAXTree"
 type GetPartialAXTreeParams struct {
 
 	// Identifier of the node to get the partial accessibility tree for.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node to get the partial accessibility tree for.
-	BackendNodeId 	interface{}	`json:"backendNodeId"`
+	BackendNodeId 	dom.BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper to get the partial accessibility tree for.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 
 	// Whether to fetch this nodes ancestors, siblings and children. Defaults to true.
-	FetchRelatives 	bool	`json:"fetchRelatives"`
+	FetchRelatives 	bool	`json:"fetchRelatives,omitempty"`
 }
 
 type GetPartialAXTreeResult struct {

@@ -1,5 +1,10 @@
 package io
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
+
 // Close the stream, discard any temporary backing storage.
 const Close = "IO.close"
 
@@ -23,10 +28,10 @@ type ReadParams struct {
 
 	// Seek to the specified offset before reading (if not specificed, proceed with offset
 	// following the last read). Some types of streams may only support sequential reads.
-	Offset 	int	`json:"offset"`
+	Offset 	int	`json:"offset,omitempty"`
 
 	// Maximum number of bytes to read (left upon the agent discretion if not specified).
-	Size 	int	`json:"size"`
+	Size 	int	`json:"size,omitempty"`
 }
 
 type ReadResult struct {
@@ -45,7 +50,7 @@ const ResolveBlob = "IO.resolveBlob"
 type ResolveBlobParams struct {
 
 	// Object id of a Blob object wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId"`
 }
 
 type ResolveBlobResult struct {

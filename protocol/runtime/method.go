@@ -9,10 +9,10 @@ type AwaitPromiseParams struct {
 	PromiseObjectId 	RemoteObjectId	`json:"promiseObjectId"`
 
 	// Whether the result is expected to be a JSON object that should be sent by value.
-	ReturnByValue 	bool	`json:"returnByValue"`
+	ReturnByValue 	bool	`json:"returnByValue,omitempty"`
 
 	// Whether preview should be generated for the result.
-	GeneratePreview 	bool	`json:"generatePreview"`
+	GeneratePreview 	bool	`json:"generatePreview,omitempty"`
 }
 
 type AwaitPromiseResult struct {
@@ -34,36 +34,36 @@ type CallFunctionOnParams struct {
 
 	// Identifier of the object to call function on. Either objectId or executionContextId should
 	// be specified.
-	ObjectId 	RemoteObjectId	`json:"objectId"`
+	ObjectId 	RemoteObjectId	`json:"objectId,omitempty"`
 
 	// Call arguments. All call arguments must belong to the same JavaScript world as the target
 	// object.
-	Arguments 	[]*CallArgument	`json:"arguments"`
+	Arguments 	[]*CallArgument	`json:"arguments,omitempty"`
 
 	// In silent mode exceptions thrown during evaluation are not reported and do not pause
 	// execution. Overrides `setPauseOnException` state.
-	Silent 	bool	`json:"silent"`
+	Silent 	bool	`json:"silent,omitempty"`
 
 	// Whether the result is expected to be a JSON object which should be sent by value.
-	ReturnByValue 	bool	`json:"returnByValue"`
+	ReturnByValue 	bool	`json:"returnByValue,omitempty"`
 
 	// Whether preview should be generated for the result.
-	GeneratePreview 	bool	`json:"generatePreview"`
+	GeneratePreview 	bool	`json:"generatePreview,omitempty"`
 
 	// Whether execution should be treated as initiated by user in the UI.
-	UserGesture 	bool	`json:"userGesture"`
+	UserGesture 	bool	`json:"userGesture,omitempty"`
 
 	// Whether execution should `await` for resulting value and return once awaited promise is
 	// resolved.
-	AwaitPromise 	bool	`json:"awaitPromise"`
+	AwaitPromise 	bool	`json:"awaitPromise,omitempty"`
 
 	// Specifies execution context which global object will be used to call function on. Either
 	// executionContextId or objectId should be specified.
-	ExecutionContextId 	ExecutionContextId	`json:"executionContextId"`
+	ExecutionContextId 	ExecutionContextId	`json:"executionContextId,omitempty"`
 
 	// Symbolic group name that can be used to release multiple objects. If objectGroup is not
 	// specified and objectId is, objectGroup will be inherited from object.
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 }
 
 type CallFunctionOnResult struct {
@@ -90,7 +90,7 @@ type CompileScriptParams struct {
 
 	// Specifies in which execution context to perform script run. If the parameter is omitted the
 	// evaluation will be performed in the context of the inspected page.
-	ExecutionContextId 	ExecutionContextId	`json:"executionContextId"`
+	ExecutionContextId 	ExecutionContextId	`json:"executionContextId,omitempty"`
 }
 
 type CompileScriptResult struct {
@@ -142,41 +142,41 @@ type EvaluateParams struct {
 	Expression 	string	`json:"expression"`
 
 	// Symbolic group name that can be used to release multiple objects.
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 
 	// Determines whether Command Line API should be available during the evaluation.
-	IncludeCommandLineAPI 	bool	`json:"includeCommandLineAPI"`
+	IncludeCommandLineAPI 	bool	`json:"includeCommandLineAPI,omitempty"`
 
 	// In silent mode exceptions thrown during evaluation are not reported and do not pause
 	// execution. Overrides `setPauseOnException` state.
-	Silent 	bool	`json:"silent"`
+	Silent 	bool	`json:"silent,omitempty"`
 
 	// Specifies in which execution context to perform evaluation. If the parameter is omitted the
 	// evaluation will be performed in the context of the inspected page.
-	ContextId 	ExecutionContextId	`json:"contextId"`
+	ContextId 	ExecutionContextId	`json:"contextId,omitempty"`
 
 	// Whether the result is expected to be a JSON object that should be sent by value.
-	ReturnByValue 	bool	`json:"returnByValue"`
+	ReturnByValue 	bool	`json:"returnByValue,omitempty"`
 
 	// Whether preview should be generated for the result.
-	GeneratePreview 	bool	`json:"generatePreview"`
+	GeneratePreview 	bool	`json:"generatePreview,omitempty"`
 
 	// Whether execution should be treated as initiated by user in the UI.
-	UserGesture 	bool	`json:"userGesture"`
+	UserGesture 	bool	`json:"userGesture,omitempty"`
 
 	// Whether execution should `await` for resulting value and return once awaited promise is
 	// resolved.
-	AwaitPromise 	bool	`json:"awaitPromise"`
+	AwaitPromise 	bool	`json:"awaitPromise,omitempty"`
 
 	// Whether to throw an exception if side effect cannot be ruled out during evaluation.
 	// This implies `disableBreaks` below.
-	ThrowOnSideEffect 	bool	`json:"throwOnSideEffect"`
+	ThrowOnSideEffect 	bool	`json:"throwOnSideEffect,omitempty"`
 
 	// Terminate execution after timing out (number of milliseconds).
-	Timeout 	TimeDelta	`json:"timeout"`
+	Timeout 	TimeDelta	`json:"timeout,omitempty"`
 
 	// Disable breakpoints during execution.
-	DisableBreaks 	bool	`json:"disableBreaks"`
+	DisableBreaks 	bool	`json:"disableBreaks,omitempty"`
 }
 
 type EvaluateResult struct {
@@ -225,14 +225,14 @@ type GetPropertiesParams struct {
 
 	// If true, returns properties belonging only to the element itself, not to its prototype
 	// chain.
-	OwnProperties 	bool	`json:"ownProperties"`
+	OwnProperties 	bool	`json:"ownProperties,omitempty"`
 
 	// If true, returns accessor properties (with getter/setter) only; internal properties are not
 	// returned either.
-	AccessorPropertiesOnly 	bool	`json:"accessorPropertiesOnly"`
+	AccessorPropertiesOnly 	bool	`json:"accessorPropertiesOnly,omitempty"`
 
 	// Whether preview should be generated for the results.
-	GeneratePreview 	bool	`json:"generatePreview"`
+	GeneratePreview 	bool	`json:"generatePreview,omitempty"`
 }
 
 type GetPropertiesResult struct {
@@ -253,7 +253,7 @@ const GlobalLexicalScopeNames = "Runtime.globalLexicalScopeNames"
 type GlobalLexicalScopeNamesParams struct {
 
 	// Specifies in which execution context to lookup global scope variables.
-	ExecutionContextId 	ExecutionContextId	`json:"executionContextId"`
+	ExecutionContextId 	ExecutionContextId	`json:"executionContextId,omitempty"`
 }
 
 type GlobalLexicalScopeNamesResult struct {
@@ -271,7 +271,7 @@ type QueryObjectsParams struct {
 	PrototypeObjectId 	RemoteObjectId	`json:"prototypeObjectId"`
 
 	// Symbolic group name that can be used to release the results.
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 }
 
 type QueryObjectsResult struct {
@@ -326,27 +326,27 @@ type RunScriptParams struct {
 
 	// Specifies in which execution context to perform script run. If the parameter is omitted the
 	// evaluation will be performed in the context of the inspected page.
-	ExecutionContextId 	ExecutionContextId	`json:"executionContextId"`
+	ExecutionContextId 	ExecutionContextId	`json:"executionContextId,omitempty"`
 
 	// Symbolic group name that can be used to release multiple objects.
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 
 	// In silent mode exceptions thrown during evaluation are not reported and do not pause
 	// execution. Overrides `setPauseOnException` state.
-	Silent 	bool	`json:"silent"`
+	Silent 	bool	`json:"silent,omitempty"`
 
 	// Determines whether Command Line API should be available during the evaluation.
-	IncludeCommandLineAPI 	bool	`json:"includeCommandLineAPI"`
+	IncludeCommandLineAPI 	bool	`json:"includeCommandLineAPI,omitempty"`
 
 	// Whether the result is expected to be a JSON object which should be sent by value.
-	ReturnByValue 	bool	`json:"returnByValue"`
+	ReturnByValue 	bool	`json:"returnByValue,omitempty"`
 
 	// Whether preview should be generated for the result.
-	GeneratePreview 	bool	`json:"generatePreview"`
+	GeneratePreview 	bool	`json:"generatePreview,omitempty"`
 
 	// Whether execution should `await` for resulting value and return once awaited promise is
 	// resolved.
-	AwaitPromise 	bool	`json:"awaitPromise"`
+	AwaitPromise 	bool	`json:"awaitPromise,omitempty"`
 }
 
 type RunScriptResult struct {
@@ -424,7 +424,7 @@ type AddBindingParams struct {
 	Name 	string	`json:"name"`
 
 	// 
-	ExecutionContextId 	ExecutionContextId	`json:"executionContextId"`
+	ExecutionContextId 	ExecutionContextId	`json:"executionContextId,omitempty"`
 }
 
 type AddBindingResult struct {

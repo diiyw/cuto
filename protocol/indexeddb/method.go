@@ -101,7 +101,7 @@ type RequestDataParams struct {
 	PageSize 	int	`json:"pageSize"`
 
 	// Key range.
-	KeyRange 	KeyRange	`json:"keyRange"`
+	KeyRange 	KeyRange	`json:"keyRange,omitempty"`
 }
 
 type RequestDataResult struct {

@@ -1,5 +1,10 @@
 package layertree
 
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Provides the reasons why the given layer was composited.
 const CompositingReasons = "LayerTree.compositingReasons"
 
@@ -74,13 +79,13 @@ type ProfileSnapshotParams struct {
 	SnapshotId 	SnapshotId	`json:"snapshotId"`
 
 	// The maximum number of times to replay the snapshot (1, if not specified).
-	MinRepeatCount 	int	`json:"minRepeatCount"`
+	MinRepeatCount 	int	`json:"minRepeatCount,omitempty"`
 
 	// The minimum duration (in seconds) to replay the snapshot.
-	MinDuration 	float64	`json:"minDuration"`
+	MinDuration 	float64	`json:"minDuration,omitempty"`
 
 	// The clip rectangle to apply when replaying the snapshot.
-	ClipRect 	interface{}	`json:"clipRect"`
+	ClipRect 	cdp.Rect	`json:"clipRect,omitempty"`
 }
 
 type ProfileSnapshotResult struct {
@@ -111,13 +116,13 @@ type ReplaySnapshotParams struct {
 	SnapshotId 	SnapshotId	`json:"snapshotId"`
 
 	// The first step to replay from (replay from the very start if not specified).
-	FromStep 	int	`json:"fromStep"`
+	FromStep 	int	`json:"fromStep,omitempty"`
 
 	// The last step to replay to (replay till the end if not specified).
-	ToStep 	int	`json:"toStep"`
+	ToStep 	int	`json:"toStep,omitempty"`
 
 	// The scale to apply while replaying (defaults to 1).
-	Scale 	float64	`json:"scale"`
+	Scale 	float64	`json:"scale,omitempty"`
 }
 
 type ReplaySnapshotResult struct {

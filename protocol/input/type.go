@@ -10,19 +10,19 @@ type TouchPoint  struct {
 	Y	float64	`json:"y"`
 
 	// X radius of the touch area (default: 1.0).
-	RadiusX	float64	`json:"radiusX"`
+	RadiusX	float64	`json:"radiusX,omitempty"`
 
 	// Y radius of the touch area (default: 1.0).
-	RadiusY	float64	`json:"radiusY"`
+	RadiusY	float64	`json:"radiusY,omitempty"`
 
 	// Rotation angle (default: 0.0).
-	RotationAngle	float64	`json:"rotationAngle"`
+	RotationAngle	float64	`json:"rotationAngle,omitempty"`
 
 	// Force (default: 1.0).
-	Force	float64	`json:"force"`
+	Force	float64	`json:"force,omitempty"`
 
 	// Identifier used to track touch sources between events, must be unique within an event.
-	Id	float64	`json:"id"`
+	Id	float64	`json:"id,omitempty"`
 }
 
 // 

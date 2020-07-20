@@ -64,10 +64,10 @@ const StartPreciseCoverage = "Profiler.startPreciseCoverage"
 type StartPreciseCoverageParams struct {
 
 	// Collect accurate call counts beyond simple 'covered' or 'not covered'.
-	CallCount 	bool	`json:"callCount"`
+	CallCount 	bool	`json:"callCount,omitempty"`
 
 	// Collect block-based coverage.
-	Detailed 	bool	`json:"detailed"`
+	Detailed 	bool	`json:"detailed,omitempty"`
 }
 
 type StartPreciseCoverageResult struct {

@@ -1,8 +1,12 @@
 package page
 
 import (
-	"github.com/diiyw/cuto/protocol/network"
+	"github.com/diiyw/cuto/protocol/io"
 	"github.com/diiyw/cuto/protocol/debugger"
+	"github.com/diiyw/cuto/protocol/emulation"
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/network"
+	"github.com/diiyw/cuto/protocol/cdp"
 )
 
 
@@ -32,7 +36,7 @@ type AddScriptToEvaluateOnNewDocumentParams struct {
 	// If specified, creates an isolated world with the given name and evaluates given script in it.
 	// This world name will be used as the ExecutionContextDescription::name when the corresponding
 	// event is emitted.
-	WorldName 	string	`json:"worldName"`
+	WorldName 	string	`json:"worldName,omitempty"`
 }
 
 type AddScriptToEvaluateOnNewDocumentResult struct {
@@ -57,16 +61,16 @@ const CaptureScreenshot = "Page.captureScreenshot"
 type CaptureScreenshotParams struct {
 
 	// Image compression format (defaults to png).
-	Format 	string	`json:"format"`
+	Format 	string	`json:"format,omitempty"`
 
 	// Compression quality from range [0..100] (jpeg only).
-	Quality 	int	`json:"quality"`
+	Quality 	int	`json:"quality,omitempty"`
 
 	// Capture the screenshot of a given region only.
-	Clip 	Viewport	`json:"clip"`
+	Clip 	Viewport	`json:"clip,omitempty"`
 
 	// Capture the screenshot from the surface, rather than the view. Defaults to true.
-	FromSurface 	bool	`json:"fromSurface"`
+	FromSurface 	bool	`json:"fromSurface,omitempty"`
 }
 
 type CaptureScreenshotResult struct {
@@ -82,7 +86,7 @@ const CaptureSnapshot = "Page.captureSnapshot"
 type CaptureSnapshotParams struct {
 
 	// Format (defaults to mhtml).
-	Format 	string	`json:"format"`
+	Format 	string	`json:"format,omitempty"`
 }
 
 type CaptureSnapshotResult struct {
@@ -130,17 +134,17 @@ type CreateIsolatedWorldParams struct {
 	FrameId 	FrameId	`json:"frameId"`
 
 	// An optional name which is reported in the Execution Context.
-	WorldName 	string	`json:"worldName"`
+	WorldName 	string	`json:"worldName,omitempty"`
 
 	// Whether or not universal access should be granted to the isolated world. This is a powerful
 	// option, use with caution.
-	GrantUniveralAccess 	bool	`json:"grantUniveralAccess"`
+	GrantUniveralAccess 	bool	`json:"grantUniveralAccess,omitempty"`
 }
 
 type CreateIsolatedWorldResult struct {
 
 	// Execution context of the isolated world.
-	ExecutionContextId 	interface{}	`json:"executionContextId"`
+	ExecutionContextId 	runtime.ExecutionContextId	`json:"executionContextId"`
 }
 
 // Deletes browser cookie with given name, domain and path.
@@ -245,7 +249,7 @@ type GetLayoutMetricsResult struct {
 	// Metrics relating to the visual viewport.
 	VisualViewport 	VisualViewport	`json:"visualViewport"`
 	// Size of scrollable area.
-	ContentSize 	interface{}	`json:"contentSize"`
+	ContentSize 	cdp.Rect	`json:"contentSize"`
 }
 
 // Returns navigation history for the current page.
@@ -314,7 +318,7 @@ type HandleJavaScriptDialogParams struct {
 
 	// The text to enter into the dialog prompt before accepting. Used only if this is a prompt
 	// dialog.
-	PromptText 	string	`json:"promptText"`
+	PromptText 	string	`json:"promptText,omitempty"`
 }
 
 type HandleJavaScriptDialogResult struct {
@@ -330,13 +334,13 @@ type NavigateParams struct {
 	Url 	string	`json:"url"`
 
 	// Referrer URL.
-	Referrer 	string	`json:"referrer"`
+	Referrer 	string	`json:"referrer,omitempty"`
 
 	// Intended transition type.
-	TransitionType 	TransitionType	`json:"transitionType"`
+	TransitionType 	TransitionType	`json:"transitionType,omitempty"`
 
 	// Frame id to navigate, if not specified navigates the top frame.
-	FrameId 	FrameId	`json:"frameId"`
+	FrameId 	FrameId	`json:"frameId,omitempty"`
 }
 
 type NavigateResult struct {
@@ -344,7 +348,7 @@ type NavigateResult struct {
 	// Frame id that has navigated (or failed to navigate)
 	FrameId 	FrameId	`json:"frameId"`
 	// Loader identifier.
-	LoaderId 	interface{}	`json:"loaderId"`
+	LoaderId 	network.LoaderId	`json:"loaderId"`
 	// User friendly error message, present if and only if navigation has failed.
 	ErrorText 	string	`json:"errorText"`
 }
@@ -368,42 +372,42 @@ const PrintToPDF = "Page.printToPDF"
 type PrintToPDFParams struct {
 
 	// Paper orientation. Defaults to false.
-	Landscape 	bool	`json:"landscape"`
+	Landscape 	bool	`json:"landscape,omitempty"`
 
 	// Display header and footer. Defaults to false.
-	DisplayHeaderFooter 	bool	`json:"displayHeaderFooter"`
+	DisplayHeaderFooter 	bool	`json:"displayHeaderFooter,omitempty"`
 
 	// Print background graphics. Defaults to false.
-	PrintBackground 	bool	`json:"printBackground"`
+	PrintBackground 	bool	`json:"printBackground,omitempty"`
 
 	// Scale of the webpage rendering. Defaults to 1.
-	Scale 	float64	`json:"scale"`
+	Scale 	float64	`json:"scale,omitempty"`
 
 	// Paper width in inches. Defaults to 8.5 inches.
-	PaperWidth 	float64	`json:"paperWidth"`
+	PaperWidth 	float64	`json:"paperWidth,omitempty"`
 
 	// Paper height in inches. Defaults to 11 inches.
-	PaperHeight 	float64	`json:"paperHeight"`
+	PaperHeight 	float64	`json:"paperHeight,omitempty"`
 
 	// Top margin in inches. Defaults to 1cm (~0.4 inches).
-	MarginTop 	float64	`json:"marginTop"`
+	MarginTop 	float64	`json:"marginTop,omitempty"`
 
 	// Bottom margin in inches. Defaults to 1cm (~0.4 inches).
-	MarginBottom 	float64	`json:"marginBottom"`
+	MarginBottom 	float64	`json:"marginBottom,omitempty"`
 
 	// Left margin in inches. Defaults to 1cm (~0.4 inches).
-	MarginLeft 	float64	`json:"marginLeft"`
+	MarginLeft 	float64	`json:"marginLeft,omitempty"`
 
 	// Right margin in inches. Defaults to 1cm (~0.4 inches).
-	MarginRight 	float64	`json:"marginRight"`
+	MarginRight 	float64	`json:"marginRight,omitempty"`
 
 	// Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means
 	// print all pages.
-	PageRanges 	string	`json:"pageRanges"`
+	PageRanges 	string	`json:"pageRanges,omitempty"`
 
 	// Whether to silently ignore invalid but successfully parsed page ranges, such as '3-2'.
 	// Defaults to false.
-	IgnoreInvalidPageRanges 	bool	`json:"ignoreInvalidPageRanges"`
+	IgnoreInvalidPageRanges 	bool	`json:"ignoreInvalidPageRanges,omitempty"`
 
 	// HTML template for the print header. Should be valid HTML markup with following
 	// classes used to inject printing values into them:
@@ -414,17 +418,17 @@ type PrintToPDFParams struct {
 	// - `totalPages`: total pages in the document
 	// 
 	// For example, `<span class=title></span>` would generate span containing the title.
-	HeaderTemplate 	string	`json:"headerTemplate"`
+	HeaderTemplate 	string	`json:"headerTemplate,omitempty"`
 
 	// HTML template for the print footer. Should use the same format as the `headerTemplate`.
-	FooterTemplate 	string	`json:"footerTemplate"`
+	FooterTemplate 	string	`json:"footerTemplate,omitempty"`
 
 	// Whether or not to prefer page size as defined by css. Defaults to false,
 	// in which case the content will be scaled to fit the paper size.
-	PreferCSSPageSize 	bool	`json:"preferCSSPageSize"`
+	PreferCSSPageSize 	bool	`json:"preferCSSPageSize,omitempty"`
 
 	// return as stream
-	TransferMode 	string	`json:"transferMode"`
+	TransferMode 	string	`json:"transferMode,omitempty"`
 }
 
 type PrintToPDFResult struct {
@@ -432,7 +436,7 @@ type PrintToPDFResult struct {
 	// Base64-encoded pdf data. Empty if |returnAsStream| is specified.
 	Data 	[]byte	`json:"data"`
 	// A handle of the stream that holds resulting PDF data.
-	Stream 	interface{}	`json:"stream"`
+	Stream 	io.StreamHandle	`json:"stream"`
 }
 
 // Reloads given page optionally ignoring the cache.
@@ -441,11 +445,11 @@ const Reload = "Page.reload"
 type ReloadParams struct {
 
 	// If true, browser cache is ignored (as if the user pressed Shift+refresh).
-	IgnoreCache 	bool	`json:"ignoreCache"`
+	IgnoreCache 	bool	`json:"ignoreCache,omitempty"`
 
 	// If set, the script will be injected into all frames of the inspected page after reload.
 	// Argument will be ignored if reloading dataURL origin.
-	ScriptToEvaluateOnLoad 	string	`json:"scriptToEvaluateOnLoad"`
+	ScriptToEvaluateOnLoad 	string	`json:"scriptToEvaluateOnLoad,omitempty"`
 }
 
 type ReloadResult struct {
@@ -506,10 +510,10 @@ type SearchInResourceParams struct {
 	Query 	string	`json:"query"`
 
 	// If true, search is case sensitive.
-	CaseSensitive 	bool	`json:"caseSensitive"`
+	CaseSensitive 	bool	`json:"caseSensitive,omitempty"`
 
 	// If true, treats string parameter as regex.
-	IsRegex 	bool	`json:"isRegex"`
+	IsRegex 	bool	`json:"isRegex,omitempty"`
 }
 
 type SearchInResourceResult struct {
@@ -565,28 +569,28 @@ type SetDeviceMetricsOverrideParams struct {
 	Mobile 	bool	`json:"mobile"`
 
 	// Scale to apply to resulting view image.
-	Scale 	float64	`json:"scale"`
+	Scale 	float64	`json:"scale,omitempty"`
 
 	// Overriding screen width value in pixels (minimum 0, maximum 10000000).
-	ScreenWidth 	int	`json:"screenWidth"`
+	ScreenWidth 	int	`json:"screenWidth,omitempty"`
 
 	// Overriding screen height value in pixels (minimum 0, maximum 10000000).
-	ScreenHeight 	int	`json:"screenHeight"`
+	ScreenHeight 	int	`json:"screenHeight,omitempty"`
 
 	// Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
-	PositionX 	int	`json:"positionX"`
+	PositionX 	int	`json:"positionX,omitempty"`
 
 	// Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
-	PositionY 	int	`json:"positionY"`
+	PositionY 	int	`json:"positionY,omitempty"`
 
 	// Do not set visible view size, rely upon explicit setVisibleSize call.
-	DontSetVisibleSize 	bool	`json:"dontSetVisibleSize"`
+	DontSetVisibleSize 	bool	`json:"dontSetVisibleSize,omitempty"`
 
 	// Screen orientation override.
-	ScreenOrientation 	interface{}	`json:"screenOrientation"`
+	ScreenOrientation 	emulation.ScreenOrientation	`json:"screenOrientation,omitempty"`
 
 	// The viewport dimensions and scale. If not set, the override is cleared.
-	Viewport 	Viewport	`json:"viewport"`
+	Viewport 	Viewport	`json:"viewport,omitempty"`
 }
 
 type SetDeviceMetricsOverrideResult struct {
@@ -664,7 +668,7 @@ type SetDownloadBehaviorParams struct {
 	Behavior 	string	`json:"behavior"`
 
 	// The default path to save downloaded files to. This is requred if behavior is set to 'allow'
-	DownloadPath 	string	`json:"downloadPath"`
+	DownloadPath 	string	`json:"downloadPath,omitempty"`
 }
 
 type SetDownloadBehaviorResult struct {
@@ -678,13 +682,13 @@ const SetGeolocationOverride = "Page.setGeolocationOverride"
 type SetGeolocationOverrideParams struct {
 
 	// Mock latitude
-	Latitude 	float64	`json:"latitude"`
+	Latitude 	float64	`json:"latitude,omitempty"`
 
 	// Mock longitude
-	Longitude 	float64	`json:"longitude"`
+	Longitude 	float64	`json:"longitude,omitempty"`
 
 	// Mock accuracy
-	Accuracy 	float64	`json:"accuracy"`
+	Accuracy 	float64	`json:"accuracy,omitempty"`
 }
 
 type SetGeolocationOverrideResult struct {
@@ -713,7 +717,7 @@ type SetTouchEmulationEnabledParams struct {
 	Enabled 	bool	`json:"enabled"`
 
 	// Touch/gesture events configuration. Default: current platform.
-	Configuration 	string	`json:"configuration"`
+	Configuration 	string	`json:"configuration,omitempty"`
 }
 
 type SetTouchEmulationEnabledResult struct {
@@ -726,19 +730,19 @@ const StartScreencast = "Page.startScreencast"
 type StartScreencastParams struct {
 
 	// Image compression format.
-	Format 	string	`json:"format"`
+	Format 	string	`json:"format,omitempty"`
 
 	// Compression quality from range [0..100].
-	Quality 	int	`json:"quality"`
+	Quality 	int	`json:"quality,omitempty"`
 
 	// Maximum screenshot width.
-	MaxWidth 	int	`json:"maxWidth"`
+	MaxWidth 	int	`json:"maxWidth,omitempty"`
 
 	// Maximum screenshot height.
-	MaxHeight 	int	`json:"maxHeight"`
+	MaxHeight 	int	`json:"maxHeight,omitempty"`
 
 	// Send every n-th frame.
-	EveryNthFrame 	int	`json:"everyNthFrame"`
+	EveryNthFrame 	int	`json:"everyNthFrame,omitempty"`
 }
 
 type StartScreencastResult struct {
@@ -849,7 +853,7 @@ type GenerateTestReportParams struct {
 	Message 	string	`json:"message"`
 
 	// Specifies the endpoint group to deliver the report to.
-	Group 	string	`json:"group"`
+	Group 	string	`json:"group,omitempty"`
 }
 
 type GenerateTestReportResult struct {
@@ -891,7 +895,7 @@ type HandleFileChooserParams struct {
 	Action 	string	`json:"action"`
 
 	// Array of absolute file paths to set, only respected with `accept` action.
-	Files 	[]string	`json:"files"`
+	Files 	[]string	`json:"files,omitempty"`
 }
 
 type HandleFileChooserResult struct {

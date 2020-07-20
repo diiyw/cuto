@@ -54,7 +54,7 @@ type BaseAudioContext  struct {
 	ContextState	ContextState	`json:"contextState"`
 
 	// 
-	RealtimeData	ContextRealtimeData	`json:"realtimeData"`
+	RealtimeData	ContextRealtimeData	`json:"realtimeData,omitempty"`
 
 	// Platform-dependent callback buffer size.
 	CallbackBufferSize	float64	`json:"callbackBufferSize"`

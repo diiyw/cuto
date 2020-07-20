@@ -1,4 +1,9 @@
 package security
+
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
 // An internal certificate ID value.
 type CertificateId int
 
@@ -19,13 +24,13 @@ type CertificateSecurityState  struct {
 	KeyExchange	string	`json:"keyExchange"`
 
 	// (EC)DH group used by the connection, if applicable.
-	KeyExchangeGroup	string	`json:"keyExchangeGroup"`
+	KeyExchangeGroup	string	`json:"keyExchangeGroup,omitempty"`
 
 	// Cipher name.
 	Cipher	string	`json:"cipher"`
 
 	// TLS MAC. Note that AEAD ciphers do not have separate MACs.
-	Mac	string	`json:"mac"`
+	Mac	string	`json:"mac,omitempty"`
 
 	// Page certificate.
 	Certificate	[]string	`json:"certificate"`
@@ -37,10 +42,10 @@ type CertificateSecurityState  struct {
 	Issuer	string	`json:"issuer"`
 
 	// Certificate valid from date.
-	ValidFrom	interface{}	`json:"validFrom"`
+	ValidFrom	cdp.TimeSinceEpoch	`json:"validFrom"`
 
 	// Certificate valid to (expiration) date
-	ValidTo	interface{}	`json:"validTo"`
+	ValidTo	cdp.TimeSinceEpoch	`json:"validTo"`
 
 	// True if the certificate uses a weak signature aglorithm.
 	CertifcateHasWeakSignature	bool	`json:"certifcateHasWeakSignature"`
@@ -68,7 +73,7 @@ type VisibleSecurityState  struct {
 	SecurityState	SecurityState	`json:"securityState"`
 
 	// Security state details about the page certificate.
-	CertificateSecurityState	CertificateSecurityState	`json:"certificateSecurityState"`
+	CertificateSecurityState	CertificateSecurityState	`json:"certificateSecurityState,omitempty"`
 
 	// Array of security state issues ids.
 	SecurityStateIssueIds	[]string	`json:"securityStateIssueIds"`
@@ -96,7 +101,7 @@ type SecurityStateExplanation  struct {
 	Certificate	[]string	`json:"certificate"`
 
 	// Recommendations to fix any issues.
-	Recommendations	[]string	`json:"recommendations"`
+	Recommendations	[]string	`json:"recommendations,omitempty"`
 }
 
 // Information about insecure content on the page.

@@ -68,10 +68,10 @@ const StartSampling = "Memory.startSampling"
 type StartSamplingParams struct {
 
 	// Average number of bytes between samples.
-	SamplingInterval 	int	`json:"samplingInterval"`
+	SamplingInterval 	int	`json:"samplingInterval,omitempty"`
 
 	// Do not randomize intervals between samples.
-	SuppressRandomness 	bool	`json:"suppressRandomness"`
+	SuppressRandomness 	bool	`json:"suppressRandomness,omitempty"`
 }
 
 type StartSamplingResult struct {

@@ -1,4 +1,9 @@
 package dom
+
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
 // Unique DOM node identifier.
 type NodeId int
 
@@ -35,7 +40,7 @@ type Node  struct {
 	NodeId	NodeId	`json:"nodeId"`
 
 	// The id of the parent node if any.
-	ParentId	NodeId	`json:"parentId"`
+	ParentId	NodeId	`json:"parentId,omitempty"`
 
 	// The BackendNodeId for this node.
 	BackendNodeId	BackendNodeId	`json:"backendNodeId"`
@@ -53,67 +58,67 @@ type Node  struct {
 	NodeValue	string	`json:"nodeValue"`
 
 	// Child count for `Container` nodes.
-	ChildNodeCount	int	`json:"childNodeCount"`
+	ChildNodeCount	int	`json:"childNodeCount,omitempty"`
 
 	// Child nodes of this node when requested with children.
-	Children	[]*Node	`json:"children"`
+	Children	[]*Node	`json:"children,omitempty"`
 
 	// Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`.
-	Attributes	[]string	`json:"attributes"`
+	Attributes	[]string	`json:"attributes,omitempty"`
 
 	// Document URL that `Document` or `FrameOwner` node points to.
-	DocumentURL	string	`json:"documentURL"`
+	DocumentURL	string	`json:"documentURL,omitempty"`
 
 	// Base URL that `Document` or `FrameOwner` node uses for URL completion.
-	BaseURL	string	`json:"baseURL"`
+	BaseURL	string	`json:"baseURL,omitempty"`
 
 	// `DocumentType`'s publicId.
-	PublicId	string	`json:"publicId"`
+	PublicId	string	`json:"publicId,omitempty"`
 
 	// `DocumentType`'s systemId.
-	SystemId	string	`json:"systemId"`
+	SystemId	string	`json:"systemId,omitempty"`
 
 	// `DocumentType`'s internalSubset.
-	InternalSubset	string	`json:"internalSubset"`
+	InternalSubset	string	`json:"internalSubset,omitempty"`
 
 	// `Document`'s XML version in case of XML documents.
-	XmlVersion	string	`json:"xmlVersion"`
+	XmlVersion	string	`json:"xmlVersion,omitempty"`
 
 	// `Attr`'s name.
-	Name	string	`json:"name"`
+	Name	string	`json:"name,omitempty"`
 
 	// `Attr`'s value.
-	Value	string	`json:"value"`
+	Value	string	`json:"value,omitempty"`
 
 	// Pseudo element type for this node.
-	PseudoType	PseudoType	`json:"pseudoType"`
+	PseudoType	PseudoType	`json:"pseudoType,omitempty"`
 
 	// Shadow root type.
-	ShadowRootType	ShadowRootType	`json:"shadowRootType"`
+	ShadowRootType	ShadowRootType	`json:"shadowRootType,omitempty"`
 
 	// Frame ID for frame owner elements.
-	FrameId	interface{}	`json:"frameId"`
+	FrameId	cdp.FrameId	`json:"frameId,omitempty"`
 
 	// Content document for frame owner elements.
-	ContentDocument	*Node	`json:"contentDocument"`
+	ContentDocument	*Node	`json:"contentDocument,omitempty"`
 
 	// Shadow root list for given element host.
-	ShadowRoots	[]*Node	`json:"shadowRoots"`
+	ShadowRoots	[]*Node	`json:"shadowRoots,omitempty"`
 
 	// Content document fragment for template elements.
-	TemplateContent	*Node	`json:"templateContent"`
+	TemplateContent	*Node	`json:"templateContent,omitempty"`
 
 	// Pseudo elements associated with this node.
-	PseudoElements	[]*Node	`json:"pseudoElements"`
+	PseudoElements	[]*Node	`json:"pseudoElements,omitempty"`
 
 	// Import document for the HTMLImport links.
-	ImportedDocument	*Node	`json:"importedDocument"`
+	ImportedDocument	*Node	`json:"importedDocument,omitempty"`
 
 	// Distributed nodes for given insertion point.
-	DistributedNodes	[]*BackendNode	`json:"distributedNodes"`
+	DistributedNodes	[]*BackendNode	`json:"distributedNodes,omitempty"`
 
 	// Whether the node is SVG.
-	IsSVG	bool	`json:"isSVG"`
+	IsSVG	bool	`json:"isSVG,omitempty"`
 }
 
 // A structure holding an RGBA color.
@@ -129,7 +134,7 @@ type RGBA  struct {
 	B	int	`json:"b"`
 
 	// The alpha component, in the [0-1] range (default: 1).
-	A	float64	`json:"a"`
+	A	float64	`json:"a,omitempty"`
 }
 
 // An array of quad vertices, x immediately followed by y for each point, points clock-wise.
@@ -157,7 +162,7 @@ type BoxModel  struct {
 	Height	int	`json:"height"`
 
 	// Shape outside coordinates
-	ShapeOutside	ShapeOutsideInfo	`json:"shapeOutside"`
+	ShapeOutside	ShapeOutsideInfo	`json:"shapeOutside,omitempty"`
 }
 
 // CSS Shape Outside details.

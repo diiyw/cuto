@@ -1,4 +1,9 @@
 package applicationcache
+
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
 // Detailed application cache resource information.
 type ApplicationCacheResource  struct {
 
@@ -35,7 +40,7 @@ type ApplicationCache  struct {
 type FrameWithManifest  struct {
 
 	// Frame identifier.
-	FrameId	interface{}	`json:"frameId"`
+	FrameId	cdp.FrameId	`json:"frameId"`
 
 	// Manifest URL.
 	ManifestURL	string	`json:"manifestURL"`

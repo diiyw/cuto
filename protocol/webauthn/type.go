@@ -18,18 +18,18 @@ type VirtualAuthenticatorOptions  struct {
 	Transport	AuthenticatorTransport	`json:"transport"`
 
 	// Defaults to false.
-	HasResidentKey	bool	`json:"hasResidentKey"`
+	HasResidentKey	bool	`json:"hasResidentKey,omitempty"`
 
 	// Defaults to false.
-	HasUserVerification	bool	`json:"hasUserVerification"`
+	HasUserVerification	bool	`json:"hasUserVerification,omitempty"`
 
 	// If set to true, tests of user presence will succeed immediately.
 	// Otherwise, they will not be resolved. Defaults to true.
-	AutomaticPresenceSimulation	bool	`json:"automaticPresenceSimulation"`
+	AutomaticPresenceSimulation	bool	`json:"automaticPresenceSimulation,omitempty"`
 
 	// Sets whether User Verification succeeds or fails for an authenticator.
 	// Defaults to false.
-	IsUserVerified	bool	`json:"isUserVerified"`
+	IsUserVerified	bool	`json:"isUserVerified,omitempty"`
 }
 
 // 
@@ -43,14 +43,14 @@ type Credential  struct {
 
 	// Relying Party ID the credential is scoped to. Must be set when adding a
 	// credential.
-	RpId	string	`json:"rpId"`
+	RpId	string	`json:"rpId,omitempty"`
 
 	// The ECDSA P-256 private key in PKCS#8 format.
 	PrivateKey	[]byte	`json:"privateKey"`
 
 	// An opaque byte sequence with a maximum size of 64 bytes mapping the
 	// credential to a specific user.
-	UserHandle	[]byte	`json:"userHandle"`
+	UserHandle	[]byte	`json:"userHandle,omitempty"`
 
 	// Signature counter. This is incremented by one for each successful
 	// assertion.

@@ -8,8 +8,10 @@ import (
 	"github.com/diiyw/cuto/protocol/page"
 	"github.com/diiyw/cuto/protocol/runtime"
 	"github.com/gorilla/websocket"
+	"io"
 	"io/ioutil"
 	"log"
+	math "math"
 	"path"
 	"strings"
 	"time"
@@ -53,6 +55,33 @@ type Tab struct {
 	DevtoolsFrontendUrl  string  `json:"devtoolsFrontendUrl"`
 	WebSocketDebuggerUrl string  `json:"webSocketDebuggerUrl"`
 	Channel              Channel `json:"-"`
+
+	debug bool `json:"-"`
+}
+
+func (tab *Tab) init(body io.Reader, debug bool) error {
+	tab.debug = debug
+	if err := json.NewDecoder(body).Decode(&tab); err != nil {
+		return err
+	}
+	conn, _, err := websocket.DefaultDialer.Dial(tab.WebSocketDebuggerUrl, nil)
+	if err != nil {
+		return err
+	}
+	tab.Channel.Conn = conn
+	tab.Channel.events = make(chan []byte, 1024)
+	tab.Channel.returns = make(chan []byte, 1024)
+	tab.Channel.errors = make(chan []byte, 1024)
+	_ = tab.Send(dom.Enable, dom.EnableParams{})
+	_ = tab.Send(page.Enable, page.EnableParams{})
+	_ = tab.Send(runtime.Enable, nil)
+	go func() {
+		if err := tab.handle(); err != nil {
+			log.Println("Error:", err)
+			return
+		}
+	}()
+	return nil
 }
 
 // 等待页面加载完成
@@ -239,6 +268,53 @@ func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) er
 	return ioutil.WriteFile(filename, captureScreenshotResult.Data, 0777)
 }
 
+// 元素截图
+func (tab *Tab) DOMCapture(filename string, quality int, selector string) error {
+	nodes, err := tab.Query(selector)
+	if err != nil || len(nodes) == 0 {
+		return err
+	}
+	if err := tab.Send(dom.GetBoxModel, dom.GetBoxModelParams{
+		NodeId: *nodes[len(nodes)-1],
+	}); err != nil {
+		return err
+	}
+	var box dom.GetBoxModelResult
+	if err := tab.HandleResult(&box); err != nil {
+		return err
+	}
+	return tab.Capture(filename, quality, page.Viewport{
+		// Round the dimensions, as otherwise we might
+		// lose one pixel in either dimension.
+		X:      math.Round(box.Model.Margin[0]),
+		Y:      math.Round(box.Model.Margin[1]),
+		Width:  math.Round(box.Model.Margin[4] - box.Model.Margin[0]),
+		Height: math.Round(box.Model.Margin[5] - box.Model.Margin[1]),
+		// This seems to be necessary? Seems to do the
+		// right thing regardless of DPI.
+		Scale: 1.0,
+	})
+}
+
+// 获取整个页面的截图
+func (tab *Tab) FullCapture(filename string, quality int) error {
+	if err := tab.Send(page.GetLayoutMetrics, page.GetLayoutMetricsParams{}); err != nil {
+		return err
+	}
+	var metric page.GetLayoutMetricsResult
+	if err := tab.HandleResult(&metric); err != nil {
+		return err
+	}
+	width, height := math.Ceil(metric.ContentSize.Width), math.Ceil(metric.ContentSize.Height)
+	return tab.Capture(filename, quality, page.Viewport{
+		X:      0,
+		Y:      0,
+		Width:  width,
+		Height: height,
+		Scale:  1.0,
+	})
+}
+
 // 发起命令
 func (tab *Tab) Send(method string, params interface{}) error {
 	tab.Channel.id++
@@ -246,6 +322,10 @@ func (tab *Tab) Send(method string, params interface{}) error {
 		"id":     tab.Channel.id,
 		"method": method,
 		"params": params,
+	}
+	data, _ := json.Marshal(request)
+	if tab.debug {
+		log.Println("Send:", string(data))
 	}
 	if err := tab.Channel.WriteJSON(request); err != nil {
 		return err
@@ -261,7 +341,9 @@ func (tab *Tab) handle() error {
 		}
 		// Error
 		if bytes.Contains(b, []byte(`"error"`)) {
-			log.Println("Error:", string(b))
+			if tab.debug {
+				log.Println("Error:", string(b))
+			}
 			tab.Channel.errors <- b
 			continue
 		}
@@ -280,7 +362,9 @@ func (tab *Tab) HandleResult(returns interface{}) error {
 	for {
 		select {
 		case b := <-tab.Channel.returns:
-			log.Println("Result:", string(b))
+			if tab.debug {
+				log.Println("Result:", string(b))
+			}
 			var ret = Return{Result: returns}
 			err := json.Unmarshal(b, &ret)
 			if err == nil {
@@ -299,7 +383,9 @@ func (tab *Tab) HandleEvent(method string, params interface{}) error {
 	for {
 		select {
 		case b := <-tab.Channel.events:
-			log.Println("Event:", string(b))
+			if tab.debug {
+				log.Println("Event:", string(b))
+			}
 			var event = Event{Params: params}
 			err := json.Unmarshal(b, &event)
 			if err == nil {

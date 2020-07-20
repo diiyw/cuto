@@ -1,5 +1,10 @@
 package network
 
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Fired when data chunk was received over the network.
 const DataReceivedEvent = "Network.dataReceived"
 type DataReceivedParams struct {
@@ -80,7 +85,7 @@ type RequestInterceptedParams struct {
 	// 
 	Request 	Request
 	// The id of the frame that initiated the request.
-	FrameId 	interface{}
+	FrameId 	cdp.FrameId
 	// How the requested resource will be used.
 	ResourceType 	ResourceType
 	// Whether this is a navigation request, which can abort the navigation completely.
@@ -140,7 +145,7 @@ type RequestWillBeSentParams struct {
 	// Type of this resource.
 	Type 	ResourceType
 	// Frame identifier.
-	FrameId 	interface{}
+	FrameId 	cdp.FrameId
 	// Whether the request is initiated by a user gesture. Defaults to false.
 	HasUserGesture 	bool}
 
@@ -185,7 +190,7 @@ type ResponseReceivedParams struct {
 	// Response data.
 	Response 	Response
 	// Frame identifier.
-	FrameId 	interface{}}
+	FrameId 	cdp.FrameId}
 
 
 

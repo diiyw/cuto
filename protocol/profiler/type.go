@@ -1,4 +1,9 @@
 package profiler
+
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
 // Profile node. Holds callsite information, execution statistics and child nodes.
 type ProfileNode  struct {
 
@@ -6,20 +11,20 @@ type ProfileNode  struct {
 	Id	int	`json:"id"`
 
 	// Function location.
-	CallFrame	interface{}	`json:"callFrame"`
+	CallFrame	runtime.CallFrame	`json:"callFrame"`
 
 	// Number of samples where this node was on top of the call stack.
-	HitCount	int	`json:"hitCount"`
+	HitCount	int	`json:"hitCount,omitempty"`
 
 	// Child node ids.
-	Children	[]int	`json:"children"`
+	Children	[]int	`json:"children,omitempty"`
 
 	// The reason of being not optimized. The function may be deoptimized or marked as don't
 	// optimize.
-	DeoptReason	string	`json:"deoptReason"`
+	DeoptReason	string	`json:"deoptReason,omitempty"`
 
 	// An array of source position ticks.
-	PositionTicks	[]*PositionTickInfo	`json:"positionTicks"`
+	PositionTicks	[]*PositionTickInfo	`json:"positionTicks,omitempty"`
 }
 
 // Profile.
@@ -35,11 +40,11 @@ type Profile  struct {
 	EndTime	float64	`json:"endTime"`
 
 	// Ids of samples top nodes.
-	Samples	[]int	`json:"samples"`
+	Samples	[]int	`json:"samples,omitempty"`
 
 	// Time intervals between adjacent samples in microseconds. The first delta is relative to the
 	// profile startTime.
-	TimeDeltas	[]int	`json:"timeDeltas"`
+	TimeDeltas	[]int	`json:"timeDeltas,omitempty"`
 }
 
 // Specifies a number of samples attributed to a certain source position.
@@ -82,7 +87,7 @@ type FunctionCoverage  struct {
 type ScriptCoverage  struct {
 
 	// JavaScript script id.
-	ScriptId	interface{}	`json:"scriptId"`
+	ScriptId	runtime.ScriptId	`json:"scriptId"`
 
 	// JavaScript script name or url.
 	Url	string	`json:"url"`
@@ -112,7 +117,7 @@ type TypeProfileEntry  struct {
 type ScriptTypeProfile  struct {
 
 	// JavaScript script id.
-	ScriptId	interface{}	`json:"scriptId"`
+	ScriptId	runtime.ScriptId	`json:"scriptId"`
 
 	// JavaScript script name or url.
 	Url	string	`json:"url"`

@@ -1,4 +1,9 @@
 package debugger
+
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
 // Breakpoint identifier.
 type BreakpointId string
 
@@ -9,13 +14,13 @@ type CallFrameId string
 type Location  struct {
 
 	// Script identifier as reported in the `Debugger.scriptParsed`.
-	ScriptId	interface{}	`json:"scriptId"`
+	ScriptId	runtime.ScriptId	`json:"scriptId"`
 
 	// Line number in the script (0-based).
 	LineNumber	int	`json:"lineNumber"`
 
 	// Column number in the script (0-based).
-	ColumnNumber	int	`json:"columnNumber"`
+	ColumnNumber	int	`json:"columnNumber,omitempty"`
 }
 
 // Location in the source code.
@@ -38,7 +43,7 @@ type CallFrame  struct {
 	FunctionName	string	`json:"functionName"`
 
 	// Location in the source code.
-	FunctionLocation	Location	`json:"functionLocation"`
+	FunctionLocation	Location	`json:"functionLocation,omitempty"`
 
 	// Location in the source code.
 	Location	Location	`json:"location"`
@@ -50,10 +55,10 @@ type CallFrame  struct {
 	ScopeChain	[]*Scope	`json:"scopeChain"`
 
 	// `this` object for this call frame.
-	This	interface{}	`json:"this"`
+	This	runtime.RemoteObject	`json:"this"`
 
 	// The value being returned, if the function is at return point.
-	ReturnValue	interface{}	`json:"returnValue"`
+	ReturnValue	runtime.RemoteObject	`json:"returnValue,omitempty"`
 }
 
 // Scope description.
@@ -65,16 +70,16 @@ type Scope  struct {
 	// Object representing the scope. For `global` and `with` scopes it represents the actual
 	// object; for the rest of the scopes, it is artificial transient object enumerating scope
 	// variables as its properties.
-	Object	interface{}	`json:"object"`
+	Object	runtime.RemoteObject	`json:"object"`
 
 	// 
-	Name	string	`json:"name"`
+	Name	string	`json:"name,omitempty"`
 
 	// Location in the source code where scope starts
-	StartLocation	Location	`json:"startLocation"`
+	StartLocation	Location	`json:"startLocation,omitempty"`
 
 	// Location in the source code where scope ends
-	EndLocation	Location	`json:"endLocation"`
+	EndLocation	Location	`json:"endLocation,omitempty"`
 }
 
 // Search match for resource.
@@ -91,14 +96,14 @@ type SearchMatch  struct {
 type BreakLocation  struct {
 
 	// Script identifier as reported in the `Debugger.scriptParsed`.
-	ScriptId	interface{}	`json:"scriptId"`
+	ScriptId	runtime.ScriptId	`json:"scriptId"`
 
 	// Line number in the script (0-based).
 	LineNumber	int	`json:"lineNumber"`
 
 	// Column number in the script (0-based).
-	ColumnNumber	int	`json:"columnNumber"`
+	ColumnNumber	int	`json:"columnNumber,omitempty"`
 
 	// 
-	Type	string	`json:"type"`
+	Type	string	`json:"type,omitempty"`
 }

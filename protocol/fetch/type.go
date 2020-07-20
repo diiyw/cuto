@@ -1,4 +1,9 @@
 package fetch
+
+import (
+	"github.com/diiyw/cuto/protocol/network"
+)
+
 // Unique request identifier.
 type RequestId string
 
@@ -12,13 +17,13 @@ type RequestPattern  struct {
 
 	// Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
 	// backslash. Omitting is equivalent to "*".
-	UrlPattern	string	`json:"urlPattern"`
+	UrlPattern	string	`json:"urlPattern,omitempty"`
 
 	// If set, only requests for matching resource types will be intercepted.
-	ResourceType	interface{}	`json:"resourceType"`
+	ResourceType	network.ResourceType	`json:"resourceType,omitempty"`
 
 	// Stage at wich to begin intercepting requests. Default is Request.
-	RequestStage	RequestStage	`json:"requestStage"`
+	RequestStage	RequestStage	`json:"requestStage,omitempty"`
 }
 
 // Response HTTP header entry
@@ -35,7 +40,7 @@ type HeaderEntry  struct {
 type AuthChallenge  struct {
 
 	// Source of the authentication challenge.
-	Source	string	`json:"source"`
+	Source	string	`json:"source,omitempty"`
 
 	// Origin of the challenger.
 	Origin	string	`json:"origin"`
@@ -57,9 +62,9 @@ type AuthChallengeResponse  struct {
 
 	// The username to provide, possibly empty. Should only be set if response is
 	// ProvideCredentials.
-	Username	string	`json:"username"`
+	Username	string	`json:"username,omitempty"`
 
 	// The password to provide, possibly empty. Should only be set if response is
 	// ProvideCredentials.
-	Password	string	`json:"password"`
+	Password	string	`json:"password,omitempty"`
 }

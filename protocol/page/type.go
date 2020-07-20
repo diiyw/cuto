@@ -1,4 +1,10 @@
 package page
+
+import (
+	"github.com/diiyw/cuto/protocol/network"
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
 // Unique frame identifier.
 type FrameId string
 
@@ -9,19 +15,19 @@ type Frame  struct {
 	Id	FrameId	`json:"id"`
 
 	// Parent frame identifier.
-	ParentId	string	`json:"parentId"`
+	ParentId	string	`json:"parentId,omitempty"`
 
 	// Identifier of the loader associated with this frame.
-	LoaderId	interface{}	`json:"loaderId"`
+	LoaderId	network.LoaderId	`json:"loaderId"`
 
 	// Frame's name as specified in the tag.
-	Name	string	`json:"name"`
+	Name	string	`json:"name,omitempty"`
 
 	// Frame document's URL without fragment.
 	Url	string	`json:"url"`
 
 	// Frame document's URL fragment including the '#'.
-	UrlFragment	string	`json:"urlFragment"`
+	UrlFragment	string	`json:"urlFragment,omitempty"`
 
 	// Frame document's security origin.
 	SecurityOrigin	string	`json:"securityOrigin"`
@@ -30,7 +36,7 @@ type Frame  struct {
 	MimeType	string	`json:"mimeType"`
 
 	// If the frame failed to load, this contains the URL that could not be loaded. Note that unlike url above, this URL may contain a fragment.
-	UnreachableUrl	string	`json:"unreachableUrl"`
+	UnreachableUrl	string	`json:"unreachableUrl,omitempty"`
 }
 
 // Information about the Resource on the page.
@@ -40,22 +46,22 @@ type FrameResource  struct {
 	Url	string	`json:"url"`
 
 	// Type of this resource.
-	Type	interface{}	`json:"type"`
+	Type	network.ResourceType	`json:"type"`
 
 	// Resource mimeType as determined by the browser.
 	MimeType	string	`json:"mimeType"`
 
 	// last-modified timestamp as reported by server.
-	LastModified	interface{}	`json:"lastModified"`
+	LastModified	cdp.TimeSinceEpoch	`json:"lastModified,omitempty"`
 
 	// Resource content size.
-	ContentSize	float64	`json:"contentSize"`
+	ContentSize	float64	`json:"contentSize,omitempty"`
 
 	// True if the resource failed to load.
-	Failed	bool	`json:"failed"`
+	Failed	bool	`json:"failed,omitempty"`
 
 	// True if the resource was canceled during loading.
-	Canceled	bool	`json:"canceled"`
+	Canceled	bool	`json:"canceled,omitempty"`
 }
 
 // Information about the Frame hierarchy along with their cached resources.
@@ -65,7 +71,7 @@ type FrameResourceTree  struct {
 	Frame	Frame	`json:"frame"`
 
 	// Child frames.
-	ChildFrames	[]*FrameResourceTree	`json:"childFrames"`
+	ChildFrames	[]*FrameResourceTree	`json:"childFrames,omitempty"`
 
 	// Information about frame resources.
 	Resources	[]*FrameResource	`json:"resources"`
@@ -78,7 +84,7 @@ type FrameTree  struct {
 	Frame	Frame	`json:"frame"`
 
 	// Child frames.
-	ChildFrames	[]*FrameTree	`json:"childFrames"`
+	ChildFrames	[]*FrameTree	`json:"childFrames,omitempty"`
 }
 
 // Unique script identifier.
@@ -128,7 +134,7 @@ type ScreencastFrameMetadata  struct {
 	ScrollOffsetY	float64	`json:"scrollOffsetY"`
 
 	// Frame swap timestamp.
-	Timestamp	interface{}	`json:"timestamp"`
+	Timestamp	cdp.TimeSinceEpoch	`json:"timestamp,omitempty"`
 }
 
 // Javascript dialog type.
@@ -191,7 +197,7 @@ type VisualViewport  struct {
 	Scale	float64	`json:"scale"`
 
 	// Page zoom factor (CSS to device independent pixels ratio).
-	Zoom	float64	`json:"zoom"`
+	Zoom	float64	`json:"zoom,omitempty"`
 }
 
 // Viewport for capturing screenshot.
@@ -217,35 +223,35 @@ type Viewport  struct {
 type FontFamilies  struct {
 
 	// The standard font-family.
-	Standard	string	`json:"standard"`
+	Standard	string	`json:"standard,omitempty"`
 
 	// The fixed font-family.
-	Fixed	string	`json:"fixed"`
+	Fixed	string	`json:"fixed,omitempty"`
 
 	// The serif font-family.
-	Serif	string	`json:"serif"`
+	Serif	string	`json:"serif,omitempty"`
 
 	// The sansSerif font-family.
-	SansSerif	string	`json:"sansSerif"`
+	SansSerif	string	`json:"sansSerif,omitempty"`
 
 	// The cursive font-family.
-	Cursive	string	`json:"cursive"`
+	Cursive	string	`json:"cursive,omitempty"`
 
 	// The fantasy font-family.
-	Fantasy	string	`json:"fantasy"`
+	Fantasy	string	`json:"fantasy,omitempty"`
 
 	// The pictograph font-family.
-	Pictograph	string	`json:"pictograph"`
+	Pictograph	string	`json:"pictograph,omitempty"`
 }
 
 // Default font sizes.
 type FontSizes  struct {
 
 	// Default standard font size.
-	Standard	int	`json:"standard"`
+	Standard	int	`json:"standard,omitempty"`
 
 	// Default fixed font size.
-	Fixed	int	`json:"fixed"`
+	Fixed	int	`json:"fixed,omitempty"`
 }
 
 // 

@@ -1,4 +1,9 @@
 package animation
+
+import (
+	"github.com/diiyw/cuto/protocol/dom"
+)
+
 // Animation instance.
 type Animation  struct {
 
@@ -27,11 +32,11 @@ type Animation  struct {
 	Type	string	`json:"type"`
 
 	// `Animation`'s source animation node.
-	Source	AnimationEffect	`json:"source"`
+	Source	AnimationEffect	`json:"source,omitempty"`
 
 	// A unique ID for `Animation` representing the sources that triggered this CSS
 	// animation/transition.
-	CssId	string	`json:"cssId"`
+	CssId	string	`json:"cssId,omitempty"`
 }
 
 // AnimationEffect instance
@@ -59,10 +64,10 @@ type AnimationEffect  struct {
 	Fill	string	`json:"fill"`
 
 	// `AnimationEffect`'s target node.
-	BackendNodeId	interface{}	`json:"backendNodeId"`
+	BackendNodeId	dom.BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// `AnimationEffect`'s keyframes.
-	KeyframesRule	KeyframesRule	`json:"keyframesRule"`
+	KeyframesRule	KeyframesRule	`json:"keyframesRule,omitempty"`
 
 	// `AnimationEffect`'s timing function.
 	Easing	string	`json:"easing"`
@@ -72,7 +77,7 @@ type AnimationEffect  struct {
 type KeyframesRule  struct {
 
 	// CSS keyframed animation's name.
-	Name	string	`json:"name"`
+	Name	string	`json:"name,omitempty"`
 
 	// List of animation keyframes.
 	Keyframes	[]*KeyframeStyle	`json:"keyframes"`

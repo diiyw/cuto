@@ -1,5 +1,10 @@
 package profiler
 
+import (
+	"github.com/diiyw/cuto/protocol/debugger"
+)
+
+
 // 
 const ConsoleProfileFinishedEvent = "Profiler.consoleProfileFinished"
 type ConsoleProfileFinishedParams struct {
@@ -7,7 +12,7 @@ type ConsoleProfileFinishedParams struct {
 	// 
 	Id 	string
 	// Location of console.profileEnd().
-	Location 	interface{}
+	Location 	debugger.Location
 	// 
 	Profile 	Profile
 	// Profile title passed as an argument to console.profile().
@@ -22,7 +27,7 @@ type ConsoleProfileStartedParams struct {
 	// 
 	Id 	string
 	// Location of console.profile().
-	Location 	interface{}
+	Location 	debugger.Location
 	// Profile title passed as an argument to console.profile().
 	Title 	string}
 

@@ -32,13 +32,13 @@ type GetSnapshotParams struct {
 	ComputedStyleWhitelist 	[]string	`json:"computedStyleWhitelist"`
 
 	// Whether or not to retrieve details of DOM listeners (default false).
-	IncludeEventListeners 	bool	`json:"includeEventListeners"`
+	IncludeEventListeners 	bool	`json:"includeEventListeners,omitempty"`
 
 	// Whether to determine and include the paint order index of LayoutTreeNodes (default false).
-	IncludePaintOrder 	bool	`json:"includePaintOrder"`
+	IncludePaintOrder 	bool	`json:"includePaintOrder,omitempty"`
 
 	// Whether to include UA shadow tree in the snapshot (default false).
-	IncludeUserAgentShadowTree 	bool	`json:"includeUserAgentShadowTree"`
+	IncludeUserAgentShadowTree 	bool	`json:"includeUserAgentShadowTree,omitempty"`
 }
 
 type GetSnapshotResult struct {
@@ -63,10 +63,10 @@ type CaptureSnapshotParams struct {
 	ComputedStyles 	[]string	`json:"computedStyles"`
 
 	// Whether to include layout object paint orders into the snapshot.
-	IncludePaintOrder 	bool	`json:"includePaintOrder"`
+	IncludePaintOrder 	bool	`json:"includePaintOrder,omitempty"`
 
 	// Whether to include DOM rectangles (offsetRects, clientRects, scrollRects) into the snapshot
-	IncludeDOMRects 	bool	`json:"includeDOMRects"`
+	IncludeDOMRects 	bool	`json:"includeDOMRects,omitempty"`
 }
 
 type CaptureSnapshotResult struct {

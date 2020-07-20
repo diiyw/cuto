@@ -1,5 +1,10 @@
 package applicationcache
 
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Enables application cache domain notifications.
 const Enable = "ApplicationCache.enable"
 
@@ -16,7 +21,7 @@ const GetApplicationCacheForFrame = "ApplicationCache.getApplicationCacheForFram
 type GetApplicationCacheForFrameParams struct {
 
 	// Identifier of the frame containing document whose application cache is retrieved.
-	FrameId 	interface{}	`json:"frameId"`
+	FrameId 	cdp.FrameId	`json:"frameId"`
 }
 
 type GetApplicationCacheForFrameResult struct {
@@ -45,7 +50,7 @@ const GetManifestForFrame = "ApplicationCache.getManifestForFrame"
 type GetManifestForFrameParams struct {
 
 	// Identifier of the frame containing document whose manifest is retrieved.
-	FrameId 	interface{}	`json:"frameId"`
+	FrameId 	cdp.FrameId	`json:"frameId"`
 }
 
 type GetManifestForFrameResult struct {

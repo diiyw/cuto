@@ -1,4 +1,10 @@
 package network
+
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/security"
+)
+
 // Resource type as it was perceived by the rendering engine.
 type ResourceType string
 
@@ -93,7 +99,7 @@ type Request  struct {
 	Url	string	`json:"url"`
 
 	// Fragment of the requested URL starting with hash, if present.
-	UrlFragment	string	`json:"urlFragment"`
+	UrlFragment	string	`json:"urlFragment,omitempty"`
 
 	// HTTP request method.
 	Method	string	`json:"method"`
@@ -102,13 +108,13 @@ type Request  struct {
 	Headers	Headers	`json:"headers"`
 
 	// HTTP POST request data.
-	PostData	string	`json:"postData"`
+	PostData	string	`json:"postData,omitempty"`
 
 	// True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.
-	HasPostData	bool	`json:"hasPostData"`
+	HasPostData	bool	`json:"hasPostData,omitempty"`
 
 	// The mixed content type of the request.
-	MixedContentType	interface{}	`json:"mixedContentType"`
+	MixedContentType	security.MixedContentType	`json:"mixedContentType,omitempty"`
 
 	// Priority of the resource request at the time request is sent.
 	InitialPriority	ResourcePriority	`json:"initialPriority"`
@@ -117,7 +123,7 @@ type Request  struct {
 	ReferrerPolicy	string	`json:"referrerPolicy"`
 
 	// Whether is loaded via link preload.
-	IsLinkPreload	bool	`json:"isLinkPreload"`
+	IsLinkPreload	bool	`json:"isLinkPreload,omitempty"`
 }
 
 // Details of a signed certificate timestamp (SCT).
@@ -158,16 +164,16 @@ type SecurityDetails  struct {
 	KeyExchange	string	`json:"keyExchange"`
 
 	// (EC)DH group used by the connection, if applicable.
-	KeyExchangeGroup	string	`json:"keyExchangeGroup"`
+	KeyExchangeGroup	string	`json:"keyExchangeGroup,omitempty"`
 
 	// Cipher name.
 	Cipher	string	`json:"cipher"`
 
 	// TLS MAC. Note that AEAD ciphers do not have separate MACs.
-	Mac	string	`json:"mac"`
+	Mac	string	`json:"mac,omitempty"`
 
 	// Certificate ID value.
-	CertificateId	interface{}	`json:"certificateId"`
+	CertificateId	security.CertificateId	`json:"certificateId"`
 
 	// Certificate subject name.
 	SubjectName	string	`json:"subjectName"`
@@ -213,16 +219,16 @@ type Response  struct {
 	Headers	Headers	`json:"headers"`
 
 	// HTTP response headers text.
-	HeadersText	string	`json:"headersText"`
+	HeadersText	string	`json:"headersText,omitempty"`
 
 	// Resource mimeType as determined by the browser.
 	MimeType	string	`json:"mimeType"`
 
 	// Refined HTTP request headers that were actually transmitted over the network.
-	RequestHeaders	Headers	`json:"requestHeaders"`
+	RequestHeaders	Headers	`json:"requestHeaders,omitempty"`
 
 	// HTTP request headers text.
-	RequestHeadersText	string	`json:"requestHeadersText"`
+	RequestHeadersText	string	`json:"requestHeadersText,omitempty"`
 
 	// Specifies whether physical connection was actually reused for this request.
 	ConnectionReused	bool	`json:"connectionReused"`
@@ -231,34 +237,34 @@ type Response  struct {
 	ConnectionId	float64	`json:"connectionId"`
 
 	// Remote IP address.
-	RemoteIPAddress	string	`json:"remoteIPAddress"`
+	RemoteIPAddress	string	`json:"remoteIPAddress,omitempty"`
 
 	// Remote port.
-	RemotePort	int	`json:"remotePort"`
+	RemotePort	int	`json:"remotePort,omitempty"`
 
 	// Specifies that the request was served from the disk cache.
-	FromDiskCache	bool	`json:"fromDiskCache"`
+	FromDiskCache	bool	`json:"fromDiskCache,omitempty"`
 
 	// Specifies that the request was served from the ServiceWorker.
-	FromServiceWorker	bool	`json:"fromServiceWorker"`
+	FromServiceWorker	bool	`json:"fromServiceWorker,omitempty"`
 
 	// Specifies that the request was served from the prefetch cache.
-	FromPrefetchCache	bool	`json:"fromPrefetchCache"`
+	FromPrefetchCache	bool	`json:"fromPrefetchCache,omitempty"`
 
 	// Total number of bytes received for this request so far.
 	EncodedDataLength	float64	`json:"encodedDataLength"`
 
 	// Timing information for the given request.
-	Timing	ResourceTiming	`json:"timing"`
+	Timing	ResourceTiming	`json:"timing,omitempty"`
 
 	// Protocol used to fetch this request.
-	Protocol	string	`json:"protocol"`
+	Protocol	string	`json:"protocol,omitempty"`
 
 	// Security state of the request resource.
-	SecurityState	interface{}	`json:"securityState"`
+	SecurityState	security.SecurityState	`json:"securityState"`
 
 	// Security details for the request.
-	SecurityDetails	SecurityDetails	`json:"securityDetails"`
+	SecurityDetails	SecurityDetails	`json:"securityDetails,omitempty"`
 }
 
 // WebSocket request data.
@@ -281,13 +287,13 @@ type WebSocketResponse  struct {
 	Headers	Headers	`json:"headers"`
 
 	// HTTP response headers text.
-	HeadersText	string	`json:"headersText"`
+	HeadersText	string	`json:"headersText,omitempty"`
 
 	// HTTP request headers.
-	RequestHeaders	Headers	`json:"requestHeaders"`
+	RequestHeaders	Headers	`json:"requestHeaders,omitempty"`
 
 	// HTTP request headers text.
-	RequestHeadersText	string	`json:"requestHeadersText"`
+	RequestHeadersText	string	`json:"requestHeadersText,omitempty"`
 }
 
 // WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests.
@@ -315,7 +321,7 @@ type CachedResource  struct {
 	Type	ResourceType	`json:"type"`
 
 	// Cached response data.
-	Response	Response	`json:"response"`
+	Response	Response	`json:"response,omitempty"`
 
 	// Cached response body size.
 	BodySize	float64	`json:"bodySize"`
@@ -328,14 +334,14 @@ type Initiator  struct {
 	Type	string	`json:"type"`
 
 	// Initiator JavaScript stack trace, set for Script only.
-	Stack	interface{}	`json:"stack"`
+	Stack	runtime.StackTrace	`json:"stack,omitempty"`
 
 	// Initiator URL, set for Parser type or for Script type (when script is importing module) or for SignedExchange type.
-	Url	string	`json:"url"`
+	Url	string	`json:"url,omitempty"`
 
 	// Initiator line number, set for Parser type or for Script type (when script is importing
 	// module) (0-based).
-	LineNumber	float64	`json:"lineNumber"`
+	LineNumber	float64	`json:"lineNumber,omitempty"`
 }
 
 // Cookie object
@@ -369,7 +375,7 @@ type Cookie  struct {
 	Session	bool	`json:"session"`
 
 	// Cookie SameSite type.
-	SameSite	CookieSameSite	`json:"sameSite"`
+	SameSite	CookieSameSite	`json:"sameSite,omitempty"`
 }
 
 // Types of reasons why a cookie may not be stored from a response.
@@ -391,7 +397,7 @@ type BlockedSetCookieWithReason  struct {
 	// The cookie object which represents the cookie which was not stored. It is optional because
 	// sometimes complete cookie information is not available, such as in the case of parsing
 	// errors.
-	Cookie	Cookie	`json:"cookie"`
+	Cookie	Cookie	`json:"cookie,omitempty"`
 }
 
 // A cookie with was not sent with a request with the corresponding reason.
@@ -415,32 +421,32 @@ type CookieParam  struct {
 
 	// The request-URI to associate with the setting of the cookie. This value can affect the
 	// default domain and path values of the created cookie.
-	Url	string	`json:"url"`
+	Url	string	`json:"url,omitempty"`
 
 	// Cookie domain.
-	Domain	string	`json:"domain"`
+	Domain	string	`json:"domain,omitempty"`
 
 	// Cookie path.
-	Path	string	`json:"path"`
+	Path	string	`json:"path,omitempty"`
 
 	// True if cookie is secure.
-	Secure	bool	`json:"secure"`
+	Secure	bool	`json:"secure,omitempty"`
 
 	// True if cookie is http-only.
-	HttpOnly	bool	`json:"httpOnly"`
+	HttpOnly	bool	`json:"httpOnly,omitempty"`
 
 	// Cookie SameSite type.
-	SameSite	CookieSameSite	`json:"sameSite"`
+	SameSite	CookieSameSite	`json:"sameSite,omitempty"`
 
 	// Cookie expiration date, session cookie if not set
-	Expires	TimeSinceEpoch	`json:"expires"`
+	Expires	TimeSinceEpoch	`json:"expires,omitempty"`
 }
 
 // Authorization challenge for HTTP status code 401 or 407.
 type AuthChallenge  struct {
 
 	// Source of the authentication challenge.
-	Source	string	`json:"source"`
+	Source	string	`json:"source,omitempty"`
 
 	// Origin of the challenger.
 	Origin	string	`json:"origin"`
@@ -462,11 +468,11 @@ type AuthChallengeResponse  struct {
 
 	// The username to provide, possibly empty. Should only be set if response is
 	// ProvideCredentials.
-	Username	string	`json:"username"`
+	Username	string	`json:"username,omitempty"`
 
 	// The password to provide, possibly empty. Should only be set if response is
 	// ProvideCredentials.
-	Password	string	`json:"password"`
+	Password	string	`json:"password,omitempty"`
 }
 
 // Stages of the interception to begin intercepting. Request will intercept before the request is
@@ -478,13 +484,13 @@ type RequestPattern  struct {
 
 	// Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
 	// backslash. Omitting is equivalent to "*".
-	UrlPattern	string	`json:"urlPattern"`
+	UrlPattern	string	`json:"urlPattern,omitempty"`
 
 	// If set, only requests for matching resource types will be intercepted.
-	ResourceType	ResourceType	`json:"resourceType"`
+	ResourceType	ResourceType	`json:"resourceType,omitempty"`
 
 	// Stage at wich to begin intercepting requests. Default is Request.
-	InterceptionStage	InterceptionStage	`json:"interceptionStage"`
+	InterceptionStage	InterceptionStage	`json:"interceptionStage,omitempty"`
 }
 
 // Information about a signed exchange signature.
@@ -501,10 +507,10 @@ type SignedExchangeSignature  struct {
 	Integrity	string	`json:"integrity"`
 
 	// Signed exchange signature cert Url.
-	CertUrl	string	`json:"certUrl"`
+	CertUrl	string	`json:"certUrl,omitempty"`
 
 	// The hex string of signed exchange signature cert sha256.
-	CertSha256	string	`json:"certSha256"`
+	CertSha256	string	`json:"certSha256,omitempty"`
 
 	// Signed exchange signature validity Url.
 	ValidityUrl	string	`json:"validityUrl"`
@@ -516,7 +522,7 @@ type SignedExchangeSignature  struct {
 	Expires	int	`json:"expires"`
 
 	// The encoded certificates.
-	Certificates	[]string	`json:"certificates"`
+	Certificates	[]string	`json:"certificates,omitempty"`
 }
 
 // Information about a signed exchange header.
@@ -549,10 +555,10 @@ type SignedExchangeError  struct {
 	Message	string	`json:"message"`
 
 	// The index of the signature which caused the error.
-	SignatureIndex	int	`json:"signatureIndex"`
+	SignatureIndex	int	`json:"signatureIndex,omitempty"`
 
 	// The field which caused the error.
-	ErrorField	SignedExchangeErrorField	`json:"errorField"`
+	ErrorField	SignedExchangeErrorField	`json:"errorField,omitempty"`
 }
 
 // Information about a signed exchange response.
@@ -562,11 +568,11 @@ type SignedExchangeInfo  struct {
 	OuterResponse	Response	`json:"outerResponse"`
 
 	// Information about the signed exchange header.
-	Header	SignedExchangeHeader	`json:"header"`
+	Header	SignedExchangeHeader	`json:"header,omitempty"`
 
 	// Security details for the signed exchange header.
-	SecurityDetails	SecurityDetails	`json:"securityDetails"`
+	SecurityDetails	SecurityDetails	`json:"securityDetails,omitempty"`
 
 	// Errors occurred while handling the signed exchagne.
-	Errors	[]*SignedExchangeError	`json:"errors"`
+	Errors	[]*SignedExchangeError	`json:"errors,omitempty"`
 }

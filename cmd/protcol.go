@@ -150,6 +150,9 @@ func (t Type) genType(domain string, typeID string) ([]string, string) {
 				buf.WriteString(str)
 				buf.WriteString("	`json:\"")
 				buf.WriteString(param.Name)
+				if param.Optional {
+					buf.WriteString(",omitempty")
+				}
 				buf.WriteString("\"`")
 				imports = append(imports, deps...)
 				buf.WriteString("\n")
@@ -197,6 +200,9 @@ func (c Command) String(domain string) ([]string, string) {
 		buf.WriteString(paramString)
 		buf.WriteString("	`json:\"")
 		buf.WriteString(param.Name)
+		if param.Optional {
+			buf.WriteString(",omitempty")
+		}
 		buf.WriteString("\"`\n")
 	}
 	buf.WriteString("}\n\n")
@@ -319,13 +325,24 @@ func (param Parameter) genType(domain string, typeID string) ([]string, string) 
 	default:
 		buf.WriteString("	")
 		if param.Ref != "" {
+
+			param.Ref = strings.Replace(param.Ref, "DOM.Rect", "cdp.Rect", -1)
+			param.Ref = strings.Replace(param.Ref, "DOM.RGBA", "cdp.RGBA", -1)
+			param.Ref = strings.Replace(param.Ref, "Page.FrameId", "cdp.FrameId", -1)
+			param.Ref = strings.Replace(param.Ref, "Page.Viewport", "cdp.Viewport", -1)
+			param.Ref = strings.Replace(param.Ref, "Network.TimeSinceEpoch", "cdp.TimeSinceEpoch", -1)
+
 			param.Ref = strings.Replace(param.Ref, domain+".", "", -1)
 			if typeID == param.Ref {
 				buf.WriteString("*")
 			}
 			ref := strings.Split(param.Ref, ".")
 			if len(ref) == 2 {
-				buf.WriteString("interface{}")
+				im := strings.ToLower(ref[0])
+				buf.WriteString(im)
+				imports = append(imports, im)
+				buf.WriteString(".")
+				buf.WriteString(ref[1])
 			} else {
 				buf.WriteString(ref[0])
 			}

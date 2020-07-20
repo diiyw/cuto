@@ -1,11 +1,17 @@
 package page
 
+import (
+	"github.com/diiyw/cuto/protocol/network"
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
+
 // 
 const DomContentEventFiredEvent = "Page.domContentEventFired"
 type DomContentEventFiredParams struct {
 
 	// 
-	Timestamp 	interface{}}
+	Timestamp 	network.MonotonicTime}
 
 
 
@@ -27,7 +33,7 @@ type FrameAttachedParams struct {
 	// Parent frame identifier.
 	ParentFrameId 	FrameId
 	// JavaScript stack trace of when frame was attached, only set if frame initiated from script.
-	Stack 	interface{}}
+	Stack 	runtime.StackTrace}
 
 
 
@@ -177,11 +183,11 @@ type LifecycleEventParams struct {
 	// Id of the frame.
 	FrameId 	FrameId
 	// Loader identifier. Empty string if the request is fetched from worker.
-	LoaderId 	interface{}
+	LoaderId 	network.LoaderId
 	// 
 	Name 	string
 	// 
-	Timestamp 	interface{}}
+	Timestamp 	network.MonotonicTime}
 
 
 
@@ -190,7 +196,7 @@ const LoadEventFiredEvent = "Page.loadEventFired"
 type LoadEventFiredParams struct {
 
 	// 
-	Timestamp 	interface{}}
+	Timestamp 	network.MonotonicTime}
 
 
 

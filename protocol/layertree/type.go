@@ -1,4 +1,10 @@
 package layertree
+
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+	"github.com/diiyw/cuto/protocol/dom"
+)
+
 // Unique Layer identifier.
 type LayerId string
 
@@ -9,7 +15,7 @@ type SnapshotId string
 type ScrollRect  struct {
 
 	// Rectangle itself.
-	Rect	interface{}	`json:"rect"`
+	Rect	cdp.Rect	`json:"rect"`
 
 	// Reason for rectangle to force scrolling on the main thread
 	Type	string	`json:"type"`
@@ -19,16 +25,16 @@ type ScrollRect  struct {
 type StickyPositionConstraint  struct {
 
 	// Layout rectangle of the sticky element before being shifted
-	StickyBoxRect	interface{}	`json:"stickyBoxRect"`
+	StickyBoxRect	cdp.Rect	`json:"stickyBoxRect"`
 
 	// Layout rectangle of the containing block of the sticky element
-	ContainingBlockRect	interface{}	`json:"containingBlockRect"`
+	ContainingBlockRect	cdp.Rect	`json:"containingBlockRect"`
 
 	// The nearest sticky layer that shifts the sticky box
-	NearestLayerShiftingStickyBox	LayerId	`json:"nearestLayerShiftingStickyBox"`
+	NearestLayerShiftingStickyBox	LayerId	`json:"nearestLayerShiftingStickyBox,omitempty"`
 
 	// The nearest sticky layer that shifts the containing block
-	NearestLayerShiftingContainingBlock	LayerId	`json:"nearestLayerShiftingContainingBlock"`
+	NearestLayerShiftingContainingBlock	LayerId	`json:"nearestLayerShiftingContainingBlock,omitempty"`
 }
 
 // Serialized fragment of layer picture along with its offset within the layer.
@@ -51,10 +57,10 @@ type Layer  struct {
 	LayerId	LayerId	`json:"layerId"`
 
 	// The id of parent (not present for root).
-	ParentLayerId	LayerId	`json:"parentLayerId"`
+	ParentLayerId	LayerId	`json:"parentLayerId,omitempty"`
 
 	// The backend id for the node associated with this layer.
-	BackendNodeId	interface{}	`json:"backendNodeId"`
+	BackendNodeId	dom.BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// Offset from parent layer, X coordinate.
 	OffsetX	float64	`json:"offsetX"`
@@ -69,16 +75,16 @@ type Layer  struct {
 	Height	float64	`json:"height"`
 
 	// Transformation matrix for layer, default is identity matrix
-	Transform	[]float64	`json:"transform"`
+	Transform	[]float64	`json:"transform,omitempty"`
 
 	// Transform anchor point X, absent if no transform specified
-	AnchorX	float64	`json:"anchorX"`
+	AnchorX	float64	`json:"anchorX,omitempty"`
 
 	// Transform anchor point Y, absent if no transform specified
-	AnchorY	float64	`json:"anchorY"`
+	AnchorY	float64	`json:"anchorY,omitempty"`
 
 	// Transform anchor point Z, absent if no transform specified
-	AnchorZ	float64	`json:"anchorZ"`
+	AnchorZ	float64	`json:"anchorZ,omitempty"`
 
 	// Indicates how many time this layer has painted.
 	PaintCount	int	`json:"paintCount"`
@@ -88,13 +94,13 @@ type Layer  struct {
 	DrawsContent	bool	`json:"drawsContent"`
 
 	// Set if layer is not visible.
-	Invisible	bool	`json:"invisible"`
+	Invisible	bool	`json:"invisible,omitempty"`
 
 	// Rectangles scrolling on main thread only.
-	ScrollRects	[]*ScrollRect	`json:"scrollRects"`
+	ScrollRects	[]*ScrollRect	`json:"scrollRects,omitempty"`
 
 	// Sticky position constraint information
-	StickyPositionConstraint	StickyPositionConstraint	`json:"stickyPositionConstraint"`
+	StickyPositionConstraint	StickyPositionConstraint	`json:"stickyPositionConstraint,omitempty"`
 }
 
 // Array of timings, one per paint step.

@@ -1,12 +1,18 @@
 package overlay
 
+import (
+	"github.com/diiyw/cuto/protocol/dom"
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Fired when the node should be inspected. This happens after call to `setInspectMode` or when
 // user manually inspects an element.
 const InspectNodeRequestedEvent = "Overlay.inspectNodeRequested"
 type InspectNodeRequestedParams struct {
 
 	// Id of the node to inspect.
-	BackendNodeId 	interface{}}
+	BackendNodeId 	dom.BackendNodeId}
 
 
 
@@ -15,7 +21,7 @@ const NodeHighlightRequestedEvent = "Overlay.nodeHighlightRequested"
 type NodeHighlightRequestedParams struct {
 
 	// 
-	NodeId 	interface{}}
+	NodeId 	dom.NodeId}
 
 
 
@@ -24,7 +30,7 @@ const ScreenshotRequestedEvent = "Overlay.screenshotRequested"
 type ScreenshotRequestedParams struct {
 
 	// Viewport to capture, in device independent pixels (dip).
-	Viewport 	interface{}}
+	Viewport 	cdp.Viewport}
 
 
 

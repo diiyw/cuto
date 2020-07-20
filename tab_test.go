@@ -1,18 +1,19 @@
 package cuto
 
 import (
-	"fmt"
 	"log"
 	"testing"
 	"time"
 )
 
 func TestTab(t *testing.T) {
-	browser, err := Create()
+	browser, err := Create(
+		WithDebug())
 	if err != nil {
 		log.Println(err)
 	}
 	defer browser.Close()
+	// 打开百度首页
 	tab, err := browser.Open("https://www.baidu.com")
 	if err != nil {
 		log.Println(err)
@@ -27,10 +28,11 @@ func TestTab(t *testing.T) {
 	if nodes == nil {
 		log.Fatal("nodes not found!")
 	}
-	fmt.Println(nodes)
-	if err := tab.Input("#kw", "百度一下", ); err != nil {
+	// 搜索
+	if err := tab.Input("#kw", "百度一下"); err != nil {
 		log.Println(err)
 	}
+	// 点击搜索
 	if err := tab.Click("#su"); err != nil {
 		log.Println(err)
 	}

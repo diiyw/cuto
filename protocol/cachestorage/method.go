@@ -80,7 +80,7 @@ type RequestEntriesParams struct {
 	PageSize 	int	`json:"pageSize"`
 
 	// If present, only return the entries containing this substring in the path
-	PathFilter 	string	`json:"pathFilter"`
+	PathFilter 	string	`json:"pathFilter,omitempty"`
 }
 
 type RequestEntriesResult struct {

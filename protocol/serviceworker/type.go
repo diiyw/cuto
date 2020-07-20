@@ -45,17 +45,17 @@ type ServiceWorkerVersion  struct {
 	Status	ServiceWorkerVersionStatus	`json:"status"`
 
 	// The Last-Modified header value of the main script.
-	ScriptLastModified	float64	`json:"scriptLastModified"`
+	ScriptLastModified	float64	`json:"scriptLastModified,omitempty"`
 
 	// The time at which the response headers of the main script were received from the server.
 	// For cached script it is the last time the cache entry was validated.
-	ScriptResponseTime	float64	`json:"scriptResponseTime"`
+	ScriptResponseTime	float64	`json:"scriptResponseTime,omitempty"`
 
 	// 
-	ControlledClients	[]*target.TargetID	`json:"controlledClients"`
+	ControlledClients	[]*target.TargetID	`json:"controlledClients,omitempty"`
 
 	// 
-	TargetId	interface{}	`json:"targetId"`
+	TargetId	target.TargetID	`json:"targetId,omitempty"`
 }
 
 // ServiceWorker error message.

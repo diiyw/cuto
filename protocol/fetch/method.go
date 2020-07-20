@@ -1,5 +1,11 @@
 package fetch
 
+import (
+	"github.com/diiyw/cuto/protocol/network"
+	"github.com/diiyw/cuto/protocol/io"
+)
+
+
 // Disables the fetch domain.
 const Disable = "Fetch.disable"
 
@@ -19,11 +25,11 @@ type EnableParams struct {
 	// If specified, only requests matching any of these patterns will produce
 	// fetchRequested event and will be paused until clients response. If not set,
 	// all requests will be affected.
-	Patterns 	[]*RequestPattern	`json:"patterns"`
+	Patterns 	[]*RequestPattern	`json:"patterns,omitempty"`
 
 	// If true, authRequired events will be issued and requests will be paused
 	// expecting a call to continueWithAuth.
-	HandleAuthRequests 	bool	`json:"handleAuthRequests"`
+	HandleAuthRequests 	bool	`json:"handleAuthRequests,omitempty"`
 }
 
 type EnableResult struct {
@@ -39,7 +45,7 @@ type FailRequestParams struct {
 	RequestId 	RequestId	`json:"requestId"`
 
 	// Causes the request to fail with the given reason.
-	ErrorReason 	interface{}	`json:"errorReason"`
+	ErrorReason 	network.ErrorReason	`json:"errorReason"`
 }
 
 type FailRequestResult struct {
@@ -58,20 +64,20 @@ type FulfillRequestParams struct {
 	ResponseCode 	int	`json:"responseCode"`
 
 	// Response headers.
-	ResponseHeaders 	[]*HeaderEntry	`json:"responseHeaders"`
+	ResponseHeaders 	[]*HeaderEntry	`json:"responseHeaders,omitempty"`
 
 	// Alternative way of specifying response headers as a \0-separated
 	// series of name: value pairs. Prefer the above method unless you
 	// need to represent some non-UTF8 values that can't be transmitted
 	// over the protocol as text.
-	BinaryResponseHeaders 	[]byte	`json:"binaryResponseHeaders"`
+	BinaryResponseHeaders 	[]byte	`json:"binaryResponseHeaders,omitempty"`
 
 	// A response body.
-	Body 	[]byte	`json:"body"`
+	Body 	[]byte	`json:"body,omitempty"`
 
 	// A textual representation of responseCode.
 	// If absent, a standard phrase matching responseCode is used.
-	ResponsePhrase 	string	`json:"responsePhrase"`
+	ResponsePhrase 	string	`json:"responsePhrase,omitempty"`
 }
 
 type FulfillRequestResult struct {
@@ -87,16 +93,16 @@ type ContinueRequestParams struct {
 	RequestId 	RequestId	`json:"requestId"`
 
 	// If set, the request url will be modified in a way that's not observable by page.
-	Url 	string	`json:"url"`
+	Url 	string	`json:"url,omitempty"`
 
 	// If set, the request method is overridden.
-	Method 	string	`json:"method"`
+	Method 	string	`json:"method,omitempty"`
 
 	// If set, overrides the post data in the request.
-	PostData 	string	`json:"postData"`
+	PostData 	string	`json:"postData,omitempty"`
 
 	// If set, overrides the request headrts.
-	Headers 	[]*HeaderEntry	`json:"headers"`
+	Headers 	[]*HeaderEntry	`json:"headers,omitempty"`
 }
 
 type ContinueRequestResult struct {
@@ -162,5 +168,5 @@ type TakeResponseBodyAsStreamParams struct {
 type TakeResponseBodyAsStreamResult struct {
 
 	// 
-	Stream 	interface{}	`json:"stream"`
+	Stream 	io.StreamHandle	`json:"stream"`
 }

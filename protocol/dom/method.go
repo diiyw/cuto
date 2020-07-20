@@ -1,5 +1,11 @@
 package dom
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Collects class names for the node with given id and all of it's child nodes.
 const CollectClassNamesFromSubtree = "DOM.collectClassNamesFromSubtree"
 
@@ -29,7 +35,7 @@ type CopyToParams struct {
 
 	// Drop the copy before this node (if absent, the copy becomes the last child of
 	// `targetNodeId`).
-	InsertBeforeNodeId 	NodeId	`json:"insertBeforeNodeId"`
+	InsertBeforeNodeId 	NodeId	`json:"insertBeforeNodeId,omitempty"`
 }
 
 type CopyToResult struct {
@@ -45,21 +51,21 @@ const DescribeNode = "DOM.describeNode"
 type DescribeNodeParams struct {
 
 	// Identifier of the node.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 
 	// The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
 	// entire subtree or provide an integer larger than 0.
-	Depth 	int	`json:"depth"`
+	Depth 	int	`json:"depth,omitempty"`
 
 	// Whether or not iframes and shadow roots should be traversed when returning the subtree
 	// (default is false).
-	Pierce 	bool	`json:"pierce"`
+	Pierce 	bool	`json:"pierce,omitempty"`
 }
 
 type DescribeNodeResult struct {
@@ -108,13 +114,13 @@ const Focus = "DOM.focus"
 type FocusParams struct {
 
 	// Identifier of the node.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 }
 
 type FocusResult struct {
@@ -142,13 +148,13 @@ const GetBoxModel = "DOM.getBoxModel"
 type GetBoxModelParams struct {
 
 	// Identifier of the node.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 }
 
 type GetBoxModelResult struct {
@@ -164,13 +170,13 @@ const GetContentQuads = "DOM.getContentQuads"
 type GetContentQuadsParams struct {
 
 	// Identifier of the node.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 }
 
 type GetContentQuadsResult struct {
@@ -186,11 +192,11 @@ type GetDocumentParams struct {
 
 	// The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
 	// entire subtree or provide an integer larger than 0.
-	Depth 	int	`json:"depth"`
+	Depth 	int	`json:"depth,omitempty"`
 
 	// Whether or not iframes and shadow roots should be traversed when returning the subtree
 	// (default is false).
-	Pierce 	bool	`json:"pierce"`
+	Pierce 	bool	`json:"pierce,omitempty"`
 }
 
 type GetDocumentResult struct {
@@ -206,11 +212,11 @@ type GetFlattenedDocumentParams struct {
 
 	// The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
 	// entire subtree or provide an integer larger than 0.
-	Depth 	int	`json:"depth"`
+	Depth 	int	`json:"depth,omitempty"`
 
 	// Whether or not iframes and shadow roots should be traversed when returning the subtree
 	// (default is false).
-	Pierce 	bool	`json:"pierce"`
+	Pierce 	bool	`json:"pierce,omitempty"`
 }
 
 type GetFlattenedDocumentResult struct {
@@ -232,10 +238,10 @@ type GetNodeForLocationParams struct {
 	Y 	int	`json:"y"`
 
 	// False to skip to the nearest non-UA shadow root ancestor (default: false).
-	IncludeUserAgentShadowDOM 	bool	`json:"includeUserAgentShadowDOM"`
+	IncludeUserAgentShadowDOM 	bool	`json:"includeUserAgentShadowDOM,omitempty"`
 
 	// Whether to ignore pointer-events: none on elements and hit test them.
-	IgnorePointerEventsNone 	bool	`json:"ignorePointerEventsNone"`
+	IgnorePointerEventsNone 	bool	`json:"ignorePointerEventsNone,omitempty"`
 }
 
 type GetNodeForLocationResult struct {
@@ -243,7 +249,7 @@ type GetNodeForLocationResult struct {
 	// Resulting node.
 	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
 	// Frame this node belongs to.
-	FrameId 	interface{}	`json:"frameId"`
+	FrameId 	cdp.FrameId	`json:"frameId"`
 	// Id of the node at given coordinates, only when enabled and requested document.
 	NodeId 	NodeId	`json:"nodeId"`
 }
@@ -254,13 +260,13 @@ const GetOuterHTML = "DOM.getOuterHTML"
 type GetOuterHTMLParams struct {
 
 	// Identifier of the node.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 }
 
 type GetOuterHTMLResult struct {
@@ -359,7 +365,7 @@ type MoveToParams struct {
 
 	// Drop node before this one (if absent, the moved node becomes the last child of
 	// `targetNodeId`).
-	InsertBeforeNodeId 	NodeId	`json:"insertBeforeNodeId"`
+	InsertBeforeNodeId 	NodeId	`json:"insertBeforeNodeId,omitempty"`
 }
 
 type MoveToResult struct {
@@ -378,7 +384,7 @@ type PerformSearchParams struct {
 	Query 	string	`json:"query"`
 
 	// True to search in user agent shadow DOM.
-	IncludeUserAgentShadowDOM 	bool	`json:"includeUserAgentShadowDOM"`
+	IncludeUserAgentShadowDOM 	bool	`json:"includeUserAgentShadowDOM,omitempty"`
 }
 
 type PerformSearchResult struct {
@@ -507,11 +513,11 @@ type RequestChildNodesParams struct {
 
 	// The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
 	// entire subtree or provide an integer larger than 0.
-	Depth 	int	`json:"depth"`
+	Depth 	int	`json:"depth,omitempty"`
 
 	// Whether or not iframes and shadow roots should be traversed when returning the sub-tree
 	// (default is false).
-	Pierce 	bool	`json:"pierce"`
+	Pierce 	bool	`json:"pierce,omitempty"`
 }
 
 type RequestChildNodesResult struct {
@@ -526,7 +532,7 @@ const RequestNode = "DOM.requestNode"
 type RequestNodeParams struct {
 
 	// JavaScript object id to convert into node.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId"`
 }
 
 type RequestNodeResult struct {
@@ -541,22 +547,22 @@ const ResolveNode = "DOM.resolveNode"
 type ResolveNodeParams struct {
 
 	// Id of the node to resolve.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Backend identifier of the node to resolve.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// Symbolic group name that can be used to release multiple objects.
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 
 	// Execution context in which to resolve the node.
-	ExecutionContextId 	interface{}	`json:"executionContextId"`
+	ExecutionContextId 	runtime.ExecutionContextId	`json:"executionContextId,omitempty"`
 }
 
 type ResolveNodeResult struct {
 
 	// JavaScript object wrapper for given node.
-	Object 	interface{}	`json:"object"`
+	Object 	runtime.RemoteObject	`json:"object"`
 }
 
 // Sets attribute for an element with given id.
@@ -592,7 +598,7 @@ type SetAttributesAsTextParams struct {
 
 	// Attribute name to replace with new attributes derived from text in case text parsed
 	// successfully.
-	Name 	string	`json:"name"`
+	Name 	string	`json:"name,omitempty"`
 }
 
 type SetAttributesAsTextResult struct {
@@ -608,13 +614,13 @@ type SetFileInputFilesParams struct {
 	Files 	[]string	`json:"files"`
 
 	// Identifier of the node.
-	NodeId 	NodeId	`json:"nodeId"`
+	NodeId 	NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node.
-	BackendNodeId 	BackendNodeId	`json:"backendNodeId"`
+	BackendNodeId 	BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 }
 
 type SetFileInputFilesResult struct {
@@ -646,7 +652,7 @@ type GetNodeStackTracesParams struct {
 type GetNodeStackTracesResult struct {
 
 	// Creation stack trace, if available.
-	Creation 	interface{}	`json:"creation"`
+	Creation 	runtime.StackTrace	`json:"creation"`
 }
 
 // Returns file information for the given
@@ -656,7 +662,7 @@ const GetFileInfo = "DOM.getFileInfo"
 type GetFileInfoParams struct {
 
 	// JavaScript object id of the node wrapper.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId"`
 }
 
 type GetFileInfoResult struct {
@@ -745,7 +751,7 @@ const GetFrameOwner = "DOM.getFrameOwner"
 type GetFrameOwnerParams struct {
 
 	// 
-	FrameId 	interface{}	`json:"frameId"`
+	FrameId 	cdp.FrameId	`json:"frameId"`
 }
 
 type GetFrameOwnerResult struct {

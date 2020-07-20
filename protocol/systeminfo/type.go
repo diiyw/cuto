@@ -9,10 +9,10 @@ type GPUDevice  struct {
 	DeviceId	float64	`json:"deviceId"`
 
 	// Sub sys ID of the GPU, only available on Windows.
-	SubSysId	float64	`json:"subSysId"`
+	SubSysId	float64	`json:"subSysId,omitempty"`
 
 	// Revision of the GPU, only available on Windows.
-	Revision	float64	`json:"revision"`
+	Revision	float64	`json:"revision,omitempty"`
 
 	// String description of the GPU vendor, if the PCI ID is not available.
 	VendorString	string	`json:"vendorString"`
@@ -100,10 +100,10 @@ type GPUInfo  struct {
 	Devices	[]*GPUDevice	`json:"devices"`
 
 	// An optional dictionary of additional GPU related attributes.
-	AuxAttributes	interface{}	`json:"auxAttributes"`
+	AuxAttributes	interface{}	`json:"auxAttributes,omitempty"`
 
 	// An optional dictionary of graphics features and their status.
-	FeatureStatus	interface{}	`json:"featureStatus"`
+	FeatureStatus	interface{}	`json:"featureStatus,omitempty"`
 
 	// An optional array of GPU driver bug workarounds.
 	DriverBugWorkarounds	[]string	`json:"driverBugWorkarounds"`

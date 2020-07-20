@@ -6,28 +6,28 @@ type MemoryDumpConfig interface{}
 type TraceConfig  struct {
 
 	// Controls how the trace buffer stores data.
-	RecordMode	string	`json:"recordMode"`
+	RecordMode	string	`json:"recordMode,omitempty"`
 
 	// Turns on JavaScript stack sampling.
-	EnableSampling	bool	`json:"enableSampling"`
+	EnableSampling	bool	`json:"enableSampling,omitempty"`
 
 	// Turns on system tracing.
-	EnableSystrace	bool	`json:"enableSystrace"`
+	EnableSystrace	bool	`json:"enableSystrace,omitempty"`
 
 	// Turns on argument filter.
-	EnableArgumentFilter	bool	`json:"enableArgumentFilter"`
+	EnableArgumentFilter	bool	`json:"enableArgumentFilter,omitempty"`
 
 	// Included category filters.
-	IncludedCategories	[]string	`json:"includedCategories"`
+	IncludedCategories	[]string	`json:"includedCategories,omitempty"`
 
 	// Excluded category filters.
-	ExcludedCategories	[]string	`json:"excludedCategories"`
+	ExcludedCategories	[]string	`json:"excludedCategories,omitempty"`
 
 	// Configuration to synthesize the delays in tracing.
-	SyntheticDelays	[]string	`json:"syntheticDelays"`
+	SyntheticDelays	[]string	`json:"syntheticDelays,omitempty"`
 
 	// Configuration for memory dump triggers. Used only when "memory-infra" category is enabled.
-	MemoryDumpConfig	MemoryDumpConfig	`json:"memoryDumpConfig"`
+	MemoryDumpConfig	MemoryDumpConfig	`json:"memoryDumpConfig,omitempty"`
 }
 
 // Data format of a trace. Can be either the legacy JSON format or the

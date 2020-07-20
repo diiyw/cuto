@@ -1,4 +1,10 @@
 package css
+
+import (
+	"github.com/diiyw/cuto/protocol/dom"
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
 // 
 type StyleSheetId string
 
@@ -11,7 +17,7 @@ type StyleSheetOrigin string
 type PseudoElementMatches  struct {
 
 	// Pseudo element type.
-	PseudoType	interface{}	`json:"pseudoType"`
+	PseudoType	dom.PseudoType	`json:"pseudoType"`
 
 	// Matches of CSS rules applicable to the pseudo style.
 	Matches	[]*RuleMatch	`json:"matches"`
@@ -21,7 +27,7 @@ type PseudoElementMatches  struct {
 type InheritedStyleEntry  struct {
 
 	// The ancestor node's inline style, if any, in the style inheritance chain.
-	InlineStyle	CSSStyle	`json:"inlineStyle"`
+	InlineStyle	CSSStyle	`json:"inlineStyle,omitempty"`
 
 	// Matches of CSS rules matching the ancestor node in the style inheritance chain.
 	MatchedCSSRules	[]*RuleMatch	`json:"matchedCSSRules"`
@@ -44,7 +50,7 @@ type Value  struct {
 	Text	string	`json:"text"`
 
 	// Value range in the underlying resource (if available).
-	Range	SourceRange	`json:"range"`
+	Range	SourceRange	`json:"range,omitempty"`
 }
 
 // Selector list data.
@@ -64,13 +70,13 @@ type CSSStyleSheetHeader  struct {
 	StyleSheetId	StyleSheetId	`json:"styleSheetId"`
 
 	// Owner frame identifier.
-	FrameId	interface{}	`json:"frameId"`
+	FrameId	cdp.FrameId	`json:"frameId"`
 
 	// Stylesheet resource URL.
 	SourceURL	string	`json:"sourceURL"`
 
 	// URL of source map associated with the stylesheet (if any).
-	SourceMapURL	string	`json:"sourceMapURL"`
+	SourceMapURL	string	`json:"sourceMapURL,omitempty"`
 
 	// Stylesheet origin.
 	Origin	StyleSheetOrigin	`json:"origin"`
@@ -79,13 +85,13 @@ type CSSStyleSheetHeader  struct {
 	Title	string	`json:"title"`
 
 	// The backend id for the owner node of the stylesheet.
-	OwnerNode	interface{}	`json:"ownerNode"`
+	OwnerNode	dom.BackendNodeId	`json:"ownerNode,omitempty"`
 
 	// Denotes whether the stylesheet is disabled.
 	Disabled	bool	`json:"disabled"`
 
 	// Whether the sourceURL field value comes from the sourceURL comment.
-	HasSourceURL	bool	`json:"hasSourceURL"`
+	HasSourceURL	bool	`json:"hasSourceURL,omitempty"`
 
 	// Whether this stylesheet is created for STYLE tag by parser. This flag is not set for
 	// document.written STYLE tags.
@@ -112,7 +118,7 @@ type CSSRule  struct {
 
 	// The css style sheet identifier (absent for user agent stylesheet and user-specified
 	// stylesheet rules) this rule came from.
-	StyleSheetId	StyleSheetId	`json:"styleSheetId"`
+	StyleSheetId	StyleSheetId	`json:"styleSheetId,omitempty"`
 
 	// Rule selector data.
 	SelectorList	SelectorList	`json:"selectorList"`
@@ -125,7 +131,7 @@ type CSSRule  struct {
 
 	// Media list array (for rules involving media queries). The array enumerates media queries
 	// starting with the innermost one, going outwards.
-	Media	[]*CSSMedia	`json:"media"`
+	Media	[]*CSSMedia	`json:"media,omitempty"`
 }
 
 // CSS coverage information.
@@ -171,7 +177,7 @@ type ShorthandEntry  struct {
 	Value	string	`json:"value"`
 
 	// Whether the property has "!important" annotation (implies `false` if absent).
-	Important	bool	`json:"important"`
+	Important	bool	`json:"important,omitempty"`
 }
 
 // 
@@ -189,7 +195,7 @@ type CSSStyle  struct {
 
 	// The css style sheet identifier (absent for user agent stylesheet and user-specified
 	// stylesheet rules) this rule came from.
-	StyleSheetId	StyleSheetId	`json:"styleSheetId"`
+	StyleSheetId	StyleSheetId	`json:"styleSheetId,omitempty"`
 
 	// CSS properties in the style.
 	CssProperties	[]*CSSProperty	`json:"cssProperties"`
@@ -198,10 +204,10 @@ type CSSStyle  struct {
 	ShorthandEntries	[]*ShorthandEntry	`json:"shorthandEntries"`
 
 	// Style declaration text (if available).
-	CssText	string	`json:"cssText"`
+	CssText	string	`json:"cssText,omitempty"`
 
 	// Style declaration range in the enclosing stylesheet (if available).
-	Range	SourceRange	`json:"range"`
+	Range	SourceRange	`json:"range,omitempty"`
 }
 
 // CSS property declaration data.
@@ -214,22 +220,22 @@ type CSSProperty  struct {
 	Value	string	`json:"value"`
 
 	// Whether the property has "!important" annotation (implies `false` if absent).
-	Important	bool	`json:"important"`
+	Important	bool	`json:"important,omitempty"`
 
 	// Whether the property is implicit (implies `false` if absent).
-	Implicit	bool	`json:"implicit"`
+	Implicit	bool	`json:"implicit,omitempty"`
 
 	// The full property text as specified in the style.
-	Text	string	`json:"text"`
+	Text	string	`json:"text,omitempty"`
 
 	// Whether the property is understood by the browser (implies `true` if absent).
-	ParsedOk	bool	`json:"parsedOk"`
+	ParsedOk	bool	`json:"parsedOk,omitempty"`
 
 	// Whether the property is disabled by the user (present for source-based properties only).
-	Disabled	bool	`json:"disabled"`
+	Disabled	bool	`json:"disabled,omitempty"`
 
 	// The entire property range in the enclosing style declaration (if available).
-	Range	SourceRange	`json:"range"`
+	Range	SourceRange	`json:"range,omitempty"`
 }
 
 // CSS media rule descriptor.
@@ -245,17 +251,17 @@ type CSSMedia  struct {
 	Source	string	`json:"source"`
 
 	// URL of the document containing the media query description.
-	SourceURL	string	`json:"sourceURL"`
+	SourceURL	string	`json:"sourceURL,omitempty"`
 
 	// The associated rule (@media or @import) header range in the enclosing stylesheet (if
 	// available).
-	Range	SourceRange	`json:"range"`
+	Range	SourceRange	`json:"range,omitempty"`
 
 	// Identifier of the stylesheet containing this object (if exists).
-	StyleSheetId	StyleSheetId	`json:"styleSheetId"`
+	StyleSheetId	StyleSheetId	`json:"styleSheetId,omitempty"`
 
 	// Array of media queries.
-	MediaList	[]*MediaQuery	`json:"mediaList"`
+	MediaList	[]*MediaQuery	`json:"mediaList,omitempty"`
 }
 
 // Media query descriptor.
@@ -281,16 +287,16 @@ type MediaQueryExpression  struct {
 	Feature	string	`json:"feature"`
 
 	// The associated range of the value text in the enclosing stylesheet (if available).
-	ValueRange	SourceRange	`json:"valueRange"`
+	ValueRange	SourceRange	`json:"valueRange,omitempty"`
 
 	// Computed length of media query expression (if applicable).
-	ComputedLength	float64	`json:"computedLength"`
+	ComputedLength	float64	`json:"computedLength,omitempty"`
 }
 
 // Information about amount of glyphs that were rendered with given font.
 type PlatformFontUsage  struct {
 
-	// FontFamily's family name reported by platform.
+	// Font's family name reported by platform.
 	FamilyName	string	`json:"familyName"`
 
 	// Indicates if the font was downloaded or resolved locally.
@@ -343,7 +349,7 @@ type CSSKeyframeRule  struct {
 
 	// The css style sheet identifier (absent for user agent stylesheet and user-specified
 	// stylesheet rules) this rule came from.
-	StyleSheetId	StyleSheetId	`json:"styleSheetId"`
+	StyleSheetId	StyleSheetId	`json:"styleSheetId,omitempty"`
 
 	// Parent stylesheet's origin.
 	Origin	StyleSheetOrigin	`json:"origin"`

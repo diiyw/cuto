@@ -1,5 +1,10 @@
 package tracing
 
+import (
+	"github.com/diiyw/cuto/protocol/io"
+)
+
+
 // 
 const BufferUsageEvent = "Tracing.bufferUsage"
 type BufferUsageParams struct {
@@ -34,7 +39,7 @@ type TracingCompleteParams struct {
 	// buffer wrapped around.
 	DataLossOccurred 	bool
 	// A handle of the stream that holds resulting trace data.
-	Stream 	interface{}
+	Stream 	io.StreamHandle
 	// Trace data format of returned stream.
 	TraceFormat 	StreamFormat
 	// Compression format of returned stream.

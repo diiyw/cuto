@@ -1,5 +1,10 @@
 package heapprofiler
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
+
 // Enables console to refer to the node with given id via $x (see Command Line API for more details
 // $x functions).
 const AddInspectedHeapObject = "HeapProfiler.addInspectedHeapObject"
@@ -50,7 +55,7 @@ const GetHeapObjectId = "HeapProfiler.getHeapObjectId"
 type GetHeapObjectIdParams struct {
 
 	// Identifier of the object to get heap object id for.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId"`
 }
 
 type GetHeapObjectIdResult struct {
@@ -68,13 +73,13 @@ type GetObjectByHeapObjectIdParams struct {
 	ObjectId 	HeapSnapshotObjectId	`json:"objectId"`
 
 	// Symbolic group name that can be used to release multiple objects.
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 }
 
 type GetObjectByHeapObjectIdResult struct {
 
 	// Evaluation result.
-	Result 	interface{}	`json:"result"`
+	Result 	runtime.RemoteObject	`json:"result"`
 }
 
 // 
@@ -96,7 +101,7 @@ type StartSamplingParams struct {
 
 	// Average sample interval in bytes. Poisson distribution is used for the intervals. The
 	// default value is 32768 bytes.
-	SamplingInterval 	float64	`json:"samplingInterval"`
+	SamplingInterval 	float64	`json:"samplingInterval,omitempty"`
 }
 
 type StartSamplingResult struct {
@@ -109,7 +114,7 @@ const StartTrackingHeapObjects = "HeapProfiler.startTrackingHeapObjects"
 type StartTrackingHeapObjectsParams struct {
 
 	// 
-	TrackAllocations 	bool	`json:"trackAllocations"`
+	TrackAllocations 	bool	`json:"trackAllocations,omitempty"`
 }
 
 type StartTrackingHeapObjectsResult struct {
@@ -135,7 +140,7 @@ type StopTrackingHeapObjectsParams struct {
 
 	// If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken
 	// when the tracking is stopped.
-	ReportProgress 	bool	`json:"reportProgress"`
+	ReportProgress 	bool	`json:"reportProgress,omitempty"`
 }
 
 type StopTrackingHeapObjectsResult struct {
@@ -148,7 +153,7 @@ const TakeHeapSnapshot = "HeapProfiler.takeHeapSnapshot"
 type TakeHeapSnapshotParams struct {
 
 	// If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken.
-	ReportProgress 	bool	`json:"reportProgress"`
+	ReportProgress 	bool	`json:"reportProgress,omitempty"`
 }
 
 type TakeHeapSnapshotResult struct {

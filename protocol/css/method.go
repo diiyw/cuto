@@ -1,5 +1,11 @@
 package css
 
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+	"github.com/diiyw/cuto/protocol/dom"
+)
+
+
 // Inserts a new rule with the given `ruleText` in a stylesheet with given `styleSheetId`, at the
 // position specified by `location`.
 const AddRule = "CSS.addRule"
@@ -43,7 +49,7 @@ const CreateStyleSheet = "CSS.createStyleSheet"
 type CreateStyleSheetParams struct {
 
 	// Identifier of the frame where "via-inspector" stylesheet should be created.
-	FrameId 	interface{}	`json:"frameId"`
+	FrameId 	cdp.FrameId	`json:"frameId"`
 }
 
 type CreateStyleSheetResult struct {
@@ -80,7 +86,7 @@ const ForcePseudoState = "CSS.forcePseudoState"
 type ForcePseudoStateParams struct {
 
 	// The element id for which to force the pseudo state.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 
 	// Element pseudo classes to force when computing the element's style.
 	ForcedPseudoClasses 	[]string	`json:"forcedPseudoClasses"`
@@ -96,7 +102,7 @@ const GetBackgroundColors = "CSS.getBackgroundColors"
 type GetBackgroundColorsParams struct {
 
 	// Id of the node to get background colors for.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 }
 
 type GetBackgroundColorsResult struct {
@@ -120,7 +126,7 @@ const GetComputedStyleForNode = "CSS.getComputedStyleForNode"
 type GetComputedStyleForNodeParams struct {
 
 	// 
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 }
 
 type GetComputedStyleForNodeResult struct {
@@ -136,7 +142,7 @@ const GetInlineStylesForNode = "CSS.getInlineStylesForNode"
 type GetInlineStylesForNodeParams struct {
 
 	// 
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 }
 
 type GetInlineStylesForNodeResult struct {
@@ -153,7 +159,7 @@ const GetMatchedStylesForNode = "CSS.getMatchedStylesForNode"
 type GetMatchedStylesForNodeParams struct {
 
 	// 
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 }
 
 type GetMatchedStylesForNodeResult struct {
@@ -191,7 +197,7 @@ const GetPlatformFontsForNode = "CSS.getPlatformFontsForNode"
 type GetPlatformFontsForNodeParams struct {
 
 	// 
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 }
 
 type GetPlatformFontsForNodeResult struct {
@@ -222,7 +228,7 @@ const SetEffectivePropertyValueForNode = "CSS.setEffectivePropertyValueForNode"
 type SetEffectivePropertyValueForNodeParams struct {
 
 	// The element id for which to set property.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 
 	// 
 	PropertyName 	string	`json:"propertyName"`

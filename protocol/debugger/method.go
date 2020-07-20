@@ -1,5 +1,10 @@
 package debugger
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
+
 // Continues execution until specific location is reached.
 const ContinueToLocation = "Debugger.continueToLocation"
 
@@ -9,7 +14,7 @@ type ContinueToLocationParams struct {
 	Location 	Location	`json:"location"`
 
 	// 
-	TargetCallFrames 	string	`json:"targetCallFrames"`
+	TargetCallFrames 	string	`json:"targetCallFrames,omitempty"`
 }
 
 type ContinueToLocationResult struct {
@@ -34,13 +39,13 @@ type EnableParams struct {
 
 	// The maximum size in bytes of collected scripts (not referenced by other heap objects)
 	// the debugger can hold. Puts no limit if paramter is omitted.
-	MaxScriptsCacheSize 	float64	`json:"maxScriptsCacheSize"`
+	MaxScriptsCacheSize 	float64	`json:"maxScriptsCacheSize,omitempty"`
 }
 
 type EnableResult struct {
 
 	// Unique identifier of the debugger.
-	DebuggerId 	interface{}	`json:"debuggerId"`
+	DebuggerId 	runtime.UniqueDebuggerId	`json:"debuggerId"`
 }
 
 // Evaluates expression on a given call frame.
@@ -56,35 +61,35 @@ type EvaluateOnCallFrameParams struct {
 
 	// String object group name to put result into (allows rapid releasing resulting object handles
 	// using `releaseObjectGroup`).
-	ObjectGroup 	string	`json:"objectGroup"`
+	ObjectGroup 	string	`json:"objectGroup,omitempty"`
 
 	// Specifies whether command line API should be available to the evaluated expression, defaults
 	// to false.
-	IncludeCommandLineAPI 	bool	`json:"includeCommandLineAPI"`
+	IncludeCommandLineAPI 	bool	`json:"includeCommandLineAPI,omitempty"`
 
 	// In silent mode exceptions thrown during evaluation are not reported and do not pause
 	// execution. Overrides `setPauseOnException` state.
-	Silent 	bool	`json:"silent"`
+	Silent 	bool	`json:"silent,omitempty"`
 
 	// Whether the result is expected to be a JSON object that should be sent by value.
-	ReturnByValue 	bool	`json:"returnByValue"`
+	ReturnByValue 	bool	`json:"returnByValue,omitempty"`
 
 	// Whether preview should be generated for the result.
-	GeneratePreview 	bool	`json:"generatePreview"`
+	GeneratePreview 	bool	`json:"generatePreview,omitempty"`
 
 	// Whether to throw an exception if side effect cannot be ruled out during evaluation.
-	ThrowOnSideEffect 	bool	`json:"throwOnSideEffect"`
+	ThrowOnSideEffect 	bool	`json:"throwOnSideEffect,omitempty"`
 
 	// Terminate execution after timing out (number of milliseconds).
-	Timeout 	interface{}	`json:"timeout"`
+	Timeout 	runtime.TimeDelta	`json:"timeout,omitempty"`
 }
 
 type EvaluateOnCallFrameResult struct {
 
 	// Object wrapper for the evaluation result.
-	Result 	interface{}	`json:"result"`
+	Result 	runtime.RemoteObject	`json:"result"`
 	// Exception details.
-	ExceptionDetails 	interface{}	`json:"exceptionDetails"`
+	ExceptionDetails 	runtime.ExceptionDetails	`json:"exceptionDetails"`
 }
 
 // Returns possible locations for breakpoint. scriptId in start and end range locations should be
@@ -98,10 +103,10 @@ type GetPossibleBreakpointsParams struct {
 
 	// End of range to search possible breakpoint locations in (excluding). When not specified, end
 	// of scripts is used as end of range.
-	End 	Location	`json:"end"`
+	End 	Location	`json:"end,omitempty"`
 
 	// Only consider locations which are in the same (non-nested) function as start.
-	RestrictToFunction 	bool	`json:"restrictToFunction"`
+	RestrictToFunction 	bool	`json:"restrictToFunction,omitempty"`
 }
 
 type GetPossibleBreakpointsResult struct {
@@ -116,7 +121,7 @@ const GetScriptSource = "Debugger.getScriptSource"
 type GetScriptSourceParams struct {
 
 	// Id of the script to get source for.
-	ScriptId 	interface{}	`json:"scriptId"`
+	ScriptId 	runtime.ScriptId	`json:"scriptId"`
 }
 
 type GetScriptSourceResult struct {
@@ -131,7 +136,7 @@ const GetWasmBytecode = "Debugger.getWasmBytecode"
 type GetWasmBytecodeParams struct {
 
 	// Id of the Wasm script to get source for.
-	ScriptId 	interface{}	`json:"scriptId"`
+	ScriptId 	runtime.ScriptId	`json:"scriptId"`
 }
 
 type GetWasmBytecodeResult struct {
@@ -146,13 +151,13 @@ const GetStackTrace = "Debugger.getStackTrace"
 type GetStackTraceParams struct {
 
 	// 
-	StackTraceId 	interface{}	`json:"stackTraceId"`
+	StackTraceId 	runtime.StackTraceId	`json:"stackTraceId"`
 }
 
 type GetStackTraceResult struct {
 
 	// 
-	StackTrace 	interface{}	`json:"stackTrace"`
+	StackTrace 	runtime.StackTrace	`json:"stackTrace"`
 }
 
 // Stops on the next JavaScript statement.
@@ -171,7 +176,7 @@ const PauseOnAsyncCall = "Debugger.pauseOnAsyncCall"
 type PauseOnAsyncCallParams struct {
 
 	// Debugger will pause when async call with given stack trace is started.
-	ParentStackTraceId 	interface{}	`json:"parentStackTraceId"`
+	ParentStackTraceId 	runtime.StackTraceId	`json:"parentStackTraceId"`
 }
 
 type PauseOnAsyncCallResult struct {
@@ -205,9 +210,9 @@ type RestartFrameResult struct {
 	// New stack trace.
 	CallFrames 	[]*CallFrame	`json:"callFrames"`
 	// Async stack trace, if any.
-	AsyncStackTrace 	interface{}	`json:"asyncStackTrace"`
+	AsyncStackTrace 	runtime.StackTrace	`json:"asyncStackTrace"`
 	// Async stack trace, if any.
-	AsyncStackTraceId 	interface{}	`json:"asyncStackTraceId"`
+	AsyncStackTraceId 	runtime.StackTraceId	`json:"asyncStackTraceId"`
 }
 
 // Resumes JavaScript execution.
@@ -226,16 +231,16 @@ const SearchInContent = "Debugger.searchInContent"
 type SearchInContentParams struct {
 
 	// Id of the script to search in.
-	ScriptId 	interface{}	`json:"scriptId"`
+	ScriptId 	runtime.ScriptId	`json:"scriptId"`
 
 	// String to search for.
 	Query 	string	`json:"query"`
 
 	// If true, search is case sensitive.
-	CaseSensitive 	bool	`json:"caseSensitive"`
+	CaseSensitive 	bool	`json:"caseSensitive,omitempty"`
 
 	// If true, treats string parameter as regex.
-	IsRegex 	bool	`json:"isRegex"`
+	IsRegex 	bool	`json:"isRegex,omitempty"`
 }
 
 type SearchInContentResult struct {
@@ -282,7 +287,7 @@ const SetBlackboxedRanges = "Debugger.setBlackboxedRanges"
 type SetBlackboxedRangesParams struct {
 
 	// Id of the script.
-	ScriptId 	interface{}	`json:"scriptId"`
+	ScriptId 	runtime.ScriptId	`json:"scriptId"`
 
 	// 
 	Positions 	[]*ScriptPosition	`json:"positions"`
@@ -302,7 +307,7 @@ type SetBreakpointParams struct {
 
 	// Expression to use as a breakpoint condition. When specified, debugger will only stop on the
 	// breakpoint if this expression evaluates to true.
-	Condition 	string	`json:"condition"`
+	Condition 	string	`json:"condition,omitempty"`
 }
 
 type SetBreakpointResult struct {
@@ -340,21 +345,21 @@ type SetBreakpointByUrlParams struct {
 	LineNumber 	int	`json:"lineNumber"`
 
 	// URL of the resources to set breakpoint on.
-	Url 	string	`json:"url"`
+	Url 	string	`json:"url,omitempty"`
 
 	// Regex pattern for the URLs of the resources to set breakpoints on. Either `url` or
 	// `urlRegex` must be specified.
-	UrlRegex 	string	`json:"urlRegex"`
+	UrlRegex 	string	`json:"urlRegex,omitempty"`
 
 	// Script hash of the resources to set breakpoint on.
-	ScriptHash 	string	`json:"scriptHash"`
+	ScriptHash 	string	`json:"scriptHash,omitempty"`
 
 	// Offset in the line to set breakpoint at.
-	ColumnNumber 	int	`json:"columnNumber"`
+	ColumnNumber 	int	`json:"columnNumber,omitempty"`
 
 	// Expression to use as a breakpoint condition. When specified, debugger will only stop on the
 	// breakpoint if this expression evaluates to true.
-	Condition 	string	`json:"condition"`
+	Condition 	string	`json:"condition,omitempty"`
 }
 
 type SetBreakpointByUrlResult struct {
@@ -373,11 +378,11 @@ const SetBreakpointOnFunctionCall = "Debugger.setBreakpointOnFunctionCall"
 type SetBreakpointOnFunctionCallParams struct {
 
 	// Function object id.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId"`
 
 	// Expression to use as a breakpoint condition. When specified, debugger will
 	// stop on the breakpoint if this expression evaluates to true.
-	Condition 	string	`json:"condition"`
+	Condition 	string	`json:"condition,omitempty"`
 }
 
 type SetBreakpointOnFunctionCallResult struct {
@@ -419,7 +424,7 @@ const SetReturnValue = "Debugger.setReturnValue"
 type SetReturnValueParams struct {
 
 	// New return value.
-	NewValue 	interface{}	`json:"newValue"`
+	NewValue 	runtime.CallArgument	`json:"newValue"`
 }
 
 type SetReturnValueResult struct {
@@ -432,14 +437,14 @@ const SetScriptSource = "Debugger.setScriptSource"
 type SetScriptSourceParams struct {
 
 	// Id of the script to edit.
-	ScriptId 	interface{}	`json:"scriptId"`
+	ScriptId 	runtime.ScriptId	`json:"scriptId"`
 
 	// New content of the script.
 	ScriptSource 	string	`json:"scriptSource"`
 
 	// If true the change will not actually be applied. Dry run may be used to get result
 	// description without actually modifying the code.
-	DryRun 	bool	`json:"dryRun"`
+	DryRun 	bool	`json:"dryRun,omitempty"`
 }
 
 type SetScriptSourceResult struct {
@@ -449,11 +454,11 @@ type SetScriptSourceResult struct {
 	// Whether current call stack  was modified after applying the changes.
 	StackChanged 	bool	`json:"stackChanged"`
 	// Async stack trace, if any.
-	AsyncStackTrace 	interface{}	`json:"asyncStackTrace"`
+	AsyncStackTrace 	runtime.StackTrace	`json:"asyncStackTrace"`
 	// Async stack trace, if any.
-	AsyncStackTraceId 	interface{}	`json:"asyncStackTraceId"`
+	AsyncStackTraceId 	runtime.StackTraceId	`json:"asyncStackTraceId"`
 	// Exception details if any.
-	ExceptionDetails 	interface{}	`json:"exceptionDetails"`
+	ExceptionDetails 	runtime.ExceptionDetails	`json:"exceptionDetails"`
 }
 
 // Makes page not interrupt on any pauses (breakpoint, exception, dom exception etc).
@@ -483,7 +488,7 @@ type SetVariableValueParams struct {
 	VariableName 	string	`json:"variableName"`
 
 	// New variable value.
-	NewValue 	interface{}	`json:"newValue"`
+	NewValue 	runtime.CallArgument	`json:"newValue"`
 
 	// Id of callframe that holds variable.
 	CallFrameId 	CallFrameId	`json:"callFrameId"`
@@ -500,7 +505,7 @@ type StepIntoParams struct {
 
 	// Debugger will pause on the execution of the first async task which was scheduled
 	// before next pause.
-	BreakOnAsyncCall 	bool	`json:"breakOnAsyncCall"`
+	BreakOnAsyncCall 	bool	`json:"breakOnAsyncCall,omitempty"`
 }
 
 type StepIntoResult struct {

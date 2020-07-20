@@ -27,10 +27,10 @@ type TargetInfo  struct {
 	Attached	bool	`json:"attached"`
 
 	// Opener target Id
-	OpenerId	TargetID	`json:"openerId"`
+	OpenerId	TargetID	`json:"openerId,omitempty"`
 
 	// 
-	BrowserContextId	BrowserContextID	`json:"browserContextId"`
+	BrowserContextId	BrowserContextID	`json:"browserContextId,omitempty"`
 }
 
 // 

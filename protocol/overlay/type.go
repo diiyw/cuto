@@ -1,42 +1,47 @@
 package overlay
+
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
 // Configuration data for the highlighting of page elements.
 type HighlightConfig  struct {
 
 	// Whether the node info tooltip should be shown (default: false).
-	ShowInfo	bool	`json:"showInfo"`
+	ShowInfo	bool	`json:"showInfo,omitempty"`
 
 	// Whether the node styles in the tooltip (default: false).
-	ShowStyles	bool	`json:"showStyles"`
+	ShowStyles	bool	`json:"showStyles,omitempty"`
 
 	// Whether the rulers should be shown (default: false).
-	ShowRulers	bool	`json:"showRulers"`
+	ShowRulers	bool	`json:"showRulers,omitempty"`
 
 	// Whether the extension lines from node to the rulers should be shown (default: false).
-	ShowExtensionLines	bool	`json:"showExtensionLines"`
+	ShowExtensionLines	bool	`json:"showExtensionLines,omitempty"`
 
 	// The content box highlight fill color (default: transparent).
-	ContentColor	interface{}	`json:"contentColor"`
+	ContentColor	cdp.RGBA	`json:"contentColor,omitempty"`
 
 	// The padding highlight fill color (default: transparent).
-	PaddingColor	interface{}	`json:"paddingColor"`
+	PaddingColor	cdp.RGBA	`json:"paddingColor,omitempty"`
 
 	// The border highlight fill color (default: transparent).
-	BorderColor	interface{}	`json:"borderColor"`
+	BorderColor	cdp.RGBA	`json:"borderColor,omitempty"`
 
 	// The margin highlight fill color (default: transparent).
-	MarginColor	interface{}	`json:"marginColor"`
+	MarginColor	cdp.RGBA	`json:"marginColor,omitempty"`
 
 	// The event target element highlight fill color (default: transparent).
-	EventTargetColor	interface{}	`json:"eventTargetColor"`
+	EventTargetColor	cdp.RGBA	`json:"eventTargetColor,omitempty"`
 
 	// The shape outside fill color (default: transparent).
-	ShapeColor	interface{}	`json:"shapeColor"`
+	ShapeColor	cdp.RGBA	`json:"shapeColor,omitempty"`
 
 	// The shape margin fill color (default: transparent).
-	ShapeMarginColor	interface{}	`json:"shapeMarginColor"`
+	ShapeMarginColor	cdp.RGBA	`json:"shapeMarginColor,omitempty"`
 
 	// The grid layout color (default: transparent).
-	CssGridColor	interface{}	`json:"cssGridColor"`
+	CssGridColor	cdp.RGBA	`json:"cssGridColor,omitempty"`
 }
 
 // 

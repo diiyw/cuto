@@ -1,5 +1,10 @@
 package layertree
 
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // 
 const LayerPaintedEvent = "LayerTree.layerPainted"
 type LayerPaintedParams struct {
@@ -7,7 +12,7 @@ type LayerPaintedParams struct {
 	// The id of the painted layer.
 	LayerId 	LayerId
 	// Clip rectangle.
-	Clip 	interface{}}
+	Clip 	cdp.Rect}
 
 
 

@@ -1,4 +1,10 @@
 package backgroundservice
+
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+	"github.com/diiyw/cuto/protocol/serviceworker"
+)
+
 // The Background Service that will be associated with the commands/events.
 	// Every Background Service operates independently, but they share the same
 	// API.
@@ -18,13 +24,13 @@ type EventMetadata  struct {
 type BackgroundServiceEvent  struct {
 
 	// Timestamp of the event (in seconds).
-	Timestamp	interface{}	`json:"timestamp"`
+	Timestamp	cdp.TimeSinceEpoch	`json:"timestamp"`
 
 	// The origin this event belongs to.
 	Origin	string	`json:"origin"`
 
 	// The Service Worker ID that initiated the event.
-	ServiceWorkerRegistrationId	interface{}	`json:"serviceWorkerRegistrationId"`
+	ServiceWorkerRegistrationId	serviceworker.RegistrationID	`json:"serviceWorkerRegistrationId"`
 
 	// The Background Service this event belongs to.
 	Service	ServiceName	`json:"service"`

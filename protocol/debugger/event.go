@@ -1,5 +1,10 @@
 package debugger
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
+
 // Fired when breakpoint is resolved to an actual script and location.
 const BreakpointResolvedEvent = "Debugger.breakpointResolved"
 type BreakpointResolvedParams struct {
@@ -24,11 +29,11 @@ type PausedParams struct {
 	// Hit breakpoints IDs
 	HitBreakpoints 	[]string
 	// Async stack trace, if any.
-	AsyncStackTrace 	interface{}
+	AsyncStackTrace 	runtime.StackTrace
 	// Async stack trace, if any.
-	AsyncStackTraceId 	interface{}
+	AsyncStackTraceId 	runtime.StackTraceId
 	// Never present, will be removed.
-	AsyncCallStackTraceId 	interface{}}
+	AsyncCallStackTraceId 	runtime.StackTraceId}
 
 
 
@@ -44,7 +49,7 @@ const ScriptFailedToParseEvent = "Debugger.scriptFailedToParse"
 type ScriptFailedToParseParams struct {
 
 	// Identifier of the script parsed.
-	ScriptId 	interface{}
+	ScriptId 	runtime.ScriptId
 	// URL or name of the script parsed (if any).
 	Url 	string
 	// Line offset of the script within the resource with given URL (for script tags).
@@ -56,7 +61,7 @@ type ScriptFailedToParseParams struct {
 	// Length of the last line of the script.
 	EndColumn 	int
 	// Specifies script creation context.
-	ExecutionContextId 	interface{}
+	ExecutionContextId 	runtime.ExecutionContextId
 	// Content hash of the script.
 	Hash 	string
 	// Embedder-specific auxiliary data.
@@ -70,7 +75,7 @@ type ScriptFailedToParseParams struct {
 	// This script length.
 	Length 	int
 	// JavaScript top stack frame of where the script parsed event was triggered if available.
-	StackTrace 	interface{}}
+	StackTrace 	runtime.StackTrace}
 
 
 
@@ -80,7 +85,7 @@ const ScriptParsedEvent = "Debugger.scriptParsed"
 type ScriptParsedParams struct {
 
 	// Identifier of the script parsed.
-	ScriptId 	interface{}
+	ScriptId 	runtime.ScriptId
 	// URL or name of the script parsed (if any).
 	Url 	string
 	// Line offset of the script within the resource with given URL (for script tags).
@@ -92,7 +97,7 @@ type ScriptParsedParams struct {
 	// Length of the last line of the script.
 	EndColumn 	int
 	// Specifies script creation context.
-	ExecutionContextId 	interface{}
+	ExecutionContextId 	runtime.ExecutionContextId
 	// Content hash of the script.
 	Hash 	string
 	// Embedder-specific auxiliary data.
@@ -108,5 +113,5 @@ type ScriptParsedParams struct {
 	// This script length.
 	Length 	int
 	// JavaScript top stack frame of where the script parsed event was triggered if available.
-	StackTrace 	interface{}}
+	StackTrace 	runtime.StackTrace}
 

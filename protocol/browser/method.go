@@ -1,5 +1,10 @@
 package browser
 
+import (
+	"github.com/diiyw/cuto/protocol/target"
+)
+
+
 // Set permission settings for given origin.
 const SetPermission = "Browser.setPermission"
 
@@ -15,7 +20,7 @@ type SetPermissionParams struct {
 	Setting 	PermissionSetting	`json:"setting"`
 
 	// Context to override. When omitted, default browser context is used.
-	BrowserContextId 	interface{}	`json:"browserContextId"`
+	BrowserContextId 	target.TargetID	`json:"browserContextId,omitempty"`
 }
 
 type SetPermissionResult struct {
@@ -34,7 +39,7 @@ type GrantPermissionsParams struct {
 	Permissions 	[]*PermissionType	`json:"permissions"`
 
 	// BrowserContext to override permissions. When omitted, default browser context is used.
-	BrowserContextId 	interface{}	`json:"browserContextId"`
+	BrowserContextId 	target.BrowserContextID	`json:"browserContextId,omitempty"`
 }
 
 type GrantPermissionsResult struct {
@@ -47,7 +52,7 @@ const ResetPermissions = "Browser.resetPermissions"
 type ResetPermissionsParams struct {
 
 	// BrowserContext to reset permissions. When omitted, default browser context is used.
-	BrowserContextId 	interface{}	`json:"browserContextId"`
+	BrowserContextId 	target.BrowserContextID	`json:"browserContextId,omitempty"`
 }
 
 type ResetPermissionsResult struct {
@@ -125,10 +130,10 @@ type GetHistogramsParams struct {
 	// Requested substring in name. Only histograms which have query as a
 	// substring in their name are extracted. An empty or absent query returns
 	// all histograms.
-	Query 	string	`json:"query"`
+	Query 	string	`json:"query,omitempty"`
 
 	// If true, retrieve delta since last call.
-	Delta 	bool	`json:"delta"`
+	Delta 	bool	`json:"delta,omitempty"`
 }
 
 type GetHistogramsResult struct {
@@ -146,7 +151,7 @@ type GetHistogramParams struct {
 	Name 	string	`json:"name"`
 
 	// If true, retrieve delta since last call.
-	Delta 	bool	`json:"delta"`
+	Delta 	bool	`json:"delta,omitempty"`
 }
 
 type GetHistogramResult struct {
@@ -177,7 +182,7 @@ const GetWindowForTarget = "Browser.getWindowForTarget"
 type GetWindowForTargetParams struct {
 
 	// Devtools agent host id. If called as a part of the session, associated targetId is used.
-	TargetId 	interface{}	`json:"targetId"`
+	TargetId 	target.TargetID	`json:"targetId,omitempty"`
 }
 
 type GetWindowForTargetResult struct {
@@ -212,10 +217,10 @@ const SetDockTile = "Browser.setDockTile"
 type SetDockTileParams struct {
 
 	// 
-	BadgeLabel 	string	`json:"badgeLabel"`
+	BadgeLabel 	string	`json:"badgeLabel,omitempty"`
 
 	// Png encoded image.
-	Image 	[]byte	`json:"image"`
+	Image 	[]byte	`json:"image,omitempty"`
 }
 
 type SetDockTileResult struct {

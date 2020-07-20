@@ -1,4 +1,9 @@
 package heapprofiler
+
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+)
+
 // Heap snapshot object id.
 type HeapSnapshotObjectId string
 
@@ -6,7 +11,7 @@ type HeapSnapshotObjectId string
 type SamplingHeapProfileNode  struct {
 
 	// Function location.
-	CallFrame	interface{}	`json:"callFrame"`
+	CallFrame	runtime.CallFrame	`json:"callFrame"`
 
 	// Allocations size in bytes for the node excluding children.
 	SelfSize	float64	`json:"selfSize"`

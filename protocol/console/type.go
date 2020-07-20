@@ -12,11 +12,11 @@ type ConsoleMessage  struct {
 	Text	string	`json:"text"`
 
 	// URL of the message origin.
-	Url	string	`json:"url"`
+	Url	string	`json:"url,omitempty"`
 
 	// Line number in the resource that generated this message (1-based).
-	Line	int	`json:"line"`
+	Line	int	`json:"line,omitempty"`
 
 	// Column number in the resource that generated this message (1-based).
-	Column	int	`json:"column"`
+	Column	int	`json:"column,omitempty"`
 }

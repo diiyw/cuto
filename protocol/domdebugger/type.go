@@ -1,4 +1,10 @@
 package domdebugger
+
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/dom"
+)
+
 // DOM breakpoint type.
 type DOMBreakpointType string
 
@@ -18,7 +24,7 @@ type EventListener  struct {
 	Once	bool	`json:"once"`
 
 	// Script id of the handler code.
-	ScriptId	interface{}	`json:"scriptId"`
+	ScriptId	runtime.ScriptId	`json:"scriptId"`
 
 	// Line number in the script (0-based).
 	LineNumber	int	`json:"lineNumber"`
@@ -27,11 +33,11 @@ type EventListener  struct {
 	ColumnNumber	int	`json:"columnNumber"`
 
 	// Event handler function value.
-	Handler	interface{}	`json:"handler"`
+	Handler	runtime.RemoteObject	`json:"handler,omitempty"`
 
 	// Event original handler function value.
-	OriginalHandler	interface{}	`json:"originalHandler"`
+	OriginalHandler	runtime.RemoteObject	`json:"originalHandler,omitempty"`
 
 	// Node the listener is added to (if any).
-	BackendNodeId	interface{}	`json:"backendNodeId"`
+	BackendNodeId	dom.BackendNodeId	`json:"backendNodeId,omitempty"`
 }

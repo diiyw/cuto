@@ -10,7 +10,7 @@ const Enable = "Cast.enable"
 type EnableParams struct {
 
 	// 
-	PresentationUrl 	string	`json:"presentationUrl"`
+	PresentationUrl 	string	`json:"presentationUrl,omitempty"`
 }
 
 type EnableResult struct {

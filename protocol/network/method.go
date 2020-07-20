@@ -1,6 +1,7 @@
 package network
 
 import (
+	"github.com/diiyw/cuto/protocol/io"
 	"github.com/diiyw/cuto/protocol/debugger"
 )
 
@@ -76,29 +77,29 @@ type ContinueInterceptedRequestParams struct {
 	// If set this causes the request to fail with the given reason. Passing `Aborted` for requests
 	// marked with `isNavigationRequest` also cancels the navigation. Must not be set in response
 	// to an authChallenge.
-	ErrorReason 	ErrorReason	`json:"errorReason"`
+	ErrorReason 	ErrorReason	`json:"errorReason,omitempty"`
 
 	// If set the requests completes using with the provided base64 encoded raw response, including
 	// HTTP status line and headers etc... Must not be set in response to an authChallenge.
-	RawResponse 	[]byte	`json:"rawResponse"`
+	RawResponse 	[]byte	`json:"rawResponse,omitempty"`
 
 	// If set the request url will be modified in a way that's not observable by page. Must not be
 	// set in response to an authChallenge.
-	Url 	string	`json:"url"`
+	Url 	string	`json:"url,omitempty"`
 
 	// If set this allows the request method to be overridden. Must not be set in response to an
 	// authChallenge.
-	Method 	string	`json:"method"`
+	Method 	string	`json:"method,omitempty"`
 
 	// If set this allows postData to be set. Must not be set in response to an authChallenge.
-	PostData 	string	`json:"postData"`
+	PostData 	string	`json:"postData,omitempty"`
 
 	// If set this allows the request headers to be changed. Must not be set in response to an
 	// authChallenge.
-	Headers 	Headers	`json:"headers"`
+	Headers 	Headers	`json:"headers,omitempty"`
 
 	// Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
-	AuthChallengeResponse 	AuthChallengeResponse	`json:"authChallengeResponse"`
+	AuthChallengeResponse 	AuthChallengeResponse	`json:"authChallengeResponse,omitempty"`
 }
 
 type ContinueInterceptedRequestResult struct {
@@ -115,13 +116,13 @@ type DeleteCookiesParams struct {
 
 	// If specified, deletes all the cookies with the given name where domain and path match
 	// provided URL.
-	Url 	string	`json:"url"`
+	Url 	string	`json:"url,omitempty"`
 
 	// If specified, deletes only cookies with the exact domain.
-	Domain 	string	`json:"domain"`
+	Domain 	string	`json:"domain,omitempty"`
 
 	// If specified, deletes only cookies with the exact path.
-	Path 	string	`json:"path"`
+	Path 	string	`json:"path,omitempty"`
 }
 
 type DeleteCookiesResult struct {
@@ -156,7 +157,7 @@ type EmulateNetworkConditionsParams struct {
 	UploadThroughput 	float64	`json:"uploadThroughput"`
 
 	// Connection type if known.
-	ConnectionType 	ConnectionType	`json:"connectionType"`
+	ConnectionType 	ConnectionType	`json:"connectionType,omitempty"`
 }
 
 type EmulateNetworkConditionsResult struct {
@@ -169,13 +170,13 @@ const Enable = "Network.enable"
 type EnableParams struct {
 
 	// Buffer size in bytes to use when preserving network payloads (XHRs, etc).
-	MaxTotalBufferSize 	int	`json:"maxTotalBufferSize"`
+	MaxTotalBufferSize 	int	`json:"maxTotalBufferSize,omitempty"`
 
 	// Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc).
-	MaxResourceBufferSize 	int	`json:"maxResourceBufferSize"`
+	MaxResourceBufferSize 	int	`json:"maxResourceBufferSize,omitempty"`
 
 	// Longest post body size (in bytes) that would be included in requestWillBeSent notification
-	MaxPostDataSize 	int	`json:"maxPostDataSize"`
+	MaxPostDataSize 	int	`json:"maxPostDataSize,omitempty"`
 }
 
 type EnableResult struct {
@@ -217,7 +218,7 @@ const GetCookies = "Network.getCookies"
 type GetCookiesParams struct {
 
 	// The list of URLs for which applicable cookies will be fetched
-	Urls 	[]string	`json:"urls"`
+	Urls 	[]string	`json:"urls,omitempty"`
 }
 
 type GetCookiesResult struct {
@@ -290,7 +291,7 @@ type TakeResponseBodyForInterceptionAsStreamParams struct {
 type TakeResponseBodyForInterceptionAsStreamResult struct {
 
 	// 
-	Stream 	interface{}	`json:"stream"`
+	Stream 	io.StreamHandle	`json:"stream"`
 }
 
 // This method sends a new XMLHttpRequest which is identical to the original one. The following
@@ -320,10 +321,10 @@ type SearchInResponseBodyParams struct {
 	Query 	string	`json:"query"`
 
 	// If true, search is case sensitive.
-	CaseSensitive 	bool	`json:"caseSensitive"`
+	CaseSensitive 	bool	`json:"caseSensitive,omitempty"`
 
 	// If true, treats string parameter as regex.
-	IsRegex 	bool	`json:"isRegex"`
+	IsRegex 	bool	`json:"isRegex,omitempty"`
 }
 
 type SearchInResponseBodyResult struct {
@@ -384,25 +385,25 @@ type SetCookieParams struct {
 
 	// The request-URI to associate with the setting of the cookie. This value can affect the
 	// default domain and path values of the created cookie.
-	Url 	string	`json:"url"`
+	Url 	string	`json:"url,omitempty"`
 
 	// Cookie domain.
-	Domain 	string	`json:"domain"`
+	Domain 	string	`json:"domain,omitempty"`
 
 	// Cookie path.
-	Path 	string	`json:"path"`
+	Path 	string	`json:"path,omitempty"`
 
 	// True if cookie is secure.
-	Secure 	bool	`json:"secure"`
+	Secure 	bool	`json:"secure,omitempty"`
 
 	// True if cookie is http-only.
-	HttpOnly 	bool	`json:"httpOnly"`
+	HttpOnly 	bool	`json:"httpOnly,omitempty"`
 
 	// Cookie SameSite type.
-	SameSite 	CookieSameSite	`json:"sameSite"`
+	SameSite 	CookieSameSite	`json:"sameSite,omitempty"`
 
 	// Cookie expiration date, session cookie if not set
-	Expires 	TimeSinceEpoch	`json:"expires"`
+	Expires 	TimeSinceEpoch	`json:"expires,omitempty"`
 }
 
 type SetCookieResult struct {
@@ -477,10 +478,10 @@ type SetUserAgentOverrideParams struct {
 	UserAgent 	string	`json:"userAgent"`
 
 	// Browser langugage to emulate.
-	AcceptLanguage 	string	`json:"acceptLanguage"`
+	AcceptLanguage 	string	`json:"acceptLanguage,omitempty"`
 
 	// The platform navigator.platform should return.
-	Platform 	string	`json:"platform"`
+	Platform 	string	`json:"platform,omitempty"`
 }
 
 type SetUserAgentOverrideResult struct {

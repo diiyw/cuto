@@ -1,5 +1,11 @@
 package fetch
 
+import (
+	"github.com/diiyw/cuto/protocol/network"
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Issued when the domain is enabled and the request URL matches the
 // specified filter. The request is paused until the client responds
 // with one of continueRequest, failRequest or fulfillRequest.
@@ -12,13 +18,13 @@ type RequestPausedParams struct {
 	// Each request the page makes will have a unique id.
 	RequestId 	RequestId
 	// The details of the request.
-	Request 	interface{}
+	Request 	network.Request
 	// The id of the frame that initiated the request.
-	FrameId 	interface{}
+	FrameId 	cdp.FrameId
 	// How the requested resource will be used.
-	ResourceType 	interface{}
+	ResourceType 	network.ResourceType
 	// Response error if intercepted at response stage.
-	ResponseErrorReason 	interface{}
+	ResponseErrorReason 	network.ErrorReason
 	// Response code if intercepted at response stage.
 	ResponseStatusCode 	int
 	// Response headers if intercepted at the response stage.
@@ -37,11 +43,11 @@ type AuthRequiredParams struct {
 	// Each request the page makes will have a unique id.
 	RequestId 	RequestId
 	// The details of the request.
-	Request 	interface{}
+	Request 	network.Request
 	// The id of the frame that initiated the request.
-	FrameId 	interface{}
+	FrameId 	cdp.FrameId
 	// How the requested resource will be used.
-	ResourceType 	interface{}
+	ResourceType 	network.ResourceType
 	// Details of the Authorization Challenge encountered.
 	// If this is set, client should respond with continueRequest that
 	// contains AuthChallengeResponse.

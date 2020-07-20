@@ -1,5 +1,12 @@
 package overlay
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/dom"
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Disables domain notifications.
 const Disable = "Overlay.disable"
 
@@ -26,13 +33,13 @@ const GetHighlightObjectForTest = "Overlay.getHighlightObjectForTest"
 type GetHighlightObjectForTestParams struct {
 
 	// Id of the node to get highlight object for.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 
 	// Whether to include distance info.
-	IncludeDistance 	bool	`json:"includeDistance"`
+	IncludeDistance 	bool	`json:"includeDistance,omitempty"`
 
 	// Whether to include style info.
-	IncludeStyle 	bool	`json:"includeStyle"`
+	IncludeStyle 	bool	`json:"includeStyle,omitempty"`
 }
 
 type GetHighlightObjectForTestResult struct {
@@ -57,13 +64,13 @@ const HighlightFrame = "Overlay.highlightFrame"
 type HighlightFrameParams struct {
 
 	// Identifier of the frame to highlight.
-	FrameId 	interface{}	`json:"frameId"`
+	FrameId 	cdp.FrameId	`json:"frameId"`
 
 	// The content box highlight fill color (default: transparent).
-	ContentColor 	interface{}	`json:"contentColor"`
+	ContentColor 	cdp.RGBA	`json:"contentColor,omitempty"`
 
 	// The content box highlight outline color (default: transparent).
-	ContentOutlineColor 	interface{}	`json:"contentOutlineColor"`
+	ContentOutlineColor 	cdp.RGBA	`json:"contentOutlineColor,omitempty"`
 }
 
 type HighlightFrameResult struct {
@@ -80,16 +87,16 @@ type HighlightNodeParams struct {
 	HighlightConfig 	HighlightConfig	`json:"highlightConfig"`
 
 	// Identifier of the node to highlight.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId,omitempty"`
 
 	// Identifier of the backend node to highlight.
-	BackendNodeId 	interface{}	`json:"backendNodeId"`
+	BackendNodeId 	dom.BackendNodeId	`json:"backendNodeId,omitempty"`
 
 	// JavaScript object id of the node to be highlighted.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId,omitempty"`
 
 	// Selectors to highlight relevant nodes.
-	Selector 	string	`json:"selector"`
+	Selector 	string	`json:"selector,omitempty"`
 }
 
 type HighlightNodeResult struct {
@@ -102,13 +109,13 @@ const HighlightQuad = "Overlay.highlightQuad"
 type HighlightQuadParams struct {
 
 	// Quad to highlight
-	Quad 	interface{}	`json:"quad"`
+	Quad 	dom.Quad	`json:"quad"`
 
 	// The highlight fill color (default: transparent).
-	Color 	interface{}	`json:"color"`
+	Color 	cdp.RGBA	`json:"color,omitempty"`
 
 	// The highlight outline color (default: transparent).
-	OutlineColor 	interface{}	`json:"outlineColor"`
+	OutlineColor 	cdp.RGBA	`json:"outlineColor,omitempty"`
 }
 
 type HighlightQuadResult struct {
@@ -133,10 +140,10 @@ type HighlightRectParams struct {
 	Height 	int	`json:"height"`
 
 	// The highlight fill color (default: transparent).
-	Color 	interface{}	`json:"color"`
+	Color 	cdp.RGBA	`json:"color,omitempty"`
 
 	// The highlight outline color (default: transparent).
-	OutlineColor 	interface{}	`json:"outlineColor"`
+	OutlineColor 	cdp.RGBA	`json:"outlineColor,omitempty"`
 }
 
 type HighlightRectResult struct {
@@ -154,7 +161,7 @@ type SetInspectModeParams struct {
 
 	// A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
 	// == false`.
-	HighlightConfig 	HighlightConfig	`json:"highlightConfig"`
+	HighlightConfig 	HighlightConfig	`json:"highlightConfig,omitempty"`
 }
 
 type SetInspectModeResult struct {
@@ -180,7 +187,7 @@ const SetPausedInDebuggerMessage = "Overlay.setPausedInDebuggerMessage"
 type SetPausedInDebuggerMessageParams struct {
 
 	// The message to display, also triggers resume and step over controls.
-	Message 	string	`json:"message"`
+	Message 	string	`json:"message,omitempty"`
 }
 
 type SetPausedInDebuggerMessageResult struct {

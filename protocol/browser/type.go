@@ -9,19 +9,19 @@ type WindowState string
 type Bounds  struct {
 
 	// The offset from the left edge of the screen to the window in pixels.
-	Left	int	`json:"left"`
+	Left	int	`json:"left,omitempty"`
 
 	// The offset from the top edge of the screen to the window in pixels.
-	Top	int	`json:"top"`
+	Top	int	`json:"top,omitempty"`
 
 	// The window width in pixels.
-	Width	int	`json:"width"`
+	Width	int	`json:"width,omitempty"`
 
 	// The window height in pixels.
-	Height	int	`json:"height"`
+	Height	int	`json:"height,omitempty"`
 
 	// The window state. Default to normal.
-	WindowState	WindowState	`json:"windowState"`
+	WindowState	WindowState	`json:"windowState,omitempty"`
 }
 
 // 
@@ -39,14 +39,14 @@ type PermissionDescriptor  struct {
 	Name	string	`json:"name"`
 
 	// For "midi" permission, may also specify sysex control.
-	Sysex	bool	`json:"sysex"`
+	Sysex	bool	`json:"sysex,omitempty"`
 
 	// For "push" permission, may specify userVisibleOnly.
 	// Note that userVisibleOnly = true is the only currently supported type.
-	UserVisibleOnly	bool	`json:"userVisibleOnly"`
+	UserVisibleOnly	bool	`json:"userVisibleOnly,omitempty"`
 
 	// For "wake-lock" permission, must specify type as either "screen" or "system".
-	Type	string	`json:"type"`
+	Type	string	`json:"type,omitempty"`
 }
 
 // Chrome histogram bucket.

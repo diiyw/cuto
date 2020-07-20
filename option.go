@@ -4,26 +4,38 @@ import "time"
 
 type Option func(b *Browser)
 
-func WithChrome(bin string) Option {
+func Binary(bin string) Option {
 	return func(b *Browser) {
-		b.bin = bin
+		b.binary = bin
 	}
 }
 
-func WithDataDir(dir string) Option {
+func Headless() Option {
+	return func(b *Browser) {
+		b.commands = append(b.commands, "--headless")
+	}
+}
+
+func DataDir(dir string) Option {
 	return func(b *Browser) {
 		b.dataDir = dir
 	}
 }
 
-func WithRemoteAddr(addr string) Option {
+func RemoteAddr(addr string) Option {
 	return func(b *Browser) {
 		b.remoteAddr = addr
 	}
 }
 
-func WithTimeout(d time.Duration) Option {
+func Timeout(d time.Duration) Option {
 	return func(b *Browser) {
 		b.timeout = d
+	}
+}
+
+func Debug() Option {
+	return func(b *Browser) {
+		b.debug = true
 	}
 }

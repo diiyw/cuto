@@ -1,5 +1,10 @@
 package emulation
 
+import (
+	"github.com/diiyw/cuto/protocol/cdp"
+)
+
+
 // Tells whether emulation is supported.
 const CanEmulate = "Emulation.canEmulate"
 
@@ -76,7 +81,7 @@ type SetDefaultBackgroundColorOverrideParams struct {
 
 	// RGBA of the default background color. If not specified, any existing override will be
 	// cleared.
-	Color 	interface{}	`json:"color"`
+	Color 	cdp.RGBA	`json:"color,omitempty"`
 }
 
 type SetDefaultBackgroundColorOverrideResult struct {
@@ -104,29 +109,29 @@ type SetDeviceMetricsOverrideParams struct {
 	Mobile 	bool	`json:"mobile"`
 
 	// Scale to apply to resulting view image.
-	Scale 	float64	`json:"scale"`
+	Scale 	float64	`json:"scale,omitempty"`
 
 	// Overriding screen width value in pixels (minimum 0, maximum 10000000).
-	ScreenWidth 	int	`json:"screenWidth"`
+	ScreenWidth 	int	`json:"screenWidth,omitempty"`
 
 	// Overriding screen height value in pixels (minimum 0, maximum 10000000).
-	ScreenHeight 	int	`json:"screenHeight"`
+	ScreenHeight 	int	`json:"screenHeight,omitempty"`
 
 	// Overriding view X position on screen in pixels (minimum 0, maximum 10000000).
-	PositionX 	int	`json:"positionX"`
+	PositionX 	int	`json:"positionX,omitempty"`
 
 	// Overriding view Y position on screen in pixels (minimum 0, maximum 10000000).
-	PositionY 	int	`json:"positionY"`
+	PositionY 	int	`json:"positionY,omitempty"`
 
 	// Do not set visible view size, rely upon explicit setVisibleSize call.
-	DontSetVisibleSize 	bool	`json:"dontSetVisibleSize"`
+	DontSetVisibleSize 	bool	`json:"dontSetVisibleSize,omitempty"`
 
 	// Screen orientation override.
-	ScreenOrientation 	ScreenOrientation	`json:"screenOrientation"`
+	ScreenOrientation 	ScreenOrientation	`json:"screenOrientation,omitempty"`
 
 	// If set, the visible area of the page will be overridden to this viewport. This viewport
 	// change is not observed by the page, e.g. viewport-relative elements do not change positions.
-	Viewport 	interface{}	`json:"viewport"`
+	Viewport 	cdp.Viewport	`json:"viewport,omitempty"`
 }
 
 type SetDeviceMetricsOverrideResult struct {
@@ -168,7 +173,7 @@ type SetEmitTouchEventsForMouseParams struct {
 	Enabled 	bool	`json:"enabled"`
 
 	// Touch/gesture events configuration. Default: current platform.
-	Configuration 	string	`json:"configuration"`
+	Configuration 	string	`json:"configuration,omitempty"`
 }
 
 type SetEmitTouchEventsForMouseResult struct {
@@ -181,10 +186,10 @@ const SetEmulatedMedia = "Emulation.setEmulatedMedia"
 type SetEmulatedMediaParams struct {
 
 	// Media type to emulate. Empty string disables the override.
-	Media 	string	`json:"media"`
+	Media 	string	`json:"media,omitempty"`
 
 	// Media features to emulate.
-	Features 	[]*MediaFeature	`json:"features"`
+	Features 	[]*MediaFeature	`json:"features,omitempty"`
 }
 
 type SetEmulatedMediaResult struct {
@@ -198,13 +203,13 @@ const SetGeolocationOverride = "Emulation.setGeolocationOverride"
 type SetGeolocationOverrideParams struct {
 
 	// Mock latitude
-	Latitude 	float64	`json:"latitude"`
+	Latitude 	float64	`json:"latitude,omitempty"`
 
 	// Mock longitude
-	Longitude 	float64	`json:"longitude"`
+	Longitude 	float64	`json:"longitude,omitempty"`
 
 	// Mock accuracy
-	Accuracy 	float64	`json:"accuracy"`
+	Accuracy 	float64	`json:"accuracy,omitempty"`
 }
 
 type SetGeolocationOverrideResult struct {
@@ -259,7 +264,7 @@ type SetTouchEmulationEnabledParams struct {
 	Enabled 	bool	`json:"enabled"`
 
 	// Maximum touch points supported. Defaults to one.
-	MaxTouchPoints 	int	`json:"maxTouchPoints"`
+	MaxTouchPoints 	int	`json:"maxTouchPoints,omitempty"`
 }
 
 type SetTouchEmulationEnabledResult struct {
@@ -277,18 +282,18 @@ type SetVirtualTimePolicyParams struct {
 
 	// If set, after this many virtual milliseconds have elapsed virtual time will be paused and a
 	// virtualTimeBudgetExpired event is sent.
-	Budget 	float64	`json:"budget"`
+	Budget 	float64	`json:"budget,omitempty"`
 
 	// If set this specifies the maximum number of tasks that can be run before virtual is forced
 	// forwards to prevent deadlock.
-	MaxVirtualTimeTaskStarvationCount 	int	`json:"maxVirtualTimeTaskStarvationCount"`
+	MaxVirtualTimeTaskStarvationCount 	int	`json:"maxVirtualTimeTaskStarvationCount,omitempty"`
 
 	// If set the virtual time policy change should be deferred until any frame starts navigating.
 	// Note any previous deferred policy change is superseded.
-	WaitForNavigation 	bool	`json:"waitForNavigation"`
+	WaitForNavigation 	bool	`json:"waitForNavigation,omitempty"`
 
 	// If set, base::Time::Now will be overriden to initially return this value.
-	InitialVirtualTime 	interface{}	`json:"initialVirtualTime"`
+	InitialVirtualTime 	cdp.TimeSinceEpoch	`json:"initialVirtualTime,omitempty"`
 }
 
 type SetVirtualTimePolicyResult struct {
@@ -338,10 +343,10 @@ type SetUserAgentOverrideParams struct {
 	UserAgent 	string	`json:"userAgent"`
 
 	// Browser langugage to emulate.
-	AcceptLanguage 	string	`json:"acceptLanguage"`
+	AcceptLanguage 	string	`json:"acceptLanguage,omitempty"`
 
 	// The platform navigator.platform should return.
-	Platform 	string	`json:"platform"`
+	Platform 	string	`json:"platform,omitempty"`
 }
 
 type SetUserAgentOverrideResult struct {

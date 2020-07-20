@@ -24,7 +24,7 @@ type AttachToTargetParams struct {
 	// Enables "flat" access to the session via specifying sessionId attribute in the commands.
 	// We plan to make this the default, deprecate non-flattened mode,
 	// and eventually retire it. See crbug.com/991325.
-	Flatten 	bool	`json:"flatten"`
+	Flatten 	bool	`json:"flatten,omitempty"`
 }
 
 type AttachToTargetResult struct {
@@ -76,7 +76,7 @@ type ExposeDevToolsProtocolParams struct {
 	TargetId 	TargetID	`json:"targetId"`
 
 	// Binding name, 'cdp' if not specified.
-	BindingName 	string	`json:"bindingName"`
+	BindingName 	string	`json:"bindingName,omitempty"`
 }
 
 type ExposeDevToolsProtocolResult struct {
@@ -117,24 +117,24 @@ type CreateTargetParams struct {
 	Url 	string	`json:"url"`
 
 	// Frame width in DIP (headless chrome only).
-	Width 	int	`json:"width"`
+	Width 	int	`json:"width,omitempty"`
 
 	// Frame height in DIP (headless chrome only).
-	Height 	int	`json:"height"`
+	Height 	int	`json:"height,omitempty"`
 
 	// The browser context to create the page in.
-	BrowserContextId 	BrowserContextID	`json:"browserContextId"`
+	BrowserContextId 	BrowserContextID	`json:"browserContextId,omitempty"`
 
 	// Whether BeginFrames for this target will be controlled via DevTools (headless chrome only,
 	// not supported on MacOS yet, false by default).
-	EnableBeginFrameControl 	bool	`json:"enableBeginFrameControl"`
+	EnableBeginFrameControl 	bool	`json:"enableBeginFrameControl,omitempty"`
 
 	// Whether to create a new Window or Tab (chrome-only, false by default).
-	NewWindow 	bool	`json:"newWindow"`
+	NewWindow 	bool	`json:"newWindow,omitempty"`
 
 	// Whether to create the target in background or foreground (chrome-only,
 	// false by default).
-	Background 	bool	`json:"background"`
+	Background 	bool	`json:"background,omitempty"`
 }
 
 type CreateTargetResult struct {
@@ -149,10 +149,10 @@ const DetachFromTarget = "Target.detachFromTarget"
 type DetachFromTargetParams struct {
 
 	// Session to detach.
-	SessionId 	SessionID	`json:"sessionId"`
+	SessionId 	SessionID	`json:"sessionId,omitempty"`
 
 	// Deprecated.
-	TargetId 	TargetID	`json:"targetId"`
+	TargetId 	TargetID	`json:"targetId,omitempty"`
 }
 
 type DetachFromTargetResult struct {
@@ -179,7 +179,7 @@ const GetTargetInfo = "Target.getTargetInfo"
 type GetTargetInfoParams struct {
 
 	// 
-	TargetId 	TargetID	`json:"targetId"`
+	TargetId 	TargetID	`json:"targetId,omitempty"`
 }
 
 type GetTargetInfoResult struct {
@@ -211,10 +211,10 @@ type SendMessageToTargetParams struct {
 	Message 	string	`json:"message"`
 
 	// Identifier of the session.
-	SessionId 	SessionID	`json:"sessionId"`
+	SessionId 	SessionID	`json:"sessionId,omitempty"`
 
 	// Deprecated.
-	TargetId 	TargetID	`json:"targetId"`
+	TargetId 	TargetID	`json:"targetId,omitempty"`
 }
 
 type SendMessageToTargetResult struct {
@@ -238,10 +238,10 @@ type SetAutoAttachParams struct {
 	// Enables "flat" access to the session via specifying sessionId attribute in the commands.
 	// We plan to make this the default, deprecate non-flattened mode,
 	// and eventually retire it. See crbug.com/991325.
-	Flatten 	bool	`json:"flatten"`
+	Flatten 	bool	`json:"flatten,omitempty"`
 
 	// Auto-attach to the targets created via window.open from current target.
-	WindowOpen 	bool	`json:"windowOpen"`
+	WindowOpen 	bool	`json:"windowOpen,omitempty"`
 }
 
 type SetAutoAttachResult struct {

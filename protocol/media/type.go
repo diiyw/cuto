@@ -12,7 +12,7 @@ type PlayerProperty  struct {
 	Name	string	`json:"name"`
 
 	// 
-	Value	string	`json:"value"`
+	Value	string	`json:"value,omitempty"`
 }
 
 // Break out events into different types

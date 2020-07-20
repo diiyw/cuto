@@ -1,20 +1,26 @@
 package domdebugger
 
+import (
+	"github.com/diiyw/cuto/protocol/runtime"
+	"github.com/diiyw/cuto/protocol/dom"
+)
+
+
 // Returns event listeners of the given object.
 const GetEventListeners = "DOMDebugger.getEventListeners"
 
 type GetEventListenersParams struct {
 
 	// Identifier of the object to return listeners for.
-	ObjectId 	interface{}	`json:"objectId"`
+	ObjectId 	runtime.RemoteObjectId	`json:"objectId"`
 
 	// The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the
 	// entire subtree or provide an integer larger than 0.
-	Depth 	int	`json:"depth"`
+	Depth 	int	`json:"depth,omitempty"`
 
 	// Whether or not iframes and shadow roots should be traversed when returning the subtree
 	// (default is false). Reports listeners for all contexts if pierce is enabled.
-	Pierce 	bool	`json:"pierce"`
+	Pierce 	bool	`json:"pierce,omitempty"`
 }
 
 type GetEventListenersResult struct {
@@ -29,7 +35,7 @@ const RemoveDOMBreakpoint = "DOMDebugger.removeDOMBreakpoint"
 type RemoveDOMBreakpointParams struct {
 
 	// Identifier of the node to remove breakpoint from.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 
 	// Type of the breakpoint to remove.
 	Type 	DOMBreakpointType	`json:"type"`
@@ -48,7 +54,7 @@ type RemoveEventListenerBreakpointParams struct {
 	EventName 	string	`json:"eventName"`
 
 	// EventTarget interface name.
-	TargetName 	string	`json:"targetName"`
+	TargetName 	string	`json:"targetName,omitempty"`
 }
 
 type RemoveEventListenerBreakpointResult struct {
@@ -87,7 +93,7 @@ const SetDOMBreakpoint = "DOMDebugger.setDOMBreakpoint"
 type SetDOMBreakpointParams struct {
 
 	// Identifier of the node to set breakpoint on.
-	NodeId 	interface{}	`json:"nodeId"`
+	NodeId 	dom.NodeId	`json:"nodeId"`
 
 	// Type of the operation to stop upon.
 	Type 	DOMBreakpointType	`json:"type"`
@@ -107,7 +113,7 @@ type SetEventListenerBreakpointParams struct {
 
 	// EventTarget interface name to stop on. If equal to `"*"` or not provided, will stop on any
 	// EventTarget.
-	TargetName 	string	`json:"targetName"`
+	TargetName 	string	`json:"targetName,omitempty"`
 }
 
 type SetEventListenerBreakpointResult struct {
