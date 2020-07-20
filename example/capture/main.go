@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	browser, err := cuto.Create(cuto.Debug(),cuto.Headless())
+	browser, err := cuto.NewBrowser(cuto.Debug(),cuto.Headless())
 	if err != nil {
 		log.Fatal(err)
 	}

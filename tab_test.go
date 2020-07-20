@@ -7,7 +7,7 @@ import (
 )
 
 func TestTab(t *testing.T) {
-	browser, err := Create(
+	browser, err := NewBrowser(
 		WithDebug())
 	if err != nil {
 		log.Println(err)

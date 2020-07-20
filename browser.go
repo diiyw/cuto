@@ -31,8 +31,8 @@ type Browser struct {
 	commands []string
 }
 
-// Create chrome client
-func Create(options ...Option) (*Browser, error) {
+// NewBrowser chrome client
+func NewBrowser(options ...Option) (*Browser, error) {
 	c := new(Browser)
 
 	for _, filename := range defaultBrowser {

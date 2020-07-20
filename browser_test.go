@@ -7,7 +7,7 @@ import (
 )
 
 func Test_browser(t *testing.T) {
-	browser, err := Create(nil)
+	browser, err := NewBrowser(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
