@@ -104,7 +104,9 @@ func (b *Browser) Open(url string) (*Tab, error) {
 
 // Close chrome
 func (b *Browser) Close() error {
-	_ = os.RemoveAll(b.dataDir)
+	defer func() {
+		_ = os.RemoveAll(b.dataDir)
+	}()
 	return b.process.Kill()
 }
 

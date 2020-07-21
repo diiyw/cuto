@@ -38,3 +38,24 @@ func TestTab(t *testing.T) {
 	}
 	time.Sleep(5 * time.Second)
 }
+
+func TestTabJump(t *testing.T) {
+	browser, err := NewBrowser(
+		Debug())
+	if err != nil {
+		log.Println(err)
+	}
+	defer browser.Close()
+	// 打开百度首页
+	tab, err := browser.Open("https://www.baidu.com")
+	if err != nil {
+		log.Println(err)
+	}
+	if err := tab.Wait(); err != nil {
+		log.Println(err)
+	}
+	if err := tab.Jump("https://www.qq.com"); err != nil {
+		log.Fatal(err)
+	}
+	time.Sleep(5 * time.Second)
+}

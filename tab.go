@@ -54,6 +54,7 @@ type Tab struct {
 	Title                string  `json:"title"`
 	DevtoolsFrontendUrl  string  `json:"devtoolsFrontendUrl"`
 	WebSocketDebuggerUrl string  `json:"webSocketDebuggerUrl"`
+
 	Channel              Channel `json:"-"`
 
 	debug bool `json:"-"`
@@ -86,7 +87,7 @@ func (tab *Tab) init(body io.Reader, debug bool) error {
 
 // 等待页面加载完成
 func (tab *Tab) Wait() error {
-	if err := tab.HandleEvent(page.LoadEventFiredEvent, nil); err != nil {
+	if err := tab.PollEvent(page.LoadEventFiredEvent, nil); err != nil {
 		return err
 	}
 	return nil
@@ -98,15 +99,15 @@ func (tab *Tab) Jump(url string) error {
 		return err
 	}
 	var result = page.NavigateResult{}
-	if err := tab.HandleResult(&result); err != nil {
+	if err := tab.GetResult(&result); err != nil {
 		return err
 	}
 	var frameNavigatedParams = page.FrameNavigatedParams{}
-	if err := tab.HandleEvent(page.FrameNavigatedEvent, &frameNavigatedParams); err != nil {
+	if err := tab.PollEvent(page.FrameNavigatedEvent, &frameNavigatedParams); err != nil {
 		return err
 	}
 	var frameStoppedLoadingParams = page.FrameStoppedLoadingParams{}
-	if err := tab.HandleEvent(page.FrameStoppedLoadingEvent, &frameStoppedLoadingParams); err != nil {
+	if err := tab.PollEvent(page.FrameStoppedLoadingEvent, &frameStoppedLoadingParams); err != nil {
 		return err
 	}
 	if frameNavigatedParams.Frame.Id == frameStoppedLoadingParams.FrameId {
@@ -122,7 +123,7 @@ func (tab *Tab) Query(selector string) ([]*dom.NodeId, error) {
 		return nil, err
 	}
 	var getDocument = dom.GetDocumentResult{}
-	if err := tab.HandleResult(&getDocument); err != nil {
+	if err := tab.GetResult(&getDocument); err != nil {
 		return nil, err
 	}
 	// 开始搜素节点
@@ -134,7 +135,7 @@ func (tab *Tab) Query(selector string) ([]*dom.NodeId, error) {
 		return nil, err
 	}
 	var searchResult = dom.PerformSearchResult{}
-	if err := tab.HandleResult(&searchResult); err != nil {
+	if err := tab.GetResult(&searchResult); err != nil {
 		return nil, err
 	}
 	// 获取节点结果
@@ -147,7 +148,7 @@ func (tab *Tab) Query(selector string) ([]*dom.NodeId, error) {
 		return nil, err
 	}
 	var getResult = dom.GetSearchResultsResult{}
-	if err := tab.HandleResult(&getResult); err != nil {
+	if err := tab.GetResult(&getResult); err != nil {
 		return nil, err
 	}
 	return getResult.NodeIds, nil
@@ -224,7 +225,7 @@ func (tab *Tab) Js(js string, timeout runtime.TimeDelta) (object runtime.RemoteO
 		return object, err
 	}
 	var evalResult = runtime.EvaluateResult{}
-	if err := tab.HandleResult(&evalResult); err != nil {
+	if err := tab.GetResult(&evalResult); err != nil {
 		return object, err
 	}
 	return evalResult.Result, nil
@@ -262,7 +263,7 @@ func (tab *Tab) Capture(filename string, quality int, viewport page.Viewport) er
 		return err
 	}
 	var captureScreenshotResult = page.CaptureScreenshotResult{}
-	if err := tab.HandleResult(&captureScreenshotResult); err != nil {
+	if err := tab.GetResult(&captureScreenshotResult); err != nil {
 		return err
 	}
 	return ioutil.WriteFile(filename, captureScreenshotResult.Data, 0777)
@@ -280,7 +281,7 @@ func (tab *Tab) DOMCapture(filename string, quality int, selector string) error 
 		return err
 	}
 	var box dom.GetBoxModelResult
-	if err := tab.HandleResult(&box); err != nil {
+	if err := tab.GetResult(&box); err != nil {
 		return err
 	}
 	return tab.Capture(filename, quality, page.Viewport{
@@ -302,7 +303,7 @@ func (tab *Tab) FullCapture(filename string, quality int) error {
 		return err
 	}
 	var metric page.GetLayoutMetricsResult
-	if err := tab.HandleResult(&metric); err != nil {
+	if err := tab.GetResult(&metric); err != nil {
 		return err
 	}
 	width, height := math.Ceil(metric.ContentSize.Width), math.Ceil(metric.ContentSize.Height)
@@ -357,7 +358,7 @@ func (tab *Tab) handle() error {
 	}
 }
 
-func (tab *Tab) HandleResult(returns interface{}) error {
+func (tab *Tab) GetResult(returns interface{}) error {
 	timeout := time.After(time.Second * 15)
 	for {
 		select {
@@ -378,7 +379,7 @@ func (tab *Tab) HandleResult(returns interface{}) error {
 	}
 }
 
-func (tab *Tab) HandleEvent(method string, params interface{}) error {
+func (tab *Tab) PollEvent(method string, params interface{}) error {
 	timeout := time.After(time.Second * 15)
 	for {
 		select {
